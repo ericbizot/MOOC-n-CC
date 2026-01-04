@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation : La Bulle de 1929</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .game-area {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel h2 {
+            font-family: 'Playfair Display', serif;
+            color: #d4af37;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .help-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #d4af37;
+            color: #000;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: help;
+            position: relative;
+        }
+
+        .help-icon:hover::after {
+            content: attr(data-help);
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.95);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            white-space: nowrap;
+            max-width: 300px;
+            white-space: normal;
+            width: 250px;
+            font-size: 12px;
+            font-weight: normal;
+            z-index: 1000;
+            border: 1px solid #d4af37;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .stat-value.positive {
+            color: #4ade80;
+        }
+
+        .stat-value.negative {
+            color: #ef4444;
+        }
+
+        .mood-indicator {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid;
+        }
+
+        .mood-indicator.euphoria {
+            border-color: #4ade80;
+            background: rgba(74,222,128,0.1);
+        }
+
+        .mood-indicator.optimism {
+            border-color: #fbbf24;
+            background: rgba(251,191,36,0.1);
+        }
+
+        .mood-indicator.concern {
+            border-color: #fb923c;
+            background: rgba(251,146,60,0.1);
+        }
+
+        .mood-indicator.panic {
+            border-color: #ef4444;
+            background: rgba(239,68,68,0.1);
+        }
+
+        .mood-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .mood-description {
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        #chart {
+            width: 100%;
+            height: 300px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .margin-panel {
+            background: rgba(212,175,55,0.1);
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .margin-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .margin-stat {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .margin-call-alert {
+            background: rgba(239,68,68,0.2);
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .margin-call-alert.active {
+            display: block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-label {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .quantity-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .quantity-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(212,175,55,0.2);
+            border: 2px solid #d4af37;
+            border-radius: 6px;
+            color: #d4af37;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn.active {
+            background: #d4af37;
+            color: #000;
+        }
+
+        .quantity-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-buy {
+            background: #4ade80;
+            color: #000;
+        }
+
+        .btn-buy:hover {
+            background: #22c55e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74,222,128,0.4);
+        }
+
+        .btn-margin {
+            background: linear-gradient(135deg, #d4af37 0%, #c49b2e 100%);
+            color: #000;
+            position: relative;
+        }
+
+        .btn-margin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212,175,55,0.4);
+        }
+
+        .btn-margin::after {
+            content: "⚡ CRÉDIT";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .btn-sell {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .btn-sell:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239,68,68,0.4);
+        }
+
+        .btn-wait {
+            background: #fbbf24;
+            color: #000;
+        }
+
+        .btn-wait:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251,191,36,0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .news-feed {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .news-item {
+            padding: 12px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid #d4af37;
+            border-radius: 4px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .news-item.historical {
+            border-left-color: #4ade80;
+            background: rgba(74,222,128,0.05);
+        }
+
+        .news-item.warning {
+            border-left-color: #fbbf24;
+            background: rgba(251,191,36,0.05);
+        }
+
+        .news-item.crash {
+            border-left-color: #ef4444;
+            background: rgba(239,68,68,0.1);
+            font-weight: 600;
+        }
+
+        .news-date {
+            font-weight: 600;
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+
+        .news-source {
+            font-size: 0.85em;
+            color: #888;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #ccc;
+            border-left: 3px solid #666;
+            padding-left: 10px;
+            margin: 8px 0;
+        }
+
+        .explanation-panel {
+            background: rgba(74,222,128,0.1);
+            border: 2px solid #4ade80;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .explanation-title {
+            font-weight: 600;
+            color: #4ade80;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .explanation-text {
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .crash-alert {
+            background: rgba(239,68,68,0.2);
+            border: 3px solid #ef4444;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+            animation: shake 0.5s infinite;
+        }
+
+        .crash-alert.active {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .game-over {
+            background: rgba(212,175,55,0.2);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .game-over.active {
+            display: block;
+        }
+
+        .game-over h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .game-over p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .btn-restart {
+            background: #d4af37;
+            color: #000;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+
+        .btn-restart:hover {
+            background: #c49b2e;
+        }
+
+        .ticker-tape {
+            background: #000;
+            color: #4ade80;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .instruction {
+            background: rgba(74,222,128,0.05);
+            border-left: 4px solid #4ade80;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Simulation : La Bulle de Wall Street 1929</h1>
+        <p class="subtitle">Vivez l'euphorie spéculative et le krach le plus dévastateur de l'histoire</p>
+
+        <!-- Explications initiales -->
+        <div class="explanation-panel">
+            <div class="explanation-title">📚 CONTEXTE HISTORIQUE : L'ACHAT À CRÉDIT (MARGIN BUYING)</div>
+            <div class="explanation-text">
+                <p><strong>Dans les années 1920, une pratique révolutionnaire se généralise à Wall Street :</strong> l'achat d'actions à crédit, appelé "margin buying" ou "buying on margin".</p>
+                <p style="margin-top: 10px;"><strong>Principe :</strong> Vous ne payez que 10 à 20% du prix des actions avec votre propre argent. Votre courtier vous prête les 80 à 90% restants.</p>
+                <p style="margin-top: 10px;"><strong>Exemple :</strong> Pour acheter 100 actions à 15$ (= 1,500$), vous ne payez que 150-300$ de votre poche. Les 1,200-1,350$ restants sont prêtés.</p>
+                <p style="margin-top: 10px;"><strong>Le piège :</strong> Si le cours baisse, vous recevez un "appel de marge" (margin call) : obligation de rembourser immédiatement ou vente forcée de vos actions en perte. Cette pratique a transformé la correction de 1929 en catastrophe mondiale.</p>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <!-- Panneau principal -->
+            <div>
+                <div class="panel">
+                    <h2>💼 Votre Portfolio <span class="help-icon" data-help="Gérez votre capital et vos actions pour maximiser votre fortune">?</span></h2>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-label">💵 Liquidités</div>
+                            <div class="stat-value" id="cash">10,000 $</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">📈 Actions possédées</div>
+                            <div class="stat-value" id="shares">0</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">💎 Valeur des actions</div>
+                            <div class="stat-value" id="stock-value">0 $</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">🏆 Patrimoine total</div>
+                            <div class="stat-value" id="total-value">10,000 $</div>
+                        </div>
+                    </div>
+
+                    <!-- Indicateur de psychologie du marché -->
+                    <div id="mood-indicator" class="mood-indicator euphoria">
+                        <div class="mood-text" id="mood-text">🚀 EUPHORIE GÉNÉRALE</div>
+                        <div class="mood-description" id="mood-description">Le marché est en pleine confiance. Tout le monde achète !</div>
+                    </div>
+
+                    <!-- Achat à crédit (Margin) -->
+                    <div class="margin-panel">
+                        <h3 style="color: #d4af37; margin-bottom: 15px;">⚡ Position à crédit (Margin) <span class="help-icon" data-help="Actions achetées avec de l'argent emprunté. Risque : appel de marge si le cours baisse !">?</span></h3>
+                        <div class="margin-info">
+                            <div class="margin-stat">
+                                <div class="stat-label">Actions à crédit</div>
+                                <div class="stat-value" id="margin-shares">0</div>
+                            </div>
+                            <div class="margin-stat">
+                                <div class="stat-label">Dette envers courtier</div>
+                                <div class="stat-value negative" id="margin-debt">0 $</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerte appel de marge -->
+                    <div id="margin-call-alert" class="margin-call-alert">
+                        <h3 style="color: #ef4444; margin-bottom: 10px;">🚨 APPEL DE MARGE (MARGIN CALL) !</h3>
+                        <p>La valeur de vos actions à crédit est tombée en dessous du seuil critique ! Vous devez :</p>
+                        <p style="margin-top: 10px;"><strong>1. Rembourser immédiatement <span id="margin-call-amount">0$</span></strong></p>
+                        <p><strong>OU</strong></p>
+                        <p><strong>2. Vos actions seront vendues automatiquement au prochain tour !</strong></p>
+                    </div>
+
+                    <div class="ticker-tape" id="ticker">
+                        📊 <span id="ticker-price">RCA $100</span> | <span id="ticker-date">JANVIER 1925</span> | <span id="ticker-variation">---</span>
+                    </div>
+
+                    <div id="chart">
+                        <canvas id="stock-chart"></canvas>
+                    </div>
+
+                    <!-- Alerte crash -->
+                    <div id="crash-alert" class="crash-alert">
+                        <h3 style="color: #ef4444; font-size: 1.8em; margin-bottom: 10px;">💥 KRACH BOURSIER !</h3>
+                        <p style="font-size: 1.2em;">Le marché s'effondre ! Vendez immédiatement ou perdez tout !</p>
+                    </div>
+
+                    <!-- Contrôles -->
+                    <div class="control-group">
+                        <label class="control-label">Quantité d'actions à acheter/vendre :</label>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn active" onclick="selectQuantity(10)">10 actions</button>
+                            <button class="quantity-btn" onclick="selectQuantity(50)">50 actions</button>
+                            <button class="quantity-btn" onclick="selectQuantity(100)">100 actions</button>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn btn-buy" onclick="buyShares()">
+                            💰 Acheter<br><span id="buy-cost" style="font-size: 0.8em;">---</span>
+                        </button>
+                        <button class="btn btn-margin" onclick="buyOnMargin()">
+                            ⚡ Acheter à crédit<br><span id="margin-cost" style="font-size: 0.8em;">10-20% cash</span>
+                        </button>
+                        <button class="btn btn-sell" onclick="sellShares()">
+                            💸 Vendre tout<br><span id="sell-revenue" style="font-size: 0.8em;">---</span>
+                        </button>
+                        <button class="btn btn-wait" onclick="waitTurn()">
+                            ⏸️ Attendre
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panneau actualités -->
+            <div>
+                <div class="panel">
+                    <h2>📰 Journal de Wall Street</h2>
+                    <div class="news-feed" id="news-feed">
+                        <div class="news-item historical">
+                            <div class="news-date">Janvier 1925</div>
+                            <div>Bienvenue à Wall Street ! L'économie américaine entre dans une période de prospérité sans précédent. Le président Coolidge déclare : <span class="quote">"Le business de l'Amérique, c'est le business."</span></div>
+                            <div class="news-source">— The Wall Street Journal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran de fin -->
+        <div id="game-over" class="game-over">
+            <h2>🎭 Fin de la simulation</h2>
+            <p id="final-message"></p>
+            <p id="lesson"></p>
+            <p id="historical-context"></p>
+            <button class="btn btn-restart" onclick="restartGame()">🔄 Rejouer</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedQuantity = 10;
+        
+        let gameState = {
+            cash: 10000,
+            shares: 0,
+            marginShares: 0,
+            marginDebt: 0,
+            stockPrice: 100,
+            turn: 0,
+            maxTurns: 20,
+            priceHistory: [100],
+            crashed: false,
+            gameOver: false,
+            marginCallActive: false
+        };
+
+        const months = ['Janvier', 'Avril', 'Juillet', 'Octobre'];
+
+        const newsEvents = {
+            1: { text: "La production industrielle atteint des records. Les nouvelles technologies (automobile, radio, électricité) révolutionnent l'économie.", type: "historical", source: "Economic Report 1925" },
+            2: { text: "L'économiste Irving Fisher déclare : <span class='quote'>\"Les actions ont atteint ce qui ressemble à un plateau permanent de prix élevés.\"</span>", type: "historical", source: "Irving Fisher, Yale University" },
+            3: { text: "Les courtiers encouragent l'achat à crédit. Slogan publicitaire : <span class='quote'>\"Pourquoi attendre ? Achetez maintenant, payez plus tard !\"</span>", type: "historical", source: "Annonce publicitaire, 1926" },
+            4: { text: "Charles Lindbergh traverse l'Atlantique en avion solo. L'optimisme technologique est à son comble.", type: "historical", source: "The New York Times, Mai 1927" },
+            5: { text: "La Réserve Fédérale maintient des taux d'intérêt bas pour stimuler l'investissement.", type: "historical", source: "Federal Reserve Bulletin" },
+            6: { text: "Un cireur de chaussures de Wall Street donne des conseils boursiers à Joseph Kennedy. Kennedy décide de vendre toutes ses actions...", type: "warning", source: "Anecdote historique rapportée" },
+            7: { text: "Le président Hoover inaugure son mandat avec confiance : <span class='quote'>\"Nous sommes proches du jour où la pauvreté sera bannie de cette nation.\"</span>", type: "historical", source: "Herbert Hoover, Mars 1929" },
+            8: { text: "Les volumes d'échanges atteignent des sommets jamais vus. 5 millions d'actions changent de mains chaque jour.", type: "historical", source: "NYSE Trading Records" },
+            9: { text: "Paul Warburg, banquier respecté, avertit : <span class='quote'>\"Si l'orgie spéculative se poursuit, elle se terminera par l'effondrement général.\"</span> Il est ignoré.", type: "warning", source: "Paul Warburg, Mars 1929" },
+            10: { text: "Roger Babson, économiste, prédit : <span class='quote'>\"Tôt ou tard un krach arrive, et il sera terrible.\"</span> Le marché plonge temporairement, puis reprend.", type: "warning", source: "Roger Babson, Septembre 1929" },
+            11: { text: "Les premiers craquements : la Bourse de Londres connaît une forte baisse. Certains analystes s'inquiètent.", type: "warning", source: "London Stock Exchange Report" },
+            12: { text: "Les banques new-yorkaises tentent de rassurer les investisseurs. Le marché se stabilise... temporairement.", type: "warning", source: "Banking Consortium Statement" },
+            13: { text: "Octobre 1929 : Les volumes de vente augmentent brutalement. La nervosité s'installe à Wall Street.", type: "warning", source: "Market Report, 21 octobre 1929" },
+            14: { text: "Première panique. Les investisseurs commencent à vendre massivement. La baisse s'accélère.", type: "crash", source: "NYSE Floor Report" },
+            15: { text: "⚫ JEUDI NOIR (24 octobre 1929) - 12,9 millions d'actions vendues en une journée. Les téléscripteurs prennent des heures de retard. La panique est générale.", type: "crash", source: "The New York Times, 25 octobre 1929" },
+            16: { text: "⚫ MARDI NOIR (29 octobre 1929) - 16,4 millions d'actions. Effondrement total. Les cours s'effondrent de 12% en une seule séance.", type: "crash", source: "The New York Times, 30 octobre 1929" },
+            17: { text: "Les appels de marge se multiplient. Des milliers d'investisseurs ruinés. Les suicides se multiplient.", type: "crash", source: "Police Reports, NYC" },
+            18: { text: "La spirale continue. Les banques commencent à faire faillite. La crise devient mondiale.", type: "crash", source: "Banking Crisis Report" },
+            19: { text: "La Grande Dépression s'installe. Le chômage explose. 25% des Américains perdront leur emploi d'ici 1933.", type: "crash", source: "U.S. Department of Labor" }
+        };
+
+        function selectQuantity(qty) {
+            selectedQuantity = qty;
+            document.querySelectorAll('.quantity-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateCostDisplay();
+        }
+
+        function updateCostDisplay() {
+            const buyCost = selectedQuantity * gameState.stockPrice;
+            const marginCost = Math.round(buyCost * 0.15);
+            const sellRevenue = gameState.shares * gameState.stockPrice;
+
+            document.getElementById('buy-cost').textContent = `${buyCost.toLocaleString('fr-FR')}$`;
+            document.getElementById('margin-cost').textContent = `${marginCost.toLocaleString('fr-FR')}$ cash`;
+            document.getElementById('sell-revenue').textContent = gameState.shares > 0 ? `${sellRevenue.toLocaleString('fr-FR')}$` : '---';
+        }
+
+        function calculateStockPrice(turn) {
+            if (turn === 0) return 100;
+            
+            if (turn <= 10) {
+                const growth = 1 + (Math.random() * 0.07 + 0.08);
+                return Math.round(gameState.priceHistory[turn - 1] * growth);
+            } else if (turn <= 13) {
+                const growth = 1 + (Math.random() * 0.05 + 0.03);
+                return Math.round(gameState.priceHistory[turn - 1] * growth);
+            } else if (turn === 14) {
+                return Math.round(gameState.priceHistory[13] * 0.95);
+            } else if (turn === 15) {
+                return Math.round(gameState.priceHistory[14] * 0.89);
+            } else if (turn === 16) {
+                gameState.crashed = true;
+                return Math.round(gameState.priceHistory[15] * 0.88);
+            } else {
+                return Math.round(gameState.priceHistory[turn - 1] * 0.85);
+            }
+        }
+
+        function updateMoodIndicator() {
+            const moodEl = document.getElementById('mood-indicator');
+            const moodText = document.getElementById('mood-text');
+            const moodDesc = document.getElementById('mood-description');
+
+            if (gameState.turn <= 8) {
+                moodEl.className = 'mood-indicator euphoria';
+                moodText.textContent = '🚀 EUPHORIE GÉNÉRALE';
+                moodDesc.textContent = 'Le marché est invincible ! Tout le monde s\'enrichit !';
+            } else if (gameState.turn <= 12) {
+                moodEl.className = 'mood-indicator optimism';
+                moodText.textContent = '😊 OPTIMISME PRUDENT';
+                moodDesc.textContent = 'Quelques voix s\'inquiètent, mais la majorité reste confiante.';
+            } else if (gameState.turn <= 14) {
+                moodEl.className = 'mood-indicator concern';
+                moodText.textContent = '😰 INQUIÉTUDE CROISSANTE';
+                moodDesc.textContent = 'La nervosité gagne Wall Street. Les ventes augmentent.';
+            } else {
+                moodEl.className = 'mood-indicator panic';
+                moodText.textContent = '🔥 PANIQUE TOTALE';
+                moodDesc.textContent = 'Sauve qui peut ! C\'est l\'effondrement !';
+            }
+        }
+
+        function checkMarginCall() {
+            if (gameState.marginShares > 0) {
+                const marginValue = gameState.marginShares * gameState.stockPrice;
+                const equityRatio = (marginValue - gameState.marginDebt) / marginValue;
+
+                if (equityRatio < 0.25) {
+                    gameState.marginCallActive = true;
+                    const amountNeeded = Math.round(gameState.marginDebt * 0.3);
+                    document.getElementById('margin-call-amount').textContent = amountNeeded.toLocaleString('fr-FR') + '$';
+                    document.getElementById('margin-call-alert').classList.add('active');
+                    
+                    addNews(`🚨 <strong>APPEL DE MARGE !</strong> Vos actions à crédit ont trop baissé. Vous devez rembourser ${amountNeeded.toLocaleString('fr-FR')}$ immédiatement ou tout sera vendu automatiquement !`, 'crash');
+                }
+            }
+        }
+
+        function handleMarginCall() {
+            if (gameState.marginCallActive) {
+                const marginRevenue = gameState.marginShares * gameState.stockPrice;
+                const netProceeds = marginRevenue - gameState.marginDebt;
+                
+                gameState.cash += netProceeds;
+                addNews(`💀 <strong>LIQUIDATION FORCÉE !</strong> Vos ${gameState.marginShares} actions à crédit ont été vendues d'office pour ${marginRevenue.toLocaleString('fr-FR')}$. Après remboursement de la dette (${gameState.marginDebt.toLocaleString('fr-FR')}$), il vous reste ${netProceeds.toLocaleString('fr-FR')}$.`, 'crash');
+                
+                gameState.marginShares = 0;
+                gameState.marginDebt = 0;
+                gameState.marginCallActive = false;
+                document.getElementById('margin-call-alert').classList.remove('active');
+            }
+        }
+
+        function getCurrentDate() {
+            const year = 1925 + Math.floor(gameState.turn / 4);
+            const month = months[gameState.turn % 4];
+            return `${month} ${year}`;
+        }
+
+        function updateDisplay() {
+            const stockValue = gameState.shares * gameState.stockPrice;
+            const marginValue = gameState.marginShares * gameState.stockPrice;
+            const totalValue = gameState.cash + stockValue + marginValue - gameState.marginDebt;
+            const variation = gameState.turn > 0 
+                ? ((gameState.stockPrice / gameState.priceHistory[gameState.turn - 1] - 1) * 100).toFixed(1)
+                : 0;
+
+            document.getElementById('cash').textContent = `${gameState.cash.toLocaleString('fr-FR')} $`;
+            document.getElementById('shares').textContent = gameState.shares.toLocaleString('fr-FR');
+            document.getElementById('stock-value').textContent = `${stockValue.toLocaleString('fr-FR')} $`;
+            document.getElementById('total-value').textContent = `${totalValue.toLocaleString('fr-FR')} $`;
+            document.getElementById('margin-shares').textContent = gameState.marginShares.toLocaleString('fr-FR');
+            document.getElementById('margin-debt').textContent = `${gameState.marginDebt.toLocaleString('fr-FR')} $`;
+
+            const variationText = variation > 0 ? `+${variation}%` : `${variation}%`;
+            document.getElementById('ticker-price').textContent = `RCA $${gameState.stockPrice}`;
+            document.getElementById('ticker-date').textContent = getCurrentDate().toUpperCase();
+            document.getElementById('ticker-variation').textContent = variationText;
+
+            updateCostDisplay();
+            updateMoodIndicator();
+            updateChart();
+
+            if (gameState.turn >= 15 && !gameState.gameOver) {
+                document.getElementById('crash-alert').classList.add('active');
+            }
+        }
+
+        function updateChart() {
+            const canvas = document.getElementById('stock-chart');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            const padding = 40;
+            const width = canvas.width - padding * 2;
+            const height = canvas.height - padding * 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (height / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+            }
+
+            const maxPrice = Math.max(...gameState.priceHistory);
+            const minPrice = Math.min(...gameState.priceHistory);
+            const priceRange = maxPrice - minPrice || 1;
+
+            ctx.strokeStyle = gameState.crashed ? '#ef4444' : '#4ade80';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+
+            gameState.priceHistory.forEach((price, index) => {
+                const x = padding + (width / (gameState.maxTurns - 1)) * index;
+                const y = padding + height - ((price - minPrice) / priceRange) * height;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+
+            ctx.stroke();
+
+            ctx.fillStyle = '#d4af37';
+            ctx.font = '12px Montserrat';
+            ctx.textAlign = 'right';
+            ctx.fillText(`${maxPrice}$`, padding - 5, padding + 5);
+            ctx.fillText(`${minPrice}$`, padding - 5, height + padding);
+            
+            ctx.textAlign = 'center';
+            ctx.fillText('1925', padding, canvas.height - 10);
+            ctx.fillText('1929', canvas.width - padding, canvas.height - 10);
+        }
+
+        function addNews(message, type = 'normal') {
+            const newsEl = document.getElementById('news-feed');
+            const newsItem = document.createElement('div');
+            newsItem.className = `news-item ${type}`;
+            newsItem.innerHTML = `
+                <div class="news-date">${getCurrentDate()}</div>
+                <div>${message}</div>
+            `;
+            newsEl.insertBefore(newsItem, newsEl.firstChild);
+        }
+
+        function buyShares() {
+            if (gameState.gameOver) return;
+            
+            const cost = selectedQuantity * gameState.stockPrice;
+            
+            if (gameState.cash >= cost) {
+                gameState.cash -= cost;
+                gameState.shares += selectedQuantity;
+                addNews(`✅ Vous achetez ${selectedQuantity} actions à ${gameState.stockPrice}$ l'unité pour ${cost.toLocaleString('fr-FR')}$.`);
+                nextTurn();
+            } else {
+                alert(`Fonds insuffisants ! Coût : ${cost.toLocaleString('fr-FR')}$ • Disponible : ${gameState.cash.toLocaleString('fr-FR')}$`);
+            }
+        }
+
+        function buyOnMargin() {
+            if (gameState.gameOver) return;
+            
+            const totalCost = selectedQuantity * gameState.stockPrice;
+            const cashRequired = Math.round(totalCost * 0.15);
+            const borrowed = totalCost - cashRequired;
+            
+            if (gameState.cash >= cashRequired) {
+                gameState.cash -= cashRequired;
+                gameState.marginShares += selectedQuantity;
+                gameState.marginDebt += borrowed;
+                addNews(`⚡ <strong>ACHAT À CRÉDIT !</strong> Vous achetez ${selectedQuantity} actions (${totalCost.toLocaleString('fr-FR')}$) avec seulement ${cashRequired.toLocaleString('fr-FR')}$ cash. Dette : +${borrowed.toLocaleString('fr-FR')}$.`, 'warning');
+                nextTurn();
+            } else {
+                alert(`Cash insuffisant ! Besoin : ${cashRequired.toLocaleString('fr-FR')}$ • Disponible : ${gameState.cash.toLocaleString('fr-FR')}$`);
+            }
+        }
+
+        function sellShares() {
+            if (gameState.gameOver) return;
+            
+            const totalShares = gameState.shares + gameState.marginShares;
+            if (totalShares === 0) {
+                alert("Vous ne possédez aucune action !");
+                return;
+            }
+
+            const normalRevenue = gameState.shares * gameState.stockPrice;
+            gameState.cash += normalRevenue;
+
+            const marginRevenue = gameState.marginShares * gameState.stockPrice;
+            const marginProfit = marginRevenue - gameState.marginDebt;
+            gameState.cash += marginProfit;
+
+            addNews(`💰 <strong>VENTE TOTALE !</strong> ${totalShares} actions vendues à ${gameState.stockPrice}$ • Actions normales : +${normalRevenue.toLocaleString('fr-FR')}$ • Actions à crédit : +${marginProfit.toLocaleString('fr-FR')}$ (après remboursement dette).`);
+            
+            gameState.shares = 0;
+            gameState.marginShares = 0;
+            gameState.marginDebt = 0;
+            gameState.marginCallActive = false;
+            document.getElementById('margin-call-alert').classList.remove('active');
+            
+            nextTurn();
+        }
+
+        function waitTurn() {
+            if (gameState.gameOver) return;
+            addNews(`⏸️ Vous observez le marché sans agir...`);
+            nextTurn();
+        }
+
+        function nextTurn() {
+            handleMarginCall();
+            
+            gameState.turn++;
+            
+            if (gameState.turn >= gameState.maxTurns) {
+                endGame();
+                return;
+            }
+
+            gameState.stockPrice = calculateStockPrice(gameState.turn);
+            gameState.priceHistory.push(gameState.stockPrice);
+
+            if (gameState.marginDebt > 0) {
+                const interest = Math.round(gameState.marginDebt * 0.01);
+                gameState.marginDebt += interest;
+            }
+
+            if (newsEvents[gameState.turn]) {
+                const event = newsEvents[gameState.turn];
+                addNews(event.text + `<div class="news-source">— ${event.source}</div>`, event.type);
+            }
+
+            checkMarginCall();
+            updateDisplay();
+        }
+
+        function endGame() {
+            gameState.gameOver = true;
+            
+            const stockValue = gameState.shares * gameState.stockPrice;
+            const marginValue = gameState.marginShares * gameState.stockPrice;
+            const totalValue = gameState.cash + stockValue + marginValue - gameState.marginDebt;
+            const profit = totalValue - 10000;
+            const profitPercent = ((profit / 10000) * 100).toFixed(1);
+
+            let message, lesson, historical;
+
+            if (totalValue >= 50000) {
+                message = `🎉 <strong>Magnifique !</strong> Patrimoine final : <strong>${totalValue.toLocaleString('fr-FR')}$</strong> (${profitPercent > 0 ? '+' : ''}${profitPercent}%). Vous avez su vendre au bon moment !`;
+                lesson = `💡 <strong>Leçon :</strong> Les rares investisseurs qui ont vendu AVANT septembre 1929 ont préservé leur fortune. Joseph Kennedy, averti par un cireur de chaussures donnant des conseils boursiers, a tout vendu et est devenu milliardaire.`;
+                historical = `📚 <strong>Contexte historique :</strong> Moins de 1% des investisseurs ont su sortir à temps. Les autres ont été ruinés par l'achat à crédit : quand les cours ont chuté, les appels de marge ont forcé des ventes massives qui ont amplifié le krach.`;
+            } else if (totalValue >= 15000) {
+                message = `😌 Bien joué ! Patrimoine final : <strong>${totalValue.toLocaleString('fr-FR')}$</strong> (${profitPercent > 0 ? '+' : ''}${profitPercent}%). Vous avez limité les dégâts.`;
+                lesson = `💡 <strong>Leçon :</strong> Vous avez compris qu'il fallait sortir, mais un peu tard. Dans les bulles spéculatives, le timing est crucial.`;
+                historical = `📚 <strong>Contexte historique :</strong> Le krach de 1929 a détruit 90% de la valeur du marché en 3 ans. Les prix de 1929 ne seront retrouvés qu'en... 1954 !`;
+            } else if (totalValue >= 5000) {
+                message = `😬 Dommage... Patrimoine final : <strong>${totalValue.toLocaleString('fr-FR')}$</strong> (${profitPercent}%). Vous avez perdu plus de la moitié.`;
+                lesson = `💡 <strong>Leçon :</strong> Vous avez cru que "ça allait remonter". Erreur classique. L'achat à crédit a transformé une baisse normale en catastrophe.`;
+                historical = `📚 <strong>Contexte historique :</strong> Des milliers d'Américains se sont suicidés en 1929-1930. Les banques ont fait faillite en chaîne. 25% de chômage en 1933. La Grande Dépression durera 10 ans.`;
+            } else {
+                message = `💀 <strong>Ruiné !</strong> Patrimoine final : <strong>${totalValue.toLocaleString('fr-FR')}$</strong> (${profitPercent}%). Vous avez tout perdu comme des millions d'Américains.`;
+                lesson = `💡 <strong>Leçon :</strong> L'euphorie collective détruit le jugement rationnel. L'achat à crédit (margin) a été le principal amplificateur du désastre : avec 10% de cash, une baisse de 10% signifie une perte de 100% !`;
+                historical = `📚 <strong>Contexte historique :</strong> En 1929, 90% des transactions boursières se faisaient à crédit. Quand les cours ont baissé, les appels de marge ont forcé des ventes paniques qui ont créé une spirale mortelle. Le Dow Jones a perdu 89% de sa valeur (1929-1932). Cette crise a contribué à la montée du fascisme en Europe et à la Seconde Guerre mondiale.`;
+            }
+
+            document.getElementById('final-message').innerHTML = message;
+            document.getElementById('lesson').innerHTML = lesson;
+            document.getElementById('historical-context').innerHTML = historical;
+            document.getElementById('game-over').classList.add('active');
+        }
+
+        function restartGame() {
+            gameState = {
+                cash: 10000,
+                shares: 0,
+                marginShares: 0,
+                marginDebt: 0,
+                stockPrice: 100,
+                turn: 0,
+                maxTurns: 20,
+                priceHistory: [100],
+                crashed: false,
+                gameOver: false,
+                marginCallActive: false
+            };
+
+            selectedQuantity = 10;
+            document.querySelectorAll('.quantity-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === 0);
+            });
+
+            document.getElementById('game-over').classList.remove('active');
+            document.getElementById('crash-alert').classList.remove('active');
+            document.getElementById('margin-call-alert').classList.remove('active');
+            document.getElementById('news-feed').innerHTML = `
+                <div class="news-item historical">
+                    <div class="news-date">Janvier 1925</div>
+                    <div>Bienvenue à Wall Street ! L'économie américaine entre dans une période de prospérité sans précédent. Le président Coolidge déclare : <span class="quote">"Le business de l'Amérique, c'est le business."</span></div>
+                    <div class="news-source">— The Wall Street Journal</div>
+                </div>
+            `;
+
+            updateDisplay();
+        }
+
+        window.onload = function() {
+            updateDisplay();
+        };
+
+        window.addEventListener('resize', updateDisplay);
+    </script>
+</body>
+</html>

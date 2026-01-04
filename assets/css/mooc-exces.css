@@ -1,0 +1,521 @@
+/* ============================================
+   MOOC EXCÈS - Style Art Déco / Années 20
+   ============================================ */
+
+:root {
+    /* Palette Art Déco */
+    --or-deco: #d4af37;
+    --noir-profond: #0d0d0d;
+    --creme: #f5f0e8;
+    --bordeaux: #6d1f1f;
+    --vert-emeraude: #2d5016;
+    --bleu-nuit: #1a1a2e;
+    
+    /* Typographie Gatsby */
+    --deco-title: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    --deco-body: 'Raleway', 'Lato', sans-serif;
+    --deco-accent: 'Cinzel', serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--deco-body);
+    background: var(--noir-profond);
+    color: var(--creme);
+    line-height: 1.7;
+}
+
+/* ============================================
+   HEADER ART DÉCO
+   ============================================ */
+
+.mooc-header {
+    background: linear-gradient(180deg, var(--noir-profond) 0%, #1a1a1a 100%);
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 3px solid var(--or-deco);
+    overflow: hidden;
+}
+
+/* Motif sunburst Art Déco */
+.mooc-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200%;
+    height: 200%;
+    background: repeating-conic-gradient(
+        from 0deg,
+        rgba(212, 175, 55, 0.03) 0deg 5deg,
+        transparent 5deg 10deg
+    );
+    pointer-events: none;
+}
+
+/* Bordure géométrique */
+.mooc-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: 
+        linear-gradient(135deg, var(--or-deco) 10px, transparent 10px),
+        linear-gradient(-135deg, var(--or-deco) 10px, transparent 10px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 0;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.mooc-title {
+    font-family: var(--deco-title);
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--or-deco);
+    text-transform: uppercase;
+    text-shadow: 
+        2px 2px 0 var(--bordeaux),
+        4px 4px 12px rgba(212, 175, 55, 0.5);
+    margin-bottom: 1rem;
+}
+
+.mooc-subtitle {
+    font-family: var(--deco-accent);
+    font-size: 1.5rem;
+    color: var(--creme);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+}
+
+/* Navigation fil d'Ariane */
+.breadcrumb {
+    position: absolute;
+    top: 1rem;
+    left: 2rem;
+    font-size: 0.9rem;
+}
+
+.breadcrumb a {
+    color: var(--or-deco);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.breadcrumb a:hover {
+    color: var(--creme);
+}
+
+.breadcrumb span {
+    color: var(--creme);
+    margin: 0 0.5rem;
+}
+
+/* ============================================
+   NAVIGATION SÉANCES
+   ============================================ */
+
+.seances-nav {
+    background: linear-gradient(135deg, #1a1a1a 0%, var(--bleu-nuit) 100%);
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 1400px;
+    border: 2px solid var(--or-deco);
+    border-radius: 0;
+    position: relative;
+}
+
+/* Coins Art Déco */
+.seances-nav::before,
+.seances-nav::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--or-deco);
+}
+
+.seances-nav::before {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.seances-nav::after {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+}
+
+.nav-title {
+    text-align: center;
+    font-family: var(--deco-accent);
+    font-size: 1.5rem;
+    color: var(--or-deco);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.15em;
+}
+
+.seances-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.seance-link {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(26, 26, 46, 0.3) 100%);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--creme);
+    border: 1px solid var(--or-deco);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.seance-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.seance-link:hover::before {
+    left: 100%;
+}
+
+.seance-link:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(26, 26, 46, 0.5) 100%);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+}
+
+.seance-number {
+    font-family: var(--deco-title);
+    font-size: 2.5rem;
+    color: var(--or-deco);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.seance-name {
+    font-family: var(--deco-accent);
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.seance-theme {
+    font-size: 0.85rem;
+    color: rgba(245, 240, 232, 0.7);
+    font-style: italic;
+}
+
+/* ============================================
+   MAIN CONTAINER
+   ============================================ */
+
+.mooc-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+}
+
+/* Section avec cadre Art Déco */
+.deco-section {
+    background: linear-gradient(135deg, #1a1a1a 0%, var(--bleu-nuit) 100%);
+    padding: 3rem;
+    margin-bottom: 3rem;
+    border: 2px solid var(--or-deco);
+    position: relative;
+}
+
+/* Motifs géométriques coins */
+.deco-section::before {
+    content: '◆';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    color: var(--or-deco);
+    background: var(--noir-profond);
+    padding: 0 1rem;
+}
+
+.section-title {
+    font-family: var(--deco-title);
+    font-size: 2.5rem;
+    color: var(--or-deco);
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.section-content {
+    color: var(--creme);
+    line-height: 1.8;
+}
+
+/* ============================================
+   ACCORDÉONS CORPUS
+   ============================================ */
+
+.accordion {
+    margin: 2rem 0;
+}
+
+.accordion-item {
+    background: rgba(26, 26, 46, 0.5);
+    border: 1px solid var(--or-deco);
+    margin-bottom: 1rem;
+}
+
+.accordion-header {
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1));
+}
+
+.accordion-header:hover {
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2));
+}
+
+.accordion-title {
+    font-family: var(--deco-accent);
+    font-size: 1.3rem;
+    color: var(--or-deco);
+}
+
+.accordion-icon {
+    font-size: 1.5rem;
+    color: var(--or-deco);
+    transition: transform 0.3s;
+}
+
+.accordion-item.active .accordion-icon {
+    transform: rotate(45deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 5000px;
+}
+
+.accordion-body {
+    padding: 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* ============================================
+   LIENS & BOUTONS
+   ============================================ */
+
+a {
+    color: var(--or-deco);
+    text-decoration: none;
+    transition: all 0.3s;
+    border-bottom: 1px solid transparent;
+}
+
+a:hover {
+    color: var(--creme);
+    border-bottom-color: var(--or-deco);
+}
+
+.deco-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--or-deco) 0%, #b8941f 100%);
+    color: var(--noir-profond);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 2px solid var(--or-deco);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.deco-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.deco-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.deco-button:hover {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   QUIZ INTERACTIFS
+   ============================================ */
+
+.quiz-container {
+    background: rgba(26, 26, 46, 0.6);
+    padding: 2rem;
+    border-left: 4px solid var(--or-deco);
+    margin: 2rem 0;
+}
+
+.quiz-question {
+    font-family: var(--deco-accent);
+    font-size: 1.2rem;
+    color: var(--or-deco);
+    margin-bottom: 1.5rem;
+}
+
+.quiz-options {
+    list-style: none;
+}
+
+.quiz-option {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.quiz-option:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateX(10px);
+}
+
+.quiz-option.correct {
+    background: rgba(45, 80, 22, 0.5);
+    border-color: var(--vert-emeraude);
+}
+
+.quiz-option.incorrect {
+    background: rgba(109, 31, 31, 0.5);
+    border-color: var(--bordeaux);
+}
+
+/* ============================================
+   BADGES & TAGS
+   ============================================ */
+
+.tag {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: rgba(212, 175, 55, 0.2);
+    border: 1px solid var(--or-deco);
+    font-size: 0.85rem;
+    margin: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.mooc-footer {
+    background: var(--noir-profond);
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 3px solid var(--or-deco);
+    margin-top: 4rem;
+}
+
+.footer-nav {
+    margin-bottom: 2rem;
+}
+
+.footer-nav a {
+    margin: 0 1rem;
+    color: var(--or-deco);
+    font-family: var(--deco-accent);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .mooc-title {
+        font-size: 2.5rem;
+    }
+    
+    .seances-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mooc-container {
+        padding: 0 1rem;
+    }
+    
+    .deco-section {
+        padding: 2rem 1rem;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.gold-shimmer {
+    background: linear-gradient(
+        90deg,
+        var(--or-deco) 0%,
+        #f0e68c 50%,
+        var(--or-deco) 100%
+    );
+    background-size: 1000px 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s infinite linear;
+}

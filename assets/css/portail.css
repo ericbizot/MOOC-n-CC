@@ -1,0 +1,379 @@
+/* ============================================
+   PORTAIL - Culture Classique + Technologie
+   ============================================ */
+
+:root {
+    /* Palette classique */
+    --marbre-blanc: #f8f7f4;
+    --bleu-profond: #1a2847;
+    --bleu-royal: #2d4a7c;
+    --or-classique: #c9a961;
+    --gris-pierre: #5a5a5a;
+    --noir-encre: #1a1a1a;
+    
+    /* Typographie */
+    --serif: 'Cormorant Garamond', 'Crimson Text', Georgia, serif;
+    --sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    --mono: 'Fira Code', 'Courier New', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--serif);
+    background: linear-gradient(135deg, var(--marbre-blanc) 0%, #e8e6e1 100%);
+    color: var(--noir-encre);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ============================================
+   HEADER NÉOCLASSIQUE
+   ============================================ */
+
+header {
+    background: linear-gradient(180deg, var(--bleu-profond) 0%, var(--bleu-royal) 100%);
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid var(--or-classique);
+}
+
+/* Motif colonnes stylisé */
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 100px,
+            rgba(201, 169, 97, 0.1) 100px,
+            rgba(201, 169, 97, 0.1) 120px
+        );
+    pointer-events: none;
+}
+
+/* Frise supérieure */
+header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--or-classique) 0px,
+        var(--or-classique) 20px,
+        transparent 20px,
+        transparent 40px
+    );
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--marbre-blanc);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-family: var(--sans);
+    font-size: 1.2rem;
+    color: var(--or-classique);
+    letter-spacing: 0.1em;
+    font-weight: 300;
+}
+
+/* Élément technologique : code binaire décoratif */
+.tech-accent {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: rgba(201, 169, 97, 0.3);
+    margin-top: 1rem;
+    letter-spacing: 0.2em;
+}
+
+/* ============================================
+   MAIN CONTAINER
+   ============================================ */
+
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 4rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intro h2 {
+    font-size: 2.5rem;
+    color: var(--bleu-profond);
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.intro p {
+    font-size: 1.2rem;
+    color: var(--gris-pierre);
+    line-height: 1.8;
+}
+
+/* ============================================
+   GRILLE DE MOOCS - Architecture bibliothèque
+   ============================================ */
+
+.moocs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.mooc-card {
+    background: white;
+    border: 2px solid var(--or-classique);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.mooc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--bleu-profond), var(--or-classique));
+}
+
+.mooc-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    border-color: var(--bleu-profond);
+}
+
+/* MOOC Actif (Excès) */
+.mooc-card.active {
+    border-width: 3px;
+    border-color: var(--bleu-profond);
+}
+
+.mooc-card.active::before {
+    height: 8px;
+}
+
+/* MOOCs à venir */
+.mooc-card.coming-soon {
+    opacity: 0.7;
+}
+
+.mooc-card.coming-soon:hover {
+    opacity: 1;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--bleu-profond) 0%, var(--bleu-royal) 100%);
+    padding: 2rem;
+    color: white;
+    position: relative;
+}
+
+.card-number {
+    font-family: var(--mono);
+    font-size: 3rem;
+    font-weight: bold;
+    opacity: 0.3;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.card-theme {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    color: var(--or-classique);
+    font-weight: 300;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-description {
+    color: var(--gris-pierre);
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--gris-pierre);
+}
+
+.card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--or-classique);
+}
+
+.status-indicator.active {
+    background: #28a745;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.card-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--bleu-profond);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.card-button:hover {
+    background: var(--bleu-royal);
+    border-color: var(--or-classique);
+    transform: translateX(4px);
+}
+
+.card-button.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ============================================
+   FOOTER NÉOCLASSIQUE
+   ============================================ */
+
+footer {
+    background: var(--bleu-profond);
+    color: var(--marbre-blanc);
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+    border-top: 4px solid var(--or-classique);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-content p {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .moocs-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    header {
+        padding: 2rem 1rem;
+    }
+    
+    main {
+        padding: 2rem 1rem;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mooc-card {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.mooc-card:nth-child(1) { animation-delay: 0.1s; }
+.mooc-card:nth-child(2) { animation-delay: 0.2s; }
+.mooc-card:nth-child(3) { animation-delay: 0.3s; }
+.mooc-card:nth-child(4) { animation-delay: 0.4s; }
+.mooc-card:nth-child(5) { animation-delay: 0.5s; }
+.mooc-card:nth-child(6) { animation-delay: 0.6s; }
+.mooc-card:nth-child(7) { animation-delay: 0.7s; }
+.mooc-card:nth-child(8) { animation-delay: 0.8s; }
+.mooc-card:nth-child(9) { animation-delay: 0.9s; }
