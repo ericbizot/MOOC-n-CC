@@ -42,7 +42,7 @@ body {
 
 header {
     position: relative;
-    min-height: 420px;
+    min-height: 620px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,8 +72,8 @@ header {
 }
 
 .hero-image-wrap {
-    width: 220px;
-    height: 220px;
+    width: 440px;
+    height: 440px;
     display: flex;
     align-items: center;
     justify-content: center;
