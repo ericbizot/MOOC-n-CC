@@ -238,6 +238,281 @@
         </div>
     </main>
 
+    <!-- ═══════════════════════════════════════════════════
+     CAISSE À OUTILS — Section à insérer dans index.html
+     Avant la balise footer / fin de page
+     ═══════════════════════════════════════════════════ -->
+
+<style>
+/* ── Caisse à outils ── */
+.outils-section {
+  padding: 64px 24px 80px;
+  background: #f9f4e8;
+  border-top: 4px solid #8b0000;
+}
+.outils-header {
+  max-width: 860px;
+  margin: 0 auto 48px;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.outils-eyebrow {
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #8b6914;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.outils-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a0800;
+  font-family: Georgia, serif;
+  margin: 0;
+}
+.outils-title em {
+  color: #8b0000;
+  font-style: normal;
+}
+.outils-tagline {
+  font-size: 14px;
+  color: #7a5020;
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+.outils-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+/* Carte outil */
+.outil-card {
+  background: #fff;
+  border: 1px solid #d4b87a;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .2s, border-color .2s;
+}
+.outil-card:hover {
+  box-shadow: 0 4px 20px rgba(139, 0, 0, .12);
+  border-color: #8b0000;
+}
+.outil-card.bientot {
+  background: #f5f0e8;
+  border-color: #e0cfa0;
+  opacity: .75;
+}
+.outil-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8b0000, #cc7722);
+}
+.outil-card.bientot::before {
+  background: #d0c090;
+}
+.outil-num {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #c4a36a;
+  letter-spacing: .12em;
+}
+.outil-icon {
+  font-size: 28px;
+  line-height: 1;
+  margin: 2px 0;
+}
+.outil-name {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a0800;
+  line-height: 1.2;
+  margin: 0;
+}
+.outil-sub {
+  font-size: 12px;
+  color: #8b6914;
+  font-weight: 600;
+  margin: 0;
+}
+.outil-desc {
+  font-size: 12px;
+  color: #5a4020;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+.outil-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  width: fit-content;
+  margin-top: 4px;
+}
+.outil-badge.dispo {
+  background: #fff3e0;
+  color: #8b4400;
+  border: 1px solid #d4a060;
+}
+.outil-badge.soon {
+  background: #f0ebe0;
+  color: #a09070;
+  border: 1px solid #d0c090;
+}
+.outil-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 9px 18px;
+  background: #8b0000;
+  color: #f8e8c0;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .15s;
+  width: fit-content;
+}
+.outil-link:hover { background: #cc2200; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .outils-grid { grid-template-columns: 1fr; }
+  .outils-title { font-size: 22px; }
+}
+</style>
+
+<section class="outils-section">
+
+  <div class="outils-header">
+    <div>
+      <div class="outils-eyebrow">⚒ Ressources permanentes</div>
+      <h2 class="outils-title">La caisse à <em>outils</em></h2>
+      <p class="outils-tagline">Des références et ressources à utiliser tout au long de l'année — pas des parcours séquentiels, des outils à portée de main.</p>
+    </div>
+  </div>
+
+  <div class="outils-grid">
+
+    <!-- ── 01 · Socle 300 (ACTIF) ── -->
+    <div class="outil-card">
+      <div class="outil-num">01</div>
+      <div class="outil-icon">📚</div>
+      <p class="outil-name">Socle 300</p>
+      <p class="outil-sub">Ma culture en 300 fiches</p>
+      <p class="outil-desc">De l'Iliade à Lyotard — 7 périodes, 12 domaines, citations authentiques, personnages cliquables, auto-évaluation. <em>Même pas peur&nbsp;!</em></p>
+      <div class="outil-badge dispo">✦ Disponible</div>
+      <a class="outil-link" href="https://socle300.netlify.app/" target="_blank" rel="noopener">⚔ Accéder au Socle 300</a>
+    </div>
+
+    <!-- ── 02 à 10 · Prochainement ── -->
+    <div class="outil-card bientot">
+      <div class="outil-num">02</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 2</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">03</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 3</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">04</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 4</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">05</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 5</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">06</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 6</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">07</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 7</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">08</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 8</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">09</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 9</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+    <div class="outil-card bientot">
+      <div class="outil-num">10</div>
+      <div class="outil-icon">🔧</div>
+      <p class="outil-name">Outil 10</p>
+      <p class="outil-sub">À venir</p>
+      <p class="outil-desc">Ressource en cours de développement. Restez connecté.</p>
+      <div class="outil-badge soon">Bientôt disponible</div>
+    </div>
+
+  </div><!-- /outils-grid -->
+
+</section>
+<!-- ═══ FIN CAISSE À OUTILS ═══ -->
     <!-- FOOTER -->
     <footer>
         <div class="footer-content">
