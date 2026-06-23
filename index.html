@@ -419,12 +419,12 @@
     <!-- ── 01 · Socle 300 (ACTIF) ── -->
     <div class="outil-card">
       <div class="outil-num">01</div>
-      <div class="outil-icon">📚</div>
       <p class="outil-name">Socle 300</p>
       <p class="outil-sub">Ma culture en 300 fiches</p>
       <p class="outil-desc">De l'Iliade à Lyotard — 7 périodes, 12 domaines, citations authentiques, personnages cliquables, auto-évaluation. <em>Même pas peur&nbsp;!</em></p>
       <div class="outil-badge dispo">✦ Disponible</div>
       <a class="outil-link" href="https://socle300.netlify.app/" target="_blank" rel="noopener">⚔ Accéder au Socle 300</a>
+	  <a class="outil-link" href="https://300-prof.netlify.app/" target="_blank" rel="noopener" style="background:#3d0800;border-color:#8b0000;margin-top:4px;">📊 Tableau de bord enseignant</a>
     </div>
 
     <!-- ── 02 à 10 · Prochainement ── -->
@@ -513,189 +513,7 @@
 
 </section>
 <!-- ═══ FIN CAISSE À OUTILS ═══ -->
-    <!-- ═══════════════════════════════════════════════════
-     ESPACE ENSEIGNANTS — Section à insérer dans index.html
-     Juste avant <!-- FOOTER --> (après la section Caisse à outils)
-     ═══════════════════════════════════════════════════ -->
 
-<style>
-/* ── Espace enseignants ── */
-.prof-section {
-  padding: 48px 24px 64px;
-  background: #1a0800;
-  border-top: 4px solid #8b0000;
-}
-.prof-inner {
-  max-width: 860px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 48px;
-  flex-wrap: wrap;
-}
-.prof-text { flex: 1; min-width: 260px; }
-.prof-eyebrow {
-  font-size: 11px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: #c4a36a;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-.prof-title {
-  font-family: Georgia, serif;
-  font-size: 24px;
-  font-weight: 700;
-  color: #f0e0c0;
-  margin: 0 0 12px;
-}
-.prof-title em { color: #cc2200; font-style: normal; }
-.prof-desc {
-  font-size: 13px;
-  color: #8a7060;
-  line-height: 1.7;
-  margin-bottom: 24px;
-}
-.prof-features {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 0;
-}
-.prof-feat {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 12.5px;
-  color: #a09080;
-  line-height: 1.5;
-}
-.prof-feat-icon {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(139,0,0,.3);
-  border: 1px solid #8b0000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-.prof-card {
-  background: #0f0600;
-  border: 1px solid #3d1500;
-  border-radius: 14px;
-  padding: 32px 28px;
-  min-width: 240px;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
-}
-.prof-card-icon { font-size: 36px; }
-.prof-card-title {
-  font-family: Georgia, serif;
-  font-size: 17px;
-  font-weight: 700;
-  color: #f0e0c0;
-}
-.prof-card-sub {
-  font-size: 12px;
-  color: #5a3a20;
-  line-height: 1.5;
-}
-.prof-card-badge {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 20px;
-  background: rgba(139,0,0,.2);
-  border: 1px solid rgba(139,0,0,.4);
-  color: #cc4400;
-}
-.prof-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-  padding: 13px 28px;
-  background: #8b0000;
-  color: #f8e8c0;
-  border-radius: 7px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border: none;
-  border-bottom: 3px solid #5a0000;
-  transition: background .15s;
-  width: 100%;
-  justify-content: center;
-}
-.prof-cta:hover { background: #cc2200; }
-.prof-note {
-  font-size: 10px;
-  color: #3a2010;
-  margin-top: 4px;
-}
-
-@media (max-width: 600px) {
-  .prof-inner { flex-direction: column; }
-  .prof-card { max-width: 100%; width: 100%; }
-}
-</style>
-
-<section class="prof-section">
-  <div class="prof-inner">
-
-    <div class="prof-text">
-      <div class="prof-eyebrow">⚒ Espace réservé</div>
-      <h2 class="prof-title">Tableau de bord <em>enseignant</em></h2>
-      <p class="prof-desc">
-        Suivez la progression de vos classes sur le Socle 300 en temps réel.
-        Créez vos classes, distribuez un code à vos étudiants, visualisez les résultats.
-      </p>
-      <div class="prof-features">
-        <div class="prof-feat">
-          <div class="prof-feat-icon">🗺</div>
-          <div>Heatmap des 300 œuvres — lacunes collectives en rouge, acquis en vert</div>
-        </div>
-        <div class="prof-feat">
-          <div class="prof-feat-icon">👤</div>
-          <div>Vue individuelle — progression fiche par fiche par étudiant</div>
-        </div>
-        <div class="prof-feat">
-          <div class="prof-feat-icon">🏛</div>
-          <div>Filtres par période et par domaine artistique</div>
-        </div>
-        <div class="prof-feat">
-          <div class="prof-feat-icon">👩‍🏫</div>
-          <div>Chaque enseignant gère ses propres classes indépendamment</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="prof-card">
-      <div class="prof-card-icon">📊</div>
-      <div class="prof-card-title">Dashboard<br>Enseignant</div>
-      <div class="prof-card-sub">Connexion sécurisée — créez votre compte ou connectez-vous</div>
-      <div class="prof-card-badge">✦ Accès enseignant</div>
-      <a class="prof-cta" href="https://300-prof.netlify.app/" target="_blank" rel="noopener">
-        Accéder au dashboard
-      </a>
-      <div class="prof-note">Compte enseignant requis</div>
-    </div>
-
-  </div>
-</section>
-<!-- ═══ FIN ESPACE ENSEIGNANTS ═══ -->
 <!-- FOOTER -->
     <footer>
         <div class="footer-content">
