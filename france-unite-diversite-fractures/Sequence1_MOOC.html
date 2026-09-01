@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fractures françaises — Séquence 1</title>
+<style>
+  :root{
+    --accent:#10233e; --accent2:#1c3a63; --light:#eef2f7; --light2:#dfe7f1;
+    --ok:#1e7d45; --bad:#b3261e; --warn:#8a5a00; --warnbg:#fbf3e6; --warnbd:#e0c28e;
+    --text:#1a1a1a; --muted:#5a6472; --bg:#ffffff; --card:#fbfcfd; --border:#dde3ea;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); line-height:1.6;}
+  .topbar{position:sticky; top:0; z-index:20; background:var(--accent); color:#fff; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .topbar .brand{font-weight:700; letter-spacing:.02em; font-size:14px; opacity:.9;}
+  .topbar h1{font-size:18px; margin:0; font-weight:600;}
+  .steps{display:flex; gap:6px; font-size:12px;}
+  .steps span{padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.12); white-space:nowrap;}
+  .steps span.active{background:#fff; color:var(--accent); font-weight:700;}
+  .wrap{max-width:820px; margin:0 auto; padding:28px 20px 80px;}
+  .hero{padding:20px 0 8px;}
+  .hero h2{font-size:26px; margin:0 0 6px; color:var(--accent);}
+  .hero p{color:var(--muted); font-size:15px; max-width:640px;}
+  section.bloc{margin-top:44px;}
+  .bloc-tag{display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.05em; color:#fff; background:var(--accent); padding:4px 10px; border-radius:4px; margin-bottom:10px;}
+  .bloc h3{font-size:22px; margin:4px 0 16px; color:var(--accent);}
+  .part{margin-bottom:22px;}
+  .part h4{font-size:15.5px; color:var(--accent2); margin:0 0 6px;}
+  .part p{margin:6px 0; text-align:justify;}
+  .figure-row{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0;}
+  .figure{background:var(--light); border-radius:8px; padding:10px 14px; min-width:130px; flex:1;}
+  .figure .num{font-size:22px; font-weight:800; color:var(--accent);}
+  .figure .lbl{font-size:11.5px; color:var(--muted); margin-top:2px;}
+  .debat{background:var(--warnbg); border:1px solid var(--warnbd); border-radius:8px; padding:16px 18px; margin:18px 0;}
+  .debat .lbl{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--warn); margin-bottom:6px;}
+  .debat p{margin:6px 0; font-size:14px;}
+  .source-note{font-size:11.5px; color:var(--muted); font-style:italic; margin-top:4px;}
+
+  .activity-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:22px 24px; margin-top:18px;}
+  .activity-card h4{margin:0 0 4px; color:var(--accent);}
+  .activity-card .sub{color:var(--muted); font-size:13px; margin-bottom:14px;}
+  .quiz-q{border-top:1px solid var(--border); padding:16px 0;}
+  .quiz-q:first-of-type{border-top:none;}
+  .quiz-q p.q{font-weight:600; margin:0 0 8px;}
+  .quiz-q label{display:block; padding:7px 10px; border-radius:6px; margin:4px 0; cursor:pointer; border:1px solid var(--border); font-size:14px;}
+  .quiz-q label:hover{background:var(--light);}
+  .quiz-q input{margin-right:8px;}
+  .quiz-q .explain{display:none; margin-top:8px; padding:8px 10px; border-radius:6px; font-size:13px;}
+  .quiz-q.correct .explain{display:block; background:#e8f5ec; color:var(--ok);}
+  .quiz-q.incorrect .explain{display:block; background:#fbeaea; color:var(--bad);}
+  .quiz-q.correct label.chosen{border-color:var(--ok); background:#e8f5ec;}
+  .quiz-q.incorrect label.chosen{border-color:var(--bad); background:#fbeaea;}
+  .quiz-q label.right-answer{border-color:var(--ok);}
+  #quizScore{margin-top:16px; font-weight:700; font-size:15px; display:none; padding:10px 14px; border-radius:8px; background:var(--light);}
+  button.primary{background:var(--accent); color:#fff; border:none; padding:11px 20px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer;}
+  button.primary:hover{background:var(--accent2);}
+  button.secondary{background:#fff; color:var(--accent); border:1px solid var(--accent); padding:9px 16px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer; margin-left:8px;}
+
+  .corpus{background:var(--light); border-radius:8px; padding:14px 16px; margin:12px 0; font-size:13.5px; max-height:320px; overflow-y:auto;}
+  .corpus h5{margin:0 0 6px; font-size:12.5px; color:var(--accent); text-transform:uppercase; letter-spacing:.03em;}
+  .corpus .doc{margin-bottom:14px;}
+  .corpus .doc:last-child{margin-bottom:0;}
+  .corpus .doc .src{font-style:italic; color:var(--muted); font-size:11.5px;}
+  textarea{width:100%; min-height:160px; border:1px solid var(--border); border-radius:8px; padding:12px; font-size:14px; font-family:inherit; resize:vertical;}
+  .wordcount{font-size:12px; color:var(--muted); margin-top:6px;}
+  .wordcount.ok{color:var(--ok);}
+  .saved-note{display:none; margin-top:10px; font-size:13px; color:var(--ok); font-weight:600;}
+
+  .biblio{margin-top:60px; border-top:2px solid var(--border); padding-top:20px;}
+  .biblio h3{color:var(--accent); font-size:16px;}
+  .biblio ol{padding-left:20px; font-size:12.5px; color:var(--muted);}
+  .biblio li{margin-bottom:6px;}
+  footer{text-align:center; color:var(--muted); font-size:11.5px; padding:30px 0 10px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="brand">FRACTURES FRANÇAISES · yapluka-edu.fr</div>
+    <h1>Séquence 1 — Territoires et générations</h1>
+  </div>
+  <div class="steps">
+    <span class="active" data-target="bloc1">Bloc 1</span>
+    <span data-target="activite">Activité en ligne</span>
+    <span data-target="bloc2">Bloc 2</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h2>La France qui se fracture dans l'espace et dans l'âge</h2>
+  </div>
+
+  <section class="bloc" id="bloc1">
+    <span class="bloc-tag">BLOC 1 · 2H</span>
+    <h3>Géographie-démographie : une France qui se vide et se recompose</h3>
+
+    <div class="part">
+      <h4>A. 2025 : une rupture démographique inédite depuis 1945</h4>
+      <p>Au 1er janvier 2026, la France compte 69,1 millions d'habitants. En 2025, les décès (651 000) ont pour la première fois dépassé les naissances (645 000) depuis la fin de la Seconde Guerre mondiale : le solde naturel est devenu négatif. L'indice conjoncturel de fécondité est tombé à 1,56 enfant par femme, son plus bas niveau depuis 1919 (le dossier documentaire détaille ce basculement en <a href="Sequence1_Dossier_documentaire.html#fiche-1" target="_blank" rel="noopener">fiche 1</a> et le reflux de la fécondité en <a href="Sequence1_Dossier_documentaire.html#fiche-5" target="_blank" rel="noopener">fiche 5</a>). Un article de synthèse publié par <a href="https://theconversation.com/la-france-qui-se-depeuple-la-france-qui-croit-etat-des-lieux-demographique-265310" target="_blank" rel="noopener">The Conversation</a> souligne que ce basculement national, s'il est inédit à cette échelle, prolonge une tendance déjà ancienne à l'échelle locale : de nombreux territoires ruraux connaissent un solde naturel négatif depuis les années 1970.</p>
+      <p>Le cas de la Creuse illustre ce mécanisme dans la durée (voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-2" target="_blank" rel="noopener">fiche 2</a>) : le département a atteint son pic de population dès 1886 (près de 285 000 habitants) et n'a cessé d'en perdre depuis. Malgré un solde migratoire redevenu positif depuis 1975 (retraités, néo-ruraux), il n'enregistre plus que 713 naissances en 2024 — deux fois moins que dans les années 1970 — car les nouveaux arrivants, souvent âgés, ne renouvellent pas la natalité locale. À l'inverse, la carte urbaine dément l'image d'un simple clivage métropoles/périphérie : plus de 90 villes de plus de 20 000 habitants perdent des habitants par déficit migratoire, Paris intra-muros y compris, alors même que l'Île-de-France dans son ensemble continue de croître grâce à sa dynamique naturelle — une typologie de ces villes en décroissance est proposée en <a href="Sequence1_Dossier_documentaire.html#fiche-3" target="_blank" rel="noopener">fiche 3</a> du dossier.</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">1,56</div><div class="lbl">enfant par femme en 2025 — record bas depuis 1919</div></div>
+        <div class="figure"><div class="num">-6 000</div><div class="lbl">solde naturel 2025 — 1er déficit depuis 1945</div></div>
+        <div class="figure"><div class="num">713</div><div class="lbl">naissances en Creuse en 2024, contre 1 400-1 500 dans les années 1970</div></div>
+      </div>
+      <p class="source-note">Sources : INSEE, Bilan démographique 2025 (janv. 2026) · The Conversation France, « La France qui se dépeuple, la France qui croît », 2025 · CEVIPOF/Ipsos, Fractures françaises, Bilan 13 ans.</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>Le « réarmement démographique » : sursaut national ou instrumentalisation politique de la natalité ?</b> Lors de ses vœux de janvier 2024, le président de la République a appelé à un « réarmement démographique » de la France. Le démographe Hervé Le Bras (EHESS-INED) a jugé la formule « grotesque » (<a href="https://www.titrespresse.com/15680932311/herve-bras-demmanuel" target="_blank" rel="noopener">couverture Mediapart, relayée par Titrespresse.com</a> ; débat détaillé en <a href="Sequence1_Dossier_documentaire.html#fiche-7" target="_blank" rel="noopener">fiche 7</a> du dossier) : sans nier le recul réel de la fécondité, il conteste un cadrage martial qui traiterait la natalité comme un enjeu de puissance nationale plutôt que comme le résultat de choix individuels liés au logement, à la garde d'enfants ou à la stabilité de l'emploi. Le terrain est d'autant plus sensible que 58 % des Français jugeaient encore la société « en déclin » en 2025 (65 % en 2014, CEVIPOF — chiffres complets en <a href="Sequence1_Dossier_documentaire.html#fiche-8" target="_blank" rel="noopener">fiche 8</a>).</p>
+      <p><b>À vous de trancher</b> : le vocabulaire du « réarmement » démographique relève-t-il d'un diagnostic scientifique ou d'une lecture politique du réel ? Quelles autres explications à la baisse de la fécondité un-e démographe peut-il/elle avancer ?</p>
+    </div>
+
+    <div class="part">
+      <h4>B. La France à trois vitesses dans l'espace</h4>
+      <p>Le démographe Hervé Le Bras cartographie la répartition des catégories sociales à travers le pays (<a href="https://theconversation.com/la-france-inegale-partage-social-de-lespace-francais-75604" target="_blank" rel="noopener">The Conversation</a>, données 2013 ; analyse développée en <a href="Sequence1_Dossier_documentaire.html#fiche-11" target="_blank" rel="noopener">fiche 11</a> du dossier) : les cadres se concentrent dans les « villes de commandement » — plus de 20 % de la population active, contre moins de 2 % en zone rurale profonde, soit un rapport de un à dix — tandis que les classes moyennes, en première couronne et dans les chefs-lieux, connaissent un écart bien plus resserré (un à trois). Les ouvriers, eux, sont statistiquement repoussés vers les marges du territoire, jusqu'à dépasser 40 % des actifs dans certaines zones frontalières — mais restent quasiment absents au sud d'une ligne Bordeaux-Grenoble, où ces emplois qualifiés (aéronautique toulousaine notamment) sont occupés par des techniciens mieux formés (fracture nord/sud et centre/périphérie détaillée en <a href="Sequence1_Dossier_documentaire.html#fiche-12" target="_blank" rel="noopener">fiche 12</a>).</p>
+      <p>Christophe Guilluy généralise cette lecture avec la thèse de la « France périphérique » (Flammarion, 2014, <a href="https://shs.cairn.info/revue-geographie-economie-societe-2016-1-page-182" target="_blank" rel="noopener">discutée dans Géographie, économie, société</a> ; présentation complète en <a href="Sequence1_Dossier_documentaire.html#fiche-13" target="_blank" rel="noopener">fiche 13</a>) : selon lui, une France des métropoles mondialisées ferait face à une « France périphérique » regroupant près de 60 % de la population, exclue des dynamiques économiques et politiquement déclassée — un diagnostic rapproché a posteriori du mouvement des Gilets jaunes de 2018.</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">&gt;20 %</div><div class="lbl">de cadres dans les métropoles vs &lt;2 % en zone rurale</div></div>
+        <div class="figure"><div class="num">&gt;40 %</div><div class="lbl">d'ouvriers dans certaines zones rurales périphériques</div></div>
+        <div class="figure"><div class="num">~60 %</div><div class="lbl">de la population vivrait en « France périphérique » selon Guilluy</div></div>
+      </div>
+      <p class="source-note">Sources : Hervé Le Bras, « La France inégale », The Conversation · Christophe Guilluy, La France périphérique, Flammarion, 2014.</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>La « France périphérique » : diagnostic vérifié ou fiction politique efficace ?</b> Guilluy explique une partie du vote RN par la géographie. Cette lecture est vivement contestée dans le champ universitaire (<a href="https://geoconfluences.ens-lyon.fr/actualites/veille/la-france-peripherique-debat-autour-d2019un-livre" target="_blank" rel="noopener">synthèse Géoconfluences, ENS de Lyon</a> ; synthèse de la critique universitaire en <a href="Sequence1_Dossier_documentaire.html#fiche-14" target="_blank" rel="noopener">fiche 14</a> du dossier) : le sociologue Michel Kokoreff lui reproche de comparer des mailles territoriales hétérogènes, la revue Espaces et sociétés dénonce une approche « culturaliste et essentialisée », et l'Observatoire des inégalités a montré dès 2014 que la pauvreté reste concentrée avant tout dans certaines zones urbaines défavorisées. Le géographe Éric Charmes propose une lecture alternative du périurbain (<a href="https://laviedesidees.fr/IMG/pdf/20171024_charmesperiurbain.pdf" target="_blank" rel="noopener">« La revanche des villages », La Vie des idées</a> ; voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-15" target="_blank" rel="noopener">fiche 15</a>) : loin d'être un espace de relégation subie, il serait pour partie le produit d'un choix actif des classes moyennes de se regrouper entre pairs (« clubbisation »). Enfin, la carte de Le Bras (<a href="https://theconversation.com/la-france-inegale-partage-social-de-lespace-francais-75604" target="_blank" rel="noopener">consultable sur The Conversation</a>) montre un dégradé plutôt qu'une coupure binaire, et le vote RN progresse en 2024-2025 aussi chez des catégories non périphériques (cadres, retraités urbains).</p>
+      <p>Cette lecture binaire du territoire n'est pas propre à la France : le journaliste britannique David Goodhart a proposé, pour expliquer le Brexit puis le vote Trump, une grille très proche opposant les « Anywhere » — mobiles, diplômés, à l'aise dans la mondialisation, environ un quart de la population britannique selon son estimation — aux « Somewhere », enracinés localement et attachés à des identités de groupe, environ la moitié (<a href="https://www.franceculture.fr/emissions/des-suggestions-de-lectures-pour-le-president/les-gens-de-partout-contre-le-peuple-de" target="_blank" rel="noopener">France Culture</a>). Le référendum de 2016 a ainsi vu les zones rurales et les villes moyennes désindustrialisées voter majoritairement Leave, contre les métropoles (Londres, Manchester, Édimbourg) très majoritairement Remain — un clivage spatial que plusieurs commentateurs ont rapproché de la fracture centre/périphérie décrite par Guilluy en France. La grille Goodhart a toutefois été critiquée pour son schématisme (l'Écosse, très « Somewhere » mais europhile lors du Brexit, l'illustre bien) : voir séquence 2, bloc 2, partie E, pour une discussion approfondie de cette thèse et de son adaptation française par Jérôme Sainte-Marie.</p>
+      <p><b>À vous de trancher</b>, à partir des seules données ci-dessus : la carte de Le Bras confirme-t-elle ou nuance-t-elle la thèse de Guilluy ?</p>
+    </div>
+
+    <div class="part">
+      <h4>C. Mobilités et déserts médicaux : la fracture silencieuse de l'accès aux services</h4>
+      <p>Depuis 2010, la France connaît un retournement inédit des budgets-temps de transport (<a href="https://theconversation.com/des-mobilites-quotidiennes-a-deux-vitesses-ce-que-revelent-les-durees-de-deplacement-en-france-284894" target="_blank" rel="noopener">The Conversation</a> ; données complètes en <a href="Sequence1_Dossier_documentaire.html#fiche-21" target="_blank" rel="noopener">fiche 21</a> du dossier) : après des décennies où les gains de vitesse se traduisaient en kilomètres supplémentaires plutôt qu'en temps gagné, le temps quotidien consacré aux déplacements augmente désormais de 10 % au niveau national — mais très inégalement selon les catégories sociales : +13 à +17 % pour les ouvriers et artisans-commerçants depuis 2010, contre une stabilisation voire une baisse chez les cadres, mieux desservis. En Île-de-France, ce ralentissement est au contraire choisi : la lenteur, autrefois subie, y devient un marqueur de statut quand cadres et citadins aisés relocalisent volontairement leurs activités à proximité (le cas francilien du vélo est développé en <a href="Sequence1_Dossier_documentaire.html#fiche-22" target="_blank" rel="noopener">fiche 22</a>). Ce basculement est identifié comme l'un des ressorts de la crise des Gilets jaunes de 2018.</p>
+      <p>L'accès aux soins dessine une géographie tout aussi fracturée (voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-23" target="_blank" rel="noopener">fiche 23</a>). L'Atlas 2025 du Conseil national de l'Ordre des médecins (<a href="https://www.gpm.fr/atlas-demographie-medicale-2025/" target="_blank" rel="noopener">synthèse gpm.fr</a>) recense 241 255 médecins en France, mais une densité de généralistes très variable selon les territoires (11,3 pour 10 000 habitants en moyenne nationale, seulement 8,1 en Ardèche) ; 6,7 millions de Français n'avaient pas de médecin traitant déclaré en 2023. Le maillage hospitalier se resserre également : 109 hôpitaux ont fermé entre 2015 et 2023, et le débat sur de nouveaux seuils minimaux d'activité, relancé à l'été 2026, menace selon ses détracteurs (<a href="https://www.breizh-info.com/2026/08/11/263130/1-milliard-deuros-deconomies-contre-des-heures-de-route-le-calcul-qui-menace-les-hopitaux-ruraux-et-la-population-qui-va-avec/" target="_blank" rel="noopener">Breizh-info.com</a>, média régional à ligne éditoriale marquée, dont les chiffres restent vérifiables indépendamment) de vider les petits hôpitaux ruraux sans fermeture frontale — la « bombe à retardement » des hôpitaux ruraux est détaillée en <a href="Sequence1_Dossier_documentaire.html#fiche-24" target="_blank" rel="noopener">fiche 24</a>. Fait contre-intuitif documenté par l'INSEE (<a href="https://www.insee.fr/fr/statistiques/5040030" target="_blank" rel="noopener">La France et ses territoires</a>) : l'Île-de-France, région la plus riche, est elle-même en déficit relatif de médecins généralistes par rapport à la moyenne nationale (géographie détaillée en <a href="Sequence1_Dossier_documentaire.html#fiche-25" target="_blank" rel="noopener">fiche 25</a>).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">+13 à 17%</div><div class="lbl">de temps de trajet en plus pour ouvriers/artisans-commerçants depuis 2010</div></div>
+        <div class="figure"><div class="num">6,7 M</div><div class="lbl">de Français sans médecin traitant déclaré en 2023</div></div>
+        <div class="figure"><div class="num">75 % / 90,4 %</div><div class="lbl">accès à moins de 15 min d'un hôpital : zone rurale / moyenne nationale</div></div>
+      </div>
+      <p class="source-note">Sources : « Des mobilités quotidiennes à deux vitesses », The Conversation, 2025 · Conseil national de l'Ordre des médecins, Atlas de la démographie médicale 2025 · Breizh-info.com, 11 août 2026 · INSEE, La France et ses territoires, éd. 2021.</p>
+    </div>
+
+    <div class="part">
+      <h4>D. Immigration et territoire : réalité démographique et perception dans l'opinion</h4>
+      <p>En 2018, la France compte 6,4 millions d'immigrés (<a href="https://www.insee.fr/fr/statistiques/4238781" target="_blank" rel="noopener">INSEE, France, portrait social</a> ; portrait détaillé en <a href="Sequence1_Dossier_documentaire.html#fiche-29" target="_blank" rel="noopener">fiche 29</a> du dossier), soit 9,6 % de la population, avec un basculement marqué dans la géographie d'origine (46 % nés en Afrique en 2018, contre 34 % en Europe, alors que cette proportion était inversée en 1975, avec 66 % d'Européens) — et 7,5 millions de descendants d'immigrés (11,2 % de la population), une population structurellement jeune puisque 53 % ont moins de trente ans (voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-30" target="_blank" rel="noopener">fiche 30</a>). Ces données sont à mettre en regard d'un débat souvent focalisé sur les seules entrées : en 2024, 438 000 personnes sont entrées sur le territoire (<a href="https://www.insee.fr/fr/statistiques/8998082" target="_blank" rel="noopener">INSEE, Flux migratoires</a> ; actualisation complète en <a href="Sequence1_Dossier_documentaire.html#fiche-31" target="_blank" rel="noopener">fiche 31</a>), en baisse de 10 % sur un an, et le solde migratoire de 2022 (+271 000 au total) recouvre en réalité un solde négatif de -78 000 pour les personnes nées en France — une émigration française structurelle, en creusement depuis 1975, qui reste un angle mort du débat public.</p>
+      <p>Dans l'opinion, la préoccupation pour l'immigration comme enjeu prioritaire reste relativement stable (22 % en 2025, contre 20 % en 2013, CEVIPOF — chiffres détaillés en <a href="Sequence1_Dossier_documentaire.html#fiche-32" target="_blank" rel="noopener">fiche 32</a> du dossier). La perception de compatibilité des religions avec les valeurs françaises dessine en revanche une hiérarchie nette et évolutive : 91 % pour le catholicisme, 79 % pour le judaïsme, mais 42 % seulement pour l'islam — un chiffre minoritaire, mais en progression de 16 points depuis 2013, la plus forte évolution des trois religions mesurées. Autre paradoxe : 60 % des personnes interrogées pensent que la France pourrait trouver de la main-d'œuvre sans recourir à l'immigration, une opinion qui contredit les besoins de recrutement documentés dans certains secteurs et territoires (santé, via les médecins formés à l'étranger — jusqu'à 20 % des effectifs dans certaines spécialités en zone sous-dense, cf. partie C — agriculture, BTP).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">6,4 M</div><div class="lbl">d'immigrés en France en 2018 (9,6 % de la population)</div></div>
+        <div class="figure"><div class="num">7,5 M</div><div class="lbl">de descendants d'immigrés (11,2 % de la population), 53 % ont moins de 30 ans</div></div>
+        <div class="figure"><div class="num">42 % (+16 pts)</div><div class="lbl">jugent l'islam compatible avec les valeurs françaises (2025 vs 2013)</div></div>
+      </div>
+      <p class="source-note">Sources : INSEE, France, portrait social, éd. 2019 · INSEE, « Flux migratoires », Insee Première n°2107, juin 2026 · CEVIPOF/Ipsos, Fractures françaises, vague 13, oct. 2025.</p>
+    </div>
+  </section>
+
+  <section class="bloc" id="activite">
+    <span class="bloc-tag">ACTIVITÉ EN LIGNE · 1H</span>
+    <h3>À vous de jouer</h3>
+
+    <div class="activity-card">
+      <h4>Quiz — Bloc 1 (10 questions)</h4>
+      <div class="sub">20 minutes. Une seule bonne réponse par question. Cliquez sur « Corriger » à la fin pour voir votre score et les explications.</div>
+      <form id="quizForm"></form>
+      <button class="primary" id="checkQuiz" type="button">Corriger le quiz</button>
+      <div id="quizScore"></div>
+    </div>
+
+    <div class="activity-card">
+      <h4>Étude de cas notée (40 minutes)</h4>
+      <div class="sub">Production courte individuelle, 200 à 250 mots. Corpus fourni ci-dessous.</div>
+      <div class="corpus">
+        <h5>Corpus</h5>
+        <div class="doc"><b>Document 1 — Carte des soldes migratoires internes par EPCI (2018-2023)</b><br>Les grandes métropoles (hors Paris intra-muros) et le littoral atlantique gagnent des habitants ; une large diagonale rurale, du Nord-Est au Massif central, continue d'en perdre (cette géographie de la concentration démographique est cartographiée dans le dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-20" target="_blank" rel="noopener">fiche 20</a>).<div class="src">Source : à intégrer par l'enseignant (carte INSEE/DGCL disponible en licence ouverte)</div></div>
+        <div class="doc"><b>Document 2 — Densité de médecins généralistes par territoire</b><br>11,3 généralistes pour 10 000 habitants en moyenne nationale en 2025, avec de forts écarts régionaux (9,1 en Bourgogne-Franche-Comté, 8,1 en Ardèche contre 10,7 en moyenne Auvergne-Rhône-Alpes) ; 6,7 millions de Français sans médecin traitant déclaré en 2023 (voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-23" target="_blank" rel="noopener">fiche 23</a>).<div class="src">Source : Conseil national de l'Ordre des médecins, <i>Atlas de la démographie médicale 2025</i>, avril 2025 (synthèse <a href="https://www.gpm.fr/atlas-demographie-medicale-2025/" target="_blank" rel="noopener">gpm.fr</a>)</div></div>
+        <div class="doc"><b>Document 3 — Extrait commenté</b><br>« La France à deux vitesses se matérialise aujourd'hui dans les pratiques de mobilité. […] La lenteur, autrefois contrainte, peut devenir un privilège lorsqu'elle est choisie. » — synthèse de l'étude sur les budgets-temps de transport (données complètes en <a href="Sequence1_Dossier_documentaire.html#fiche-21" target="_blank" rel="noopener">fiche 21</a> du dossier).<div class="src">Source : « Des mobilités quotidiennes à deux vitesses », <a href="https://theconversation.com/des-mobilites-quotidiennes-a-deux-vitesses-ce-que-revelent-les-durees-de-deplacement-en-france-284894" target="_blank" rel="noopener">The Conversation</a>, 2025</div></div>
+        <div class="doc"><b>Document 4 — Résultats du 2d tour des municipales de mars 2026 par taille de commune</b><br>RN qualifié dans 20 villes de plus de 100 000 habitants ; moins de 8 % des voix dans plusieurs métropoles (Bordeaux, Strasbourg, Toulouse, Nantes, Montpellier) ; scores élevés dans les bastions historiques de taille moyenne (Hénin-Beaumont, Fréjus, Hayange).<div class="src">Source : résultats officiels, mars 2026</div></div>
+        <div class="doc"><b>Document 5 — La fermeture silencieuse des hôpitaux ruraux</b><br>Le nombre d'hôpitaux en France est passé de 2 489 en 2015 à 2 380 en 2023 (-109 en huit ans) ; 75 % des habitants des zones rurales vivent à moins de 15 minutes d'un centre hospitalier, contre 90,4 % en moyenne nationale. Un débat sur de nouveaux seuils minimaux d'activité, relancé à l'été 2026, est accusé par ses détracteurs de menacer les petits établissements sans fermeture frontale (dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-24" target="_blank" rel="noopener">fiche 24</a>).<div class="src">Source : « 1 milliard d'euros d'économies contre des heures de route… », <a href="https://www.breizh-info.com/2026/08/11/263130/1-milliard-deuros-deconomies-contre-des-heures-de-route-le-calcul-qui-menace-les-hopitaux-ruraux-et-la-population-qui-va-avec/" target="_blank" rel="noopener">Breizh-info.com</a>, 11 août 2026 (chiffres Cour des comptes, à contextualiser : média régional à ligne éditoriale marquée)</div></div>
+      </div>
+      <p style="font-size:14px;"><b>Consigne :</b> en vous appuyant sur au moins trois éléments chiffrés du corpus, répondez à la question suivante : <i>« Le territoire est-il devenu, en France, une variable aussi discriminante que la classe sociale ? »</i></p>
+      <textarea id="caseResponse" placeholder="Votre réponse (200 à 250 mots)..."></textarea>
+      <div class="wordcount" id="wordcount">0 mot</div>
+      <button class="primary" id="saveCase" type="button" style="margin-top:10px;">Enregistrer ma réponse</button>
+      <span class="saved-note" id="savedNote">✓ Réponse enregistrée pour relecture par les pairs</span>
+    </div>
+  </section>
+
+  <section class="bloc" id="bloc2">
+    <span class="bloc-tag">BLOC 2 · 2H</span>
+    <h3>Génération-économie : qui paie, qui hérite, qui attend ?</h3>
+
+    <div class="part">
+      <h4>A. Une fracture générationnelle mesurée par les ressources</h4>
+      <p>15,7 % des 18-29 ans vivent sous le seuil de pauvreté, contre 4 à 5 % seulement des 65 ans et plus (les inégalités réelles entre générations, salaires et chômage compris, sont détaillées en <a href="Sequence1_Dossier_documentaire.html#fiche-35" target="_blank" rel="noopener">fiche 35</a> du dossier). 46 % des moins de 35 ans se déclarent seuls en 2024, contre 30 % des plus de 60 ans. Le chômage des jeunes actifs atteint 21,1 % au premier trimestre 2026, plus du double du taux global (8,1 % — voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-43" target="_blank" rel="noopener">fiche 43</a>). Paradoxe : malgré cette situation objective plus difficile, 46 % des moins de 35 ans anticipent un avenir « rempli d'opportunités », contre 37 % des 60 ans et plus — un optimisme relatif qui a même progressé de 11 points en dix ans.</p>
+      <p>Cet écart n'a rien de conjoncturel : selon l'<a href="https://www.inegalites.fr/taux-de-chomage-par-age" target="_blank" rel="noopener">Observatoire des inégalités</a>, le chômage des 20-24 ans est passé de 5,3 % en 1975 à 19,5 % en 2018, et atteint encore 19,8 % en 2025 (contre seulement 3,7 % chez les 50-64 ans la même année) — soit près de quatre fois plus qu'il y a quarante ans. La note de recherche du <a href="https://www.sciencespo.fr/cevipof/fr/etudes-enquetes/enquete-fractures-francaises/" target="_blank" rel="noopener">CEVIPOF</a> (Anne Muxel, oct. 2025) documente aussi une droitisation marquée des moins de 35 ans (de 28 % à 38 % de positionnement à droite entre 2020 et 2024), fortement clivée selon le sexe : 30 % des jeunes hommes se disent proches du RN en 2024, contre 13 % seulement des jeunes femmes (analyse complète en <a href="Sequence1_Dossier_documentaire.html#fiche-39" target="_blank" rel="noopener">fiche 39</a> du dossier).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">15,7 %</div><div class="lbl">des 18-29 ans sous le seuil de pauvreté (4-5 % chez les 65 ans+)</div></div>
+        <div class="figure"><div class="num">21,1 %</div><div class="lbl">de chômage chez les jeunes actifs, T1 2026 (8,1 % en moyenne)</div></div>
+        <div class="figure"><div class="num">46 % / 30%</div><div class="lbl">se déclarent seuls : moins de 35 ans / plus de 60 ans</div></div>
+        <div class="figure"><div class="num">30 % / 13 %</div><div class="lbl">proximité avec le RN chez les moins de 35 ans : hommes / femmes (2024)</div></div>
+      </div>
+      <p class="source-note">Sources : Observatoire des inégalités/INSEE, cité in Anne Muxel, Note CEVIPOF n°2, oct. 2025 · Observatoire des inégalités, « Chômage : les jeunes toujours aux premières loges » · INSEE, Informations rapides n°113, mai 2026.</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>Les « générations » (Boomers, X, Y, Z) désignent-elles une réalité démontrée scientifiquement, ou une commodité marketing sans fondement ?</b> Le psychologue du travail David Costanza soutient, dans une critique radicale reprise par <a href="https://www.slate.fr/story/161041/sciences-statistiques-generations-n-existent-pas-absence-preuves-baby-boomers-x-millennials-z" target="_blank" rel="noopener">Slate.fr</a> (cette critique scientifique est développée en <a href="Sequence1_Dossier_documentaire.html#fiche-33" target="_blank" rel="noopener">fiche 33</a> du dossier), que rien ne prouve que les évolutions de comportement suivent des lignes de fracture par cohorte de naissance plutôt que des effets d'âge ou de période : la variabilité à l'intérieur d'une même génération dépasse presque toujours celle observée entre générations, et les bornes chronologiques varient de près d'une décennie selon les études — le narcissisme « spécifique » des millennials, par exemple, ne repose que sur une hausse marginale (+1,8 point sur 40), depuis revenue à son niveau des années 1980. À l'inverse, la notion reste un outil sociologique reconnu depuis Karl Mannheim (1928), qui distingue la cohorte démographique de l'« unité générationnelle » — la conscience de vivre un même événement historique fondateur (Mai 68, le Covid) — un usage que <a href="https://theconversation.com/generation-un-concept-a-utiliser-avec-moderation-161040" target="_blank" rel="noopener">The Conversation</a> juge « à utiliser avec modération » plutôt qu'à rejeter en bloc (voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-34" target="_blank" rel="noopener">fiche 34</a>).</p>
+      <p><b>À vous de trancher</b> : si la statistique ne permet pas de démontrer que les générations forment des groupes homogènes, pourquoi la catégorie continue-t-elle à structurer aussi fortement le débat public et des politiques publiques ciblées par âge, comme le budget 2026 (cf. partie B) ?</p>
+    </div>
+
+    <div class="part">
+      <h4>B. La dette comme nouvelle ligne de fracture</h4>
+      <p>Le déficit public a atteint 5,1 % du PIB en 2025 ; la dette publique s'élève, selon l'<a href="https://www.insee.fr/fr/statistiques/8956575" target="_blank" rel="noopener">INSEE</a>, à 117,5 % du PIB au premier trimestre 2026 (environ 3 561 milliards d'euros — ordres de grandeur détaillés en <a href="Sequence1_Dossier_documentaire.html#fiche-44" target="_blank" rel="noopener">fiche 44</a> du dossier). Le budget 2026, discuté dans un climat tendu, a ravivé le mouvement social « Bloquons tout » (lancé le 10 septembre 2025 — origines et première journée détaillées en <a href="Sequence1_Dossier_documentaire.html#fiche-48" target="_blank" rel="noopener">fiche 48</a> —, relancé à la rentrée 2026, cf. <a href="Sequence1_Dossier_documentaire.html#fiche-49" target="_blank" rel="noopener">fiche 49</a>), massivement jugé légitime par les 18-24 ans (70 %, soit 29 points de plus que chez les plus de 70 ans). Autre fait à mettre en tension : 63 % des 18-24 ans veulent que les générations plus âgées « contribuent davantage » à la solidarité envers les jeunes — mais 70 % de l'ensemble des Français refusent, dans le même temps, d'opposer les générations entre elles.</p>
+      <p>Le budget 2026 illustre concrètement cette asymétrie ressentie. Côté retraités, la loi de financement de la Sécurité sociale, promulguée le 30 décembre 2025, revalorise les pensions de 0,9 % dès janvier 2026 et <a href="https://www.touteleurope.eu/vie-politique-des-etats-membres/l-assemblee-nationale-donne-son-feu-vert-definitif-au-budget-de-la-securite-sociale-pour-2026-la-reforme-des-retraites-va-etre-suspendue/" target="_blank" rel="noopener">suspend le report de l'âge légal</a> pour les générations nées entre 1964 et 1968 (retour possible à 62 ans et 9 mois pour la génération 1964) ; les générations nées à partir de 1969 restent pleinement soumises à l'âge de 64 ans (détail des mesures en <a href="Sequence1_Dossier_documentaire.html#fiche-45" target="_blank" rel="noopener">fiche 45</a> du dossier). Côté jeunes, le projet de budget prévoit en miroir le gel des bourses du Crous, la suppression de l'APL pour les quelque 100 000 étudiants internationaux non boursiers hors Union européenne (économie visée : 108 millions d'euros) et une réduction de 20 % du budget du service civique, faisant passer le nombre de missions financées de 150 000 à 110 000 (<a href="https://www.letudiant.fr/lifestyle/aides-financieres/plf-2026-quelles-mesures-pour-les-etudiants-sont-en-attente-du-budget.html" target="_blank" rel="noopener">L'Étudiant</a>, déc. 2025 ; mesures détaillées en <a href="Sequence1_Dossier_documentaire.html#fiche-46" target="_blank" rel="noopener">fiche 46</a>). Ce contraste alimente directement le sondage Elabe cité par le CEVIPOF : 70 % des Français désapprouvent la formule du « confort des boomers » employée par François Bayrou, mais 63 % des 18-24 ans lui donnent au contraire raison.</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">117,5 %</div><div class="lbl">du PIB — dette publique, T1 2026 (~3 561 Md€)</div></div>
+        <div class="figure"><div class="num">70 % / 63 %</div><div class="lbl">18-24 ans jugeant « Bloquons tout » légitime / voulant plus de solidarité des aînés</div></div>
+        <div class="figure"><div class="num">150 000 → 110 000</div><div class="lbl">missions de service civique financées, 2025 → 2026 (-20 %)</div></div>
+      </div>
+      <p class="source-note">Sources : INSEE, comptes nationaux des administrations publiques 2025-2026 · Touteleurope.eu, sur la suspension de la réforme des retraites · L'Étudiant, PLF 2026, déc. 2025 · CEVIPOF/Ipsos, Fractures françaises, vague 13, oct. 2025 · presse 2025-2026.</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>Le « conflit de générations » est-il un récit médiatique masquant un conflit de classe ?</b> Une partie du débat public réduit la fracture française à un affrontement jeunes/vieux. Anne Muxel (CEVIPOF) nuance : le déclassement touche surtout les jeunes diplômés à faible revenu — génération et classe s'entremêlent plus qu'elles ne se substituent l'une à l'autre (cette « génération surdiplômée » est étudiée en <a href="Sequence1_Dossier_documentaire.html#fiche-42" target="_blank" rel="noopener">fiche 42</a> du dossier ; pour une charge plus polémique contre les baby-boomers, voir la <a href="Sequence1_Dossier_documentaire.html#fiche-47" target="_blank" rel="noopener">fiche 47</a>).</p>
+      <p><b>À partir des chiffres ci-dessus</b>, quelle variable vous paraît la plus discriminante : l'âge, ou la position sociale ?</p>
+    </div>
+
+    <div class="part">
+      <h4>C. Jeunesse : corps, écrans et consommation</h4>
+      <p>Le stéréotype d'une jeunesse hyper-consommatrice de substances est démenti par les enquêtes les plus récentes : selon l'édition 2024 de l'<a href="https://www.ofdt.fr/publication/2025/drogues-et-addictions-chiffres-cles-2025-2474" target="_blank" rel="noopener">enquête ESPAD</a> (37 pays, plus de 113 000 jeunes de 16 ans ; baisse structurelle détaillée en <a href="Sequence1_Dossier_documentaire.html#fiche-50" target="_blank" rel="noopener">fiche 50</a> du dossier), le tabagisme quotidien à 16 ans passe de 16 % en 2015 à 3,1 % en 2024 — une division par cinq en une décennie — et l'expérimentation du cannabis recule de 31 % à 8,4 % sur la même période, même si sept adolescents sur dix ont déjà goûté à l'alcool (l'alcool comme rite de passage adolescent est analysé en <a href="Sequence1_Dossier_documentaire.html#fiche-52" target="_blank" rel="noopener">fiche 52</a>). Cette sobriété chiffrée coexiste avec une consommation marchande très structurée : chez les 12-18 ans équipés de la carte prépayée Pixpay (100 000 utilisateurs analysés), l'alimentation absorbe 42 % du budget mensuel, et trois enseignes — McDonald's, Apple, Monoprix — concentrent à elles seules 10 % des transactions, tandis que les filles partagent leur fidélité entre la seconde main (Vinted) et l'ultra-fast-fashion Shein, signe d'une tension entre discours écologique affiché et pratiques réelles (détail des habitudes de consommation en <a href="Sequence1_Dossier_documentaire.html#fiche-53" target="_blank" rel="noopener">fiche 53</a>). Autre marqueur de la vie quotidienne : la géolocalisation par les parents, banalisée en une décennie (un modèle de montre connectée sur deux est aujourd'hui conçu pour les enfants), brouille la frontière entre protection et surveillance — un sociologue observe que la sortie de l'adolescence n'y met pas fin, mais déplace simplement le contrôle des parents vers les pairs (voir dossier, <a href="Sequence1_Dossier_documentaire.html#fiche-54" target="_blank" rel="noopener">fiche 54</a>).</p>
+      <p>Cette même jeunesse constitue aussi une cible économique organisée dès la petite enfance (mécanismes détaillés en <a href="Sequence1_Dossier_documentaire.html#fiche-60" target="_blank" rel="noopener">fiche 60</a> du dossier) : un enfant français aura vu près de 100 000 spots publicitaires avant ses 12 ans (environ 1 200 heures cumulées — effets sur le développement psychologique étudiés en <a href="Sequence1_Dossier_documentaire.html#fiche-61" target="_blank" rel="noopener">fiche 61</a>), et le « pouvoir d'embêter » (<i>pester power</i>) qu'exerce l'enfant sur ses parents — un conflit familial éclate dans 21 % des refus d'achat chez les enfants les plus exposés à la publicité, contre 9 % chez les moins exposés — est un ressort marketing documenté depuis les années 1980. La France encadre pourtant cette exposition beaucoup moins strictement que ses voisins : interdiction totale de la publicité aux moins de 13 ans au Canada depuis 1989, encadrement des mannequins de moins de 14 ans au Danemark depuis 1997, contre un encadrement limité au seul service public audiovisuel français depuis 2018.</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">3,1 % <span style="font-size:13px;">(16 % en 2015)</span></div><div class="lbl">de tabagisme quotidien à 16 ans en 2024 — division par cinq</div></div>
+        <div class="figure"><div class="num">42 %</div><div class="lbl">du budget mensuel des 12-18 ans consacré à l'alimentation</div></div>
+        <div class="figure"><div class="num">100 000</div><div class="lbl">spots publicitaires vus en moyenne avant 12 ans (~1 200 h cumulées)</div></div>
+      </div>
+      <p class="source-note">Sources : OFDT, Drogues et addictions, chiffres clés 2025 (enquête ESPAD 2024) · LADN, habitudes de consommation des ados (données Pixpay) · LADN, entretien avec Yann Bruna sur la géolocalisation parentale · Vincent Joly (Paris Descartes), RTL, CLEMI, sur la publicité destinée aux enfants.</p>
+    </div>
+
+    <div class="part">
+      <h4>D. Vieillesse : travail et représentations</h4>
+      <p>Alors que les plus de 60 ans représentaient 26,2 % de la population française en 2019 et disposent souvent d'un pouvoir d'achat supérieur à celui des actifs plus jeunes (désendettement plus avancé, charges familiales allégées), une étude qualitative menée auprès de 40 personnes par <a href="https://theconversation.com/les-consommateurs-seniors-ces-mal-aimes-de-la-publicite-132397" target="_blank" rel="noopener">The Conversation</a> révèle un paradoxe (développé en <a href="Sequence1_Dossier_documentaire.html#fiche-65" target="_blank" rel="noopener">fiche 65</a> du dossier) : cette clientèle solvable reste sous-représentée dans la publicité — l'exemple cité d'un tour-opérateur dont plus de 70 % de la clientèle est senior, mais qui redoute d'afficher des mannequins âgés, est particulièrement parlant — et, quand elle y apparaît, c'est le plus souvent cantonnée au rôle de grand-parent ou associée à la dépendance. Le vieillissement lui-même souffre d'un déficit de modèle culturel : la retraite reste largement imaginée sur le schéma des années 1950 (le grand-père épuisé par un travail industriel, une espérance de vie alors limitée à environ 70 ans), alors que le retraité contemporain en bonne santé dispose potentiellement de deux à trois décennies de vie active devant lui — d'où l'invention, faute de mieux, du terme flou de « senior » (ce mythe de la « retraite, nouveau départ » est déconstruit en <a href="Sequence1_Dossier_documentaire.html#fiche-64" target="_blank" rel="noopener">fiche 64</a>).</p>
+      <p>Ce déficit de représentation contredit pourtant les données d'enquête : contrairement au cliché du « vieux ronchon nostalgique », les plus de 60 ans se révèlent statistiquement plus optimistes que les jeunes sur l'avenir du progrès (61 % contre 43 % chez les moins de 35 ans) et moins nombreux à juger que « c'était mieux avant » (66 % contre 74 % chez les moins de 35 ans), selon les données CEVIPOF citées par <a href="https://www.telos-eu.com/fr/societe/cetait-mieux-avant-symbole-dune-societe-qui-prend-.html" target="_blank" rel="noopener">Telos</a> — ce qui interroge la pertinence même du stéréotype mobilisé par l'expression « OK Boomer » (le mythe est déconstruit chiffres à l'appui en <a href="Sequence1_Dossier_documentaire.html#fiche-67" target="_blank" rel="noopener">fiche 67</a> du dossier). Le déterminant réel du pessimisme social n'est d'ailleurs pas l'âge mais la classe sociale : 82 % des ouvriers et employés expriment une défiance extrême envers autrui, contre 66 % des cadres et 73 % des retraités. Le vieillissement démographique, souvent présenté comme un pur fardeau budgétaire (cf. partie B), se lit aussi comme une opportunité économique : le marché français du « grand âge » est estimé à environ 30 milliards d'euros (la silver economy est détaillée en <a href="Sequence1_Dossier_documentaire.html#fiche-68" target="_blank" rel="noopener">fiche 68</a>), quand le Japon, confronté au même défi démographique, expérimente un compromis plus explicite — âge de la retraite des fonctionnaires repoussé de 60 à 65 ans, mais salaire réduit à 70 % et retrait des postes de direction après 60 ans (comparaison développée en <a href="Sequence1_Dossier_documentaire.html#fiche-69" target="_blank" rel="noopener">fiche 69</a>).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">26,2 %</div><div class="lbl">de plus de 60 ans dans la population française en 2019</div></div>
+        <div class="figure"><div class="num">61 % / 43 %</div><div class="lbl">jugent que « la société évolue vers plus de progrès » : plus de 60 ans / moins de 35 ans</div></div>
+        <div class="figure"><div class="num">~30 Md€</div><div class="lbl">marché français du « grand âge » (silver economy), ordre de grandeur 2025-2026</div></div>
+      </div>
+      <p class="source-note">Sources : The Conversation, « Les consommateurs seniors, ces mal-aimés de la publicité » · Serge Guérin (probable), « "C'était mieux avant"… », Telos · Portail national de la Silver économie / Bpifrance · The Japan Times, sur la réforme des retraites des fonctionnaires japonais.</p>
+    </div>
+  </section>
+
+  <div class="biblio">
+    <h3>Bibliographie de la séquence</h3>
+    <ol>
+      <li>CEVIPOF/Ipsos-BVA, <i>Fractures françaises</i>, vague 13, oct. 2025, et <i>Bilan 13 ans</i>, oct. 2025.</li>
+      <li>Anne Muxel, « La génération est-elle encore un marqueur des fractures politiques françaises ? », Note CEVIPOF n°2, oct. 2025.</li>
+      <li>INSEE, <i>Bilan démographique 2025</i>, Insee Première n°2087, janv. 2026 ; <i>Informations rapides</i> n°113, 78-79, 158.</li>
+      <li>Hervé Le Bras, « La France inégale : partage social de l'espace français », The Conversation.</li>
+      <li>« Des mobilités quotidiennes à deux vitesses », The Conversation.</li>
+      <li>Christophe Guilluy, <i>La France périphérique</i>, Flammarion, 2014 ; <i>No society</i>, Flammarion, 2018.</li>
+      <li>Direction générale des étrangers en France, données 2025 (publication 2026).</li>
+      <li>Presse française, couverture de « Bloquons tout » et du budget 2026, 2025-2026.</li>
+      <li>David Costanza, « Les générations, un concept marketing sans fondement scientifique », <i>Slate.fr</i>, 3 mai 2018.</li>
+      <li><i>The Conversation</i>, « Génération : un concept à utiliser avec modération ? ».</li>
+      <li>INSEE, « En 2025, le déficit public s'élève à 5,1 % du PIB, la dette publique à 115,6 % du PIB », <i>Informations rapides</i> n°78.</li>
+      <li>Touteleurope.eu, sur la suspension de la réforme des retraites et le budget de la Sécurité sociale 2026.</li>
+      <li>L'Étudiant, « PLF 2026 : quelles mesures pour les étudiants sont en attente du budget ? », déc. 2025.</li>
+      <li>OFDT, <i>Drogues et addictions, chiffres clés 2025</i>, 15 janv. 2025 (enquête ESPAD 2024).</li>
+      <li><i>The Conversation</i>, « Les consommateurs seniors, ces mal-aimés de la publicité ».</li>
+      <li>Serge Guérin (probable), « "C'était mieux avant", symbole d'une société qui prend de l'âge ? », <i>Telos</i>.</li>
+    </ol>
+  </div>
+
+  <footer>MOOC « Fractures françaises » — yapluka-edu.fr — Séquence 1 / 2 — Document pédagogique établi à partir de sources primaires (voir bibliographie)</footer>
+</div>
+
+<script>
+(function(){
+  var QUESTIONS = [
+    {q:"En 2025, quel est l'indice conjoncturel de fécondité en France ?", opts:["1,56 enfant par femme","1,8 enfant par femme","2,1 enfants par femme","1,2 enfant par femme"], correct:0, explain:"1,56 enfant par femme : le niveau le plus bas depuis la fin de la Première Guerre mondiale (INSEE, Bilan démographique 2025)."},
+    {q:"Quel événement démographique inédit s'est produit en France en 2025, pour la première fois depuis 1945 ?", opts:["Un solde migratoire négatif","Un solde naturel négatif (décès > naissances)","Une baisse de l'espérance de vie","Une baisse de la population totale"], correct:1, explain:"Le solde naturel (naissances moins décès) est devenu négatif (-6 000) : une première depuis la fin de la Seconde Guerre mondiale."},
+    {q:"Selon Hervé Le Bras, où les cadres se concentrent-ils principalement ?", opts:["Dans les zones rurales profondes","Dans les « villes de commandement » (métropoles, capitales régionales)","De façon uniforme sur tout le territoire","Uniquement dans les départements d'outre-mer"], correct:1, explain:"Les cadres dépassent 20 % de la population active dans les « villes de commandement », contre moins de 2 % en zone rurale profonde."},
+    {q:"Quelle proportion de Français jugeait la société « en déclin » en 2025 ?", opts:["38 %","58 %","81 %","20 %"], correct:1, explain:"58 % en 2025, en léger reflux par rapport aux 65 % de 2014, mais toujours majoritaire (CEVIPOF/Ipsos)."},
+    {q:"D'après l'étude sur les « mobilités à deux vitesses », qu'observe-t-on chez les ouvriers et artisans-commerçants depuis 2010 ?", opts:["Une diminution de leur temps de trajet","Une augmentation de 13 à 17 % de leur temps de trajet quotidien","Un recours accru au vélo, comme les cadres franciliens","Aucune évolution mesurable"], correct:1, explain:"Le temps de transport quotidien augmente de 13 à 17 % pour ces catégories, pendant que les cadres stabilisent ou réduisent le leur."},
+    {q:"Quelle est la thèse centrale de Christophe Guilluy dans « La France périphérique » ?", opts:["Toutes les régions profitent également de la mondialisation","La France est coupée entre métropoles mondialisées et périphérie reléguée","Les zones rurales concentrent l'essentiel de la richesse nationale","Le vote RN ne dépend en rien de la géographie"], correct:1, explain:"Guilluy oppose des métropoles insérées dans la mondialisation à une « France périphérique » qui en serait tenue à l'écart — une thèse discutée en cours."},
+    {q:"Combien de premiers titres de séjour ont été délivrés en France en 2025 ?", opts:["4,5 millions","78 800","384 000","955 000"], correct:2, explain:"384 000 premiers titres délivrés en 2025 (+11 % par rapport à 2024). 4,5 millions est le nombre total d'étrangers résidents ; 955 000 les renouvellements ; 78 800 les décisions d'asile favorables."},
+    {q:"Quelle part de la population française est constituée d'étrangers résidents en 2025-2026 ?", opts:["8,1 %","16 %","22 %","2 %"], correct:0, explain:"8,1 %, un niveau proche de la moyenne européenne (8,4 %), plaçant la France au 16e rang européen sur ce critère."},
+    {q:"Quelle proportion des 18-29 ans vit sous le seuil de pauvreté ?", opts:["4 à 5 %","15,7 %","30 %","46 %"], correct:1, explain:"15,7 % des 18-29 ans, contre seulement 4 à 5 % des 65 ans et plus (Observatoire des inégalités/INSEE)."},
+    {q:"Quel est le taux de chômage des jeunes actifs au premier trimestre 2026 ?", opts:["8,1 %","15 %","21,1 %","30 %"], correct:2, explain:"21,1 %, soit plus du double du taux de chômage global (8,1 %) à la même période."},
+    {q:"Quelle revalorisation des pensions de retraite a été votée pour le 1er janvier 2026 ?", opts:["Gel total, aucune revalorisation","+0,9 %, sans gel ni seuil d'exclusion","+3 %, réservée aux petites pensions","+5 %, financée par une nouvelle taxe"], correct:1, explain:"La loi de financement de la Sécurité sociale, promulguée le 30 décembre 2025, prévoit une revalorisation générale de 0,9 % dès janvier 2026, sans gel ni seuil d'exclusion."},
+    {q:"Quelle mesure du budget 2026 concerne spécifiquement les étudiants internationaux non boursiers hors Union européenne ?", opts:["Le doublement de leurs bourses", "La suppression de l'APL à leur profit", "La gratuité des transports en commun", "Une exonération totale de frais d'inscription"], correct:1, explain:"Le projet de budget prévoit la suppression de l'APL pour ces étudiants (environ 100 000 personnes concernées, économie visée de 108 millions d'euros)."},
+    {q:"Comment évolue le tabagisme quotidien à 16 ans entre 2015 et 2024, selon l'enquête ESPAD ?", opts:["Il reste stable", "Il double", "Il est divisé par cinq (16 % → 3,1 %)", "Il augmente légèrement"], correct:2, explain:"Le tabagisme quotidien à 16 ans passe de 16 % en 2015 à 3,1 % en 2024, une baisse spectaculaire confirmée par l'OFDT."},
+    {q:"Combien de spots publicitaires un enfant français aurait-il vus en moyenne avant l'âge de 12 ans ?", opts:["10 000", "100 000", "500 000", "1 million"], correct:1, explain:"Environ 100 000 spots publicitaires (soit près de 1 200 heures cumulées), un chiffre qui ne comprend pas la publicité hors télévision."},
+    {q:"Selon les données CEVIPOF citées par Telos, qui se déclare le plus optimiste sur l'idée que « la société évolue vers toujours plus de progrès » ?", opts:["Les moins de 35 ans", "Les plus de 60 ans", "Les deux groupes à égalité", "Aucun des deux groupes, tous majoritairement pessimistes"], correct:1, explain:"61 % des plus de 60 ans (et 63 % des retraités) partagent cette opinion, contre seulement 43 % des moins de 35 ans — à rebours du stéréotype du « senior nostalgique »."},
+    {q:"Selon David Costanza (Slate.fr), quel constat statistique fragilise le concept marketing de « génération » ?", opts:["La variabilité à l'intérieur d'une génération dépasse presque toujours celle observée entre générations", "Les échantillons d'enquête sont trop petits pour être fiables", "Aucune étude n'a jamais porté sur le sujet", "Les générations n'ont jamais été définies par des dates précises"], correct:0, explain:"C'est le problème méthodologique du « within and between » : la variance intra-génération dépasse presque toujours la variance inter-générations, rendant fragile toute généralisation individuelle."}
+  ];
+
+  var form = document.getElementById('quizForm');
+  QUESTIONS.forEach(function(item, idx){
+    var block = document.createElement('div');
+    block.className = 'quiz-q';
+    block.dataset.index = idx;
+    var qp = document.createElement('p');
+    qp.className = 'q';
+    qp.textContent = (idx+1) + '. ' + item.q;
+    block.appendChild(qp);
+    item.opts.forEach(function(opt, oi){
+      var label = document.createElement('label');
+      var input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'q'+idx;
+      input.value = oi;
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(opt));
+      block.appendChild(label);
+    });
+    var explain = document.createElement('div');
+    explain.className = 'explain';
+    explain.textContent = item.explain;
+    block.appendChild(explain);
+    form.appendChild(block);
+  });
+
+  document.getElementById('checkQuiz').addEventListener('click', function(){
+    var score = 0;
+    QUESTIONS.forEach(function(item, idx){
+      var block = form.querySelector('.quiz-q[data-index="'+idx+'"]');
+      var chosen = block.querySelector('input[name="q'+idx+'"]:checked');
+      var labels = block.querySelectorAll('label');
+      labels.forEach(function(l, oi){
+        l.classList.remove('chosen','right-answer');
+        if (oi === item.correct) l.classList.add('right-answer');
+      });
+      block.classList.remove('correct','incorrect');
+      if (chosen) {
+        var oi = parseInt(chosen.value, 10);
+        labels[oi].classList.add('chosen');
+        if (oi === item.correct) { block.classList.add('correct'); score++; }
+        else { block.classList.add('incorrect'); }
+      } else {
+        block.classList.add('incorrect');
+      }
+    });
+    var scoreEl = document.getElementById('quizScore');
+    scoreEl.style.display = 'block';
+    scoreEl.textContent = 'Score : ' + score + ' / ' + QUESTIONS.length;
+  });
+
+  var textarea = document.getElementById('caseResponse');
+  var wc = document.getElementById('wordcount');
+  textarea.addEventListener('input', function(){
+    var words = textarea.value.trim().length ? textarea.value.trim().split(/\s+/).length : 0;
+    wc.textContent = words + ' mot' + (words>1?'s':'');
+    wc.className = 'wordcount' + ((words>=200 && words<=250) ? ' ok' : '');
+  });
+  document.getElementById('saveCase').addEventListener('click', function(){
+    var note = document.getElementById('savedNote');
+    note.style.display = 'inline';
+    setTimeout(function(){ note.style.display = 'none'; }, 4000);
+  });
+
+  document.querySelectorAll('.steps span').forEach(function(s){
+    s.addEventListener('click', function(){
+      var el = document.getElementById(s.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+})();
+</script>
+</body>
+</html>

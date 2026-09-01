@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOOC : France, unité, diversité, fractures</title>
+<meta name="description" content="Un MOOC en deux séquences sur les tensions internes de la société française — territoire, génération, société, valeurs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#10233E; --navy-light:#1a3a6e;
+    --bordeaux:#5A1A3A; --bordeaux-light:#7a2a54;
+    --ink:#1a1a1a; --paper:#faf8f4; --line:#e2ddd2;
+    --gold:#b8960c;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;}
+  h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;margin:0;}
+  a{color:inherit;}
+  .breadcrumb{padding:18px 32px;font-size:14px;}
+  .breadcrumb a{color:var(--navy);text-decoration:none;font-weight:500;}
+  .breadcrumb a:hover{text-decoration:underline;}
+
+  header.hero{
+    background:linear-gradient(120deg,var(--navy) 0%, var(--navy) 55%, var(--bordeaux) 100%);
+    color:#fff; padding:56px 32px 64px; text-align:center;
+  }
+  header.hero h1{font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:.01em;}
+  header.hero .subtitle{font-size:18px;font-weight:300;margin-top:10px;opacity:.92;font-family:'Inter',sans-serif;}
+  header.hero .tags{margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  header.hero .tag{font-size:12px;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(255,255,255,.4);padding:5px 12px;border-radius:20px;}
+
+  main{max-width:960px;margin:0 auto;padding:56px 24px 80px;}
+  section{margin-bottom:56px;}
+  .section-title{font-size:26px;font-weight:600;color:var(--navy);margin-bottom:16px;border-bottom:2px solid var(--line);padding-bottom:10px;}
+  .lead{font-size:16px;color:#333;}
+  .lead p{margin:0 0 14px;}
+
+  .seq-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px;}
+  @media(max-width:720px){.seq-grid{grid-template-columns:1fr;}}
+  .seq-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column;}
+  .seq-card .seq-head{padding:20px 22px;color:#fff;}
+  .seq-card.s1 .seq-head{background:var(--navy);}
+  .seq-card.s2 .seq-head{background:var(--bordeaux);}
+  .seq-num{font-size:12px;letter-spacing:.15em;text-transform:uppercase;opacity:.85;}
+  .seq-head h3{font-size:22px;font-weight:600;margin-top:4px;}
+  .seq-head .seq-theme{font-size:13px;font-weight:300;opacity:.9;margin-top:4px;font-family:'Inter',sans-serif;}
+  .seq-body{padding:18px 22px 22px;flex:1;display:flex;flex-direction:column;gap:12px;}
+  .seq-body p{font-size:14px;color:#444;margin:0;}
+  .seq-links{display:flex;flex-direction:column;gap:8px;margin-top:auto;}
+  .seq-links a{font-size:13px;padding:9px 14px;border-radius:6px;text-decoration:none;font-weight:600;text-align:center;}
+  .seq-card.s1 .seq-links .primary{background:var(--navy);color:#fff;}
+  .seq-card.s2 .seq-links .primary{background:var(--bordeaux);color:#fff;}
+  .seq-links .secondary{border:1px solid var(--line);color:#333;background:#f5f3ee;}
+  .seq-links a:hover{opacity:.88;}
+
+  .infos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;}
+  .infos-grid h4{color:var(--gold);font-size:13px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;font-family:'Inter',sans-serif;font-weight:700;}
+  .infos-grid p{font-size:14px;color:#444;margin:0;}
+
+  .approche-box{background:rgba(184,150,12,0.08);padding:18px 22px;border-left:4px solid var(--gold);margin:14px 0;border-radius:0 6px 6px 0;}
+  .approche-box h4{color:var(--gold);font-size:15px;margin-bottom:6px;font-family:'Inter',sans-serif;font-weight:700;}
+  .approche-box p{font-size:14px;color:#333;margin:0;}
+  .approche-quote{margin-top:18px;font-style:italic;text-align:center;color:#555;font-size:15px;}
+
+  .tags-cloud{display:flex;flex-wrap:wrap;gap:8px;}
+  .tags-cloud span{font-size:12px;border:1px solid var(--line);padding:5px 12px;border-radius:20px;color:#444;background:#fff;}
+
+  footer{background:var(--navy);color:#f0ede4;padding:36px 24px;text-align:center;}
+  footer nav{display:flex;gap:22px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;}
+  footer nav a{font-size:13px;text-decoration:none;color:#cdd6e3;font-weight:600;}
+  footer nav a:hover{color:#fff;}
+  footer .foot-title{font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:.03em;}
+  footer .foot-sub{font-size:12px;opacity:.65;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<nav class="breadcrumb"><a href="../index.html">&larr; Retour aux MOOCs</a></nav>
+
+<header class="hero">
+  <h1>France : unité, diversité, fractures</h1>
+  <p class="subtitle">Les tensions internes de la société française — territoire, génération, société, valeurs</p>
+  <div class="tags">
+    <span class="tag">Licence 1/2</span>
+    <span class="tag">2 séquences de 5h</span>
+    <span class="tag">Quiz + étude de cas</span>
+  </div>
+</header>
+
+<main>
+
+  <section>
+    <h2 class="section-title">Un pays qui ne se lit plus en un seul bloc</h2>
+    <div class="lead">
+      <p>Ce MOOC explore les fractures internes de la société française à travers quatre entrées qui forment une progression volontaire : la géographie et la démographie d'un territoire qui se vide et se recompose, les ressources économiques qui opposent générations, les structures sociales concrètes (classe, famille, croyance, réseaux), et enfin la cartographie des valeurs et du rapport au politique.</p>
+      <p>Chaque séquence de 5 heures combine deux blocs de cours magistral et une heure d'activité en ligne (quiz auto-corrigé et étude de cas notée), avec un dossier documentaire sourcé et une bibliographie détaillée mobilisables tout au long du parcours. Les débats sont volontairement laissés ouverts : chaque thèse discutée est présentée avec ses contradicteurs, jamais avec une conclusion imposée.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Les deux séquences</h2>
+    <div class="seq-grid">
+
+      <article class="seq-card s1">
+        <div class="seq-head">
+          <div class="seq-num">Séquence 1</div>
+          <h3>Territoires et générations</h3>
+          <div class="seq-theme">Géographie-démographie &middot; Génération-économie</div>
+        </div>
+        <div class="seq-body">
+          <p>La France qui se vide et se recompose dans l'espace ; qui paie, qui hérite, qui attend — la fracture par les ressources et la dette entre générations.</p>
+          <div class="seq-links">
+            <a class="primary" href="Sequence1_MOOC.html">Accéder à la séquence 1</a>
+            <a class="secondary" href="Sequence1_Dossier_documentaire.html">Dossier documentaire (HTML)</a>
+            <a class="secondary" href="Sequence1_Dossier_documentaire.pdf">Dossier documentaire (PDF)</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="seq-card s2">
+        <div class="seq-head">
+          <div class="seq-num">Séquence 2</div>
+          <h3>Société et valeurs</h3>
+          <div class="seq-theme">Approche sociologique &middot; Cartographie des valeurs</div>
+        </div>
+        <div class="seq-body">
+          <p>Classes, déclassement, famille, croyance, réseaux sociaux — puis la cartographie des valeurs et du rapport au politique, jusqu'aux municipales de mars 2026.</p>
+          <div class="seq-links">
+            <a class="primary" href="Sequence2_MOOC.html">Accéder à la séquence 2</a>
+            <a class="secondary" href="Sequence2_Dossier_documentaire.html">Dossier documentaire (HTML)</a>
+            <a class="secondary" href="Sequence2_Dossier_documentaire.pdf">Dossier documentaire (PDF)</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Informations pratiques</h2>
+    <div class="infos-grid">
+      <div>
+        <h4>Durée</h4>
+        <p>2 séquences de 5h (2h CM + 1h en ligne + 2h CM)<br>Total : 10 heures</p>
+      </div>
+      <div>
+        <h4>Niveau</h4>
+        <p>Licence 1 ou 2<br>Filières généralistes (droit, AES, LEA)</p>
+      </div>
+      <div>
+        <h4>Ressources</h4>
+        <p>150 fiches sourcées, cartes et graphiques<br>Accès libre et gratuit</p>
+      </div>
+      <div>
+        <h4>Évaluation</h4>
+        <p>Quiz auto-corrigés (32 questions)<br>Études de cas notées</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Notre approche</h2>
+    <p class="lead">Ce MOOC adopte une démarche équilibrée entre rigueur académique et audace intellectuelle, en accentuant systématiquement les tensions plutôt qu'en les lissant :</p>
+    <div class="approche-box">
+      <h4>Sources mainstream</h4>
+      <p>Insee, CEVIPOF, Observatoire des inégalités, The Conversation France, travaux universitaires établis (géographie sociale, sociologie électorale, démographie).</p>
+    </div>
+    <div class="approche-box">
+      <h4>Hypothèses disruptives</h4>
+      <p>Thèses discutées et controversées présentées avec leurs contradicteurs — la « France périphérique », le clivage Anywhere/Somewhere, la déconsolidation démocratique, l'ancrage affectif au territoire.</p>
+    </div>
+    <p class="approche-quote">« Aller chercher systématiquement l'audacieux et le discutable, à condition de s'appuyer sur des sources fiables. »</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Auteurs mobilisés</h2>
+    <div class="tags-cloud">
+      <span>Hervé Le Bras</span>
+      <span>Christophe Guilluy</span>
+      <span>Camille Peugny</span>
+      <span>Éric Maurin</span>
+      <span>Louis Chauvel</span>
+      <span>François de Singly</span>
+      <span>Anne Muxel</span>
+      <span>Luc Rouban</span>
+      <span>Roberto Foa</span>
+      <span>Yascha Mounk</span>
+      <span>David Goodhart</span>
+      <span>Benoît Coquard</span>
+      <span>Jérôme Sainte-Marie</span>
+      <span>Jean-Noël Retière</span>
+      <span>Violaine Girard</span>
+      <span>Kevin Arceneaux</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <nav>
+    <a href="../index.html">Accueil</a>
+    <a href="Sequence1_MOOC.html">Séquence 1</a>
+    <a href="Sequence2_MOOC.html">Séquence 2</a>
+    <a href="#top">&uarr; Haut de page</a>
+  </nav>
+  <p class="foot-title">FRANCE : UNITÉ, DIVERSITÉ, FRACTURES</p>
+  <p class="foot-sub">MOOC Licence — yapluka-edu.fr — 2026</p>
+</footer>
+
+</body>
+</html>

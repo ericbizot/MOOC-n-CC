@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fractures françaises — Séquence 2</title>
+<style>
+  :root{
+    --accent:#5a1a3a; --accent2:#7a2a52; --light:#f6ecf1; --light2:#efe0e8;
+    --ok:#1e7d45; --bad:#b3261e; --warn:#8a5a00; --warnbg:#fbf3e6; --warnbd:#e0c28e;
+    --text:#1a1a1a; --muted:#5a6472; --bg:#ffffff; --card:#fbfcfd; --border:#e6dde2;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); line-height:1.6;}
+  .topbar{position:sticky; top:0; z-index:20; background:var(--accent); color:#fff; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .topbar .brand{font-weight:700; letter-spacing:.02em; font-size:14px; opacity:.9;}
+  .topbar h1{font-size:18px; margin:0; font-weight:600;}
+  .steps{display:flex; gap:6px; font-size:12px;}
+  .steps span{padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.12); white-space:nowrap; cursor:pointer;}
+  .steps span.active{background:#fff; color:var(--accent); font-weight:700;}
+  .wrap{max-width:820px; margin:0 auto; padding:28px 20px 80px;}
+  .hero{padding:20px 0 8px;}
+  .hero h2{font-size:26px; margin:0 0 6px; color:var(--accent);}
+  .hero p{color:var(--muted); font-size:15px; max-width:640px;}
+  section.bloc{margin-top:44px;}
+  .bloc-tag{display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.05em; color:#fff; background:var(--accent); padding:4px 10px; border-radius:4px; margin-bottom:10px;}
+  .bloc h3{font-size:22px; margin:4px 0 16px; color:var(--accent);}
+  .part{margin-bottom:22px;}
+  .part h4{font-size:15.5px; color:var(--accent2); margin:0 0 6px;}
+  .part p{margin:6px 0; text-align:justify;}
+  .figure-row{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0;}
+  .figure{background:var(--light); border-radius:8px; padding:10px 14px; min-width:130px; flex:1;}
+  .figure .num{font-size:22px; font-weight:800; color:var(--accent);}
+  .figure .lbl{font-size:11.5px; color:var(--muted); margin-top:2px;}
+  .debat{background:var(--warnbg); border:1px solid var(--warnbd); border-radius:8px; padding:16px 18px; margin:18px 0;}
+  .debat .lbl{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--warn); margin-bottom:6px;}
+  .debat p{margin:6px 0; font-size:14px;}
+  .source-note{font-size:11.5px; color:var(--muted); font-style:italic; margin-top:4px;}
+  table.valtable{border-collapse:collapse; width:100%; margin:14px 0; font-size:13px;}
+  table.valtable th, table.valtable td{border:1px solid var(--border); padding:7px 10px; text-align:center;}
+  table.valtable th{background:var(--accent); color:#fff; font-weight:600;}
+  table.valtable td:first-child{text-align:left; font-weight:600;}
+
+  .activity-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:22px 24px; margin-top:18px;}
+  .activity-card h4{margin:0 0 4px; color:var(--accent);}
+  .activity-card .sub{color:var(--muted); font-size:13px; margin-bottom:14px;}
+  .quiz-q{border-top:1px solid var(--border); padding:16px 0;}
+  .quiz-q:first-of-type{border-top:none;}
+  .quiz-q p.q{font-weight:600; margin:0 0 8px;}
+  .quiz-q label{display:block; padding:7px 10px; border-radius:6px; margin:4px 0; cursor:pointer; border:1px solid var(--border); font-size:14px;}
+  .quiz-q label:hover{background:var(--light);}
+  .quiz-q input{margin-right:8px;}
+  .quiz-q .explain{display:none; margin-top:8px; padding:8px 10px; border-radius:6px; font-size:13px;}
+  .quiz-q.correct .explain{display:block; background:#e8f5ec; color:var(--ok);}
+  .quiz-q.incorrect .explain{display:block; background:#fbeaea; color:var(--bad);}
+  .quiz-q.correct label.chosen{border-color:var(--ok); background:#e8f5ec;}
+  .quiz-q.incorrect label.chosen{border-color:var(--bad); background:#fbeaea;}
+  .quiz-q label.right-answer{border-color:var(--ok);}
+  #quizScore{margin-top:16px; font-weight:700; font-size:15px; display:none; padding:10px 14px; border-radius:8px; background:var(--light);}
+  button.primary{background:var(--accent); color:#fff; border:none; padding:11px 20px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer;}
+  button.primary:hover{background:var(--accent2);}
+
+  .corpus{background:var(--light); border-radius:8px; padding:14px 16px; margin:12px 0; font-size:13.5px; max-height:320px; overflow-y:auto;}
+  .corpus h5{margin:0 0 6px; font-size:12.5px; color:var(--accent); text-transform:uppercase; letter-spacing:.03em;}
+  .corpus .doc{margin-bottom:14px;}
+  .corpus .doc:last-child{margin-bottom:0;}
+  .corpus .doc .src{font-style:italic; color:var(--muted); font-size:11.5px;}
+  textarea{width:100%; min-height:160px; border:1px solid var(--border); border-radius:8px; padding:12px; font-size:14px; font-family:inherit; resize:vertical;}
+  .wordcount{font-size:12px; color:var(--muted); margin-top:6px;}
+  .wordcount.ok{color:var(--ok);}
+  .saved-note{display:none; margin-top:10px; font-size:13px; color:var(--ok); font-weight:600;}
+
+  .biblio{margin-top:60px; border-top:2px solid var(--border); padding-top:20px;}
+  .biblio h3{color:var(--accent); font-size:16px;}
+  .biblio ol{padding-left:20px; font-size:12.5px; color:var(--muted);}
+  .biblio li{margin-bottom:6px;}
+  footer{text-align:center; color:var(--muted); font-size:11.5px; padding:30px 0 10px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="brand">FRACTURES FRANÇAISES · yapluka-edu.fr</div>
+    <h1>Séquence 2 — Société et valeurs</h1>
+  </div>
+  <div class="steps">
+    <span class="active" data-target="bloc1">Bloc 1</span>
+    <span data-target="activite">Activité en ligne</span>
+    <span data-target="bloc2">Bloc 2</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h2>Ce qui tient encore ensemble</h2>
+  </div>
+
+  <section class="bloc" id="bloc1">
+    <span class="bloc-tag">BLOC 1 · 2H</span>
+    <h3>Approche sociologique : classes, familles, croyances, écrans</h3>
+
+    <div class="part">
+      <h4>A. Classes sociales et déclassement : une architecture qui se referme</h4>
+      <p>Entre 1982 et 2021, la structure socioprofessionnelle française s'est nettement élevée : les cadres supérieurs sont passés de 8 % à 22 % de l'emploi, les professions intermédiaires de 19 % à 25 %, si bien que catégories supérieures et intermédiaires réunies pèsent désormais 47 % des emplois contre 27 % quarante ans plus tôt. L'Observatoire des inégalités <a href="https://www.inegalites.fr/Comment-evoluent-les-categories-sociales-en-France" target="_blank" rel="noopener">y voit</a> moins une polarisation extrême qu'une élévation générale des qualifications — mais le constat inverse subsiste : ouvriers et employés représentent encore près d'un emploi sur deux, la « classe populaire » n'a pas disparu numériquement, elle a perdu en centralité politique et médiatique (cette « translation vers le haut » est développée en <a href="Sequence2_Dossier_documentaire.html#fiche-1" target="_blank" rel="noopener">fiche 1</a> du dossier).</p>
+      <p>Cette élévation générale masque un durcissement du rôle du diplôme dans la reproduction sociale : l'écart de chômage entre diplômés du supérieur et non-diplômés est passé de 10 points dans les années 1970 à 40 points dans les années 2000, et la mobilité sociale « nette » (à structure d'emploi égale) a reculé de 43 % à 40 % entre 1993 et 2003 (voir dossier, <a href="Sequence2_Dossier_documentaire.html#fiche-4" target="_blank" rel="noopener">fiche 4</a>). Le lieu commun du chômeur qui refuserait un emploi disponible « en traversant la rue » ne résiste pas non plus aux chiffres : en 2017, sur 111 000 offres déclarées « non pourvues », seules 18 000 l'étaient réellement faute de candidats, et 99 % des recrutements aboutissaient (<a href="https://theconversation.com/il-suffit-de-traverser-la-rue-la-ritournelle-des-emplois-non-pourvus-103389" target="_blank" rel="noopener">The Conversation</a>, 2018 ; démonstration complète en <a href="Sequence2_Dossier_documentaire.html#fiche-8" target="_blank" rel="noopener">fiche 8</a>).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">8 % → 22 %</div><div class="lbl">cadres supérieurs dans l'emploi total (1982-2021)</div></div>
+        <div class="figure"><div class="num">10 → 40 pts</div><div class="lbl">écart de chômage diplômés/non-diplômés (1970s-2000s)</div></div>
+        <div class="figure"><div class="num">18 000 / 111 000</div><div class="lbl">offres réellement non pourvues faute de candidats (2017)</div></div>
+      </div>
+      <p class="source-note">Sources : Observatoire des inégalités, 17 mai 2023 · Louis Maurin, Alternatives économiques, hors-série n°89 · The Conversation, 24 sept. 2018.</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>Le déclassement est-il d'abord une affaire de territoire ou de relations sociales concrètes ?</b> Le sociologue Benoît Coquard a passé dix ans (2010-2018) en immersion dans des cantons de la Meuse en déclin démographique : plutôt qu'une carte agrégée à l'échelle nationale, il documente comment de jeunes ruraux peu diplômés construisent, avec l'entraide de leur « bande de potes », un ancrage fait de maison, de loisirs communs et de réputation locale — ce que la sociologie appelle un « capital d'autochtonie » (enquête présentée en <a href="Sequence2_Dossier_documentaire.html#fiche-19" target="_blank" rel="noopener">fiche 19</a> du dossier). Coquard revendique explicitement d'avoir écrit contre les lectures cartographiques descendantes du monde rural, jugées trop éloignées du « cœur des relations sociales » des villages (synthèse du débat méthodologique en <a href="Sequence2_Dossier_documentaire.html#fiche-23" target="_blank" rel="noopener">fiche 23</a>). Le reportage de Gérald Andrieu et Floriane Louison sur la « France sacrifiée » nuance de la même façon l'image d'une pauvreté spectaculaire : à Creil, elle « ne saute pas au visage », elle se vit dans l'isolement (<a href="http://www.slate.fr/story/153630/france-en-marge-entretien-croise" target="_blank" rel="noopener">Slate.fr</a> ; reportage complet en <a href="Sequence2_Dossier_documentaire.html#fiche-13" target="_blank" rel="noopener">fiche 13</a>). De son côté, Luc Rouban (CEVIPOF) construit un indice d'« échec social subjectif » — le sentiment de dégradation par rapport aux autres et à ses parents — qui touche 60 % des Français, loin devant l'assignation à un territoire (31 %), et qui prédit mieux le vote RN que le diplôme ou le lieu de résidence pris isolément (<a href="https://hal.science/hal-04921797" target="_blank" rel="noopener">Note CEVIPOF, janv. 2025</a> ; indice détaillé en <a href="Sequence2_Dossier_documentaire.html#fiche-52" target="_blank" rel="noopener">fiche 52</a>).</p>
+      <p><b>À vous de trancher</b> : l'ancrage affectif et relationnel décrit par Coquard et l'indice statistique d'échec social de Rouban se contredisent-ils, ou décrivent-ils deux couches différentes d'un même phénomène ?</p>
+    </div>
+
+    <div class="part">
+      <h4>B. Recomposition familiale : la forme change, la fonction demeure</h4>
+      <p>Pour le sociologue François de Singly, la famille contemporaine est traversée par deux logiques : une « logique de transmission » intergénérationnelle, jugée universelle et stable, et une « logique affective », née avec l'imaginaire romantique du XIXe siècle et intrinsèquement fragile puisque rien ne garantit la durée d'un sentiment. Selon lui, la multiplication des formes familiales — séparations, recompositions, homoparentalité — ne signale donc pas un affaiblissement de l'institution familiale, mais la force de cet impératif affectif : c'est parce qu'elle doit rester fondée sur l'amour que sa forme change quand le sentiment change (<a href="https://www.ladn.eu/nouveaux-usages/les-nouveaux-modeles-familiaux-tentent-de-bousculer-les-imaginaires/" target="_blank" rel="noopener">entretien, L'ADN</a> ; thèse développée en <a href="Sequence2_Dossier_documentaire.html#fiche-26" target="_blank" rel="noopener">fiche 26</a> du dossier). La fonction de transmission, elle, se redéploierait surtout via les stratégies scolaires plutôt que par l'entretien du foyer (mutations quantitatives de la famille française détaillées en <a href="Sequence2_Dossier_documentaire.html#fiche-27" target="_blank" rel="noopener">fiche 27</a>).</p>
+      <p>Les données Insee confirment l'ampleur du mouvement (actualisation 2023 en <a href="Sequence2_Dossier_documentaire.html#fiche-28" target="_blank" rel="noopener">fiche 28</a> du dossier) : en 2023, 30 % des enfants mineurs vivent avec un seul de leurs deux parents (23 % en famille monoparentale, 10 % en famille recomposée), contre 28 % en 2018. Cette proportion croît fortement avec l'âge de l'enfant (13 % avant un an, 32 % à dix-sept ans) et connaît une géographie très inégale : plus de 40 % des enfants ultramarins vivent en famille monoparentale avec leur mère, contre moins de 20 % en métropole. Cette monoparentalité reste socialement marquée — 34 % des mères seules sont sans emploi, contre 24 % dans les familles biparentales (<a href="https://www.insee.fr/fr/statistiques/8310621" target="_blank" rel="noopener">Insee Première n°2032</a>, 2025) — rappelant que la question familiale ne peut être dissociée de la question sociale traitée en partie A.</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">30 % / 28 %</div><div class="lbl">enfants avec un seul parent : 2023 / 2018</div></div>
+        <div class="figure"><div class="num">&gt;40 % / &lt;20 %</div><div class="lbl">monoparentalité : DROM / métropole</div></div>
+        <div class="figure"><div class="num">34 % / 24 %</div><div class="lbl">mères sans emploi : familles mono- / biparentales</div></div>
+      </div>
+      <p class="source-note">Sources : François de Singly, entretien L'ADN · Insee Première n°2032, 14 janv. 2025.</p>
+    </div>
+
+    <div class="part">
+      <h4>C. Sécularisation : une image ambivalente et hiérarchisée des religions</h4>
+      <p>Deux grandes enquêtes internationales longitudinales (European Values Study, International Social Survey Programme) montrent une image des religions restée très négative et stable dans le temps (données complètes en <a href="Sequence2_Dossier_documentaire.html#fiche-29" target="_blank" rel="noopener">fiche 29</a> du dossier) : 64 % des Français jugent, aussi bien en 1998 qu'en 2018, qu'elles « apportent plus de conflit que de paix ». Cette défiance n'est cependant pas uniforme selon les cultes : 56 % des enquêtés déclarent une attitude positive envers les chrétiens, contre seulement 24 % envers les musulmans. Dans le même temps, la catégorie hybride « pas religieux mais spirituel » progresse de 15 % à 18 % en dix ans, surtout chez les moins de 35 ans — signe que la sécularisation institutionnelle ne fait pas disparaître le besoin de sens.</p>
+      <p>L'analyse de Gérard Grunberg déplace utilement le regard vers des causes structurelles plutôt que culturelles (voir dossier, <a href="Sequence2_Dossier_documentaire.html#fiche-30" target="_blank" rel="noopener">fiche 30</a>) : dans le monde, la pratique religieuse recule d'abord avec l'espérance de vie et le niveau de vie (90 % d'assistance religieuse régulière au Nigeria, contre 10 % aux Pays-Bas ; 98 % de prière quotidienne en Afghanistan, contre 18 % en Norvège). En France même, seuls 54 % des musulmans jugent leur religion « très importante », contre plus de 80 % dans les sociétés musulmanes traditionnelles (<a href="https://www.slate.fr/story/164051/religions-monde-chretiente-islam-juif-secularisation" target="_blank" rel="noopener">Slate.fr</a>, 2018 ; identité musulmane en France développée en <a href="Sequence2_Dossier_documentaire.html#fiche-32" target="_blank" rel="noopener">fiche 32</a>) — signe d'une sécularisation à l'œuvre y compris dans la minorité religieuse la plus scrutée par le débat public. C'est justement la fragilité méthodologique de ce type de mesure qu'a révélée la controverse autour d'une enquête Ifop de novembre 2025 sur les musulmans de France, contestée sur son échantillon et la formulation de ses questions (<a href="https://www.ifop.com/wp-content/uploads/2025/11/analyse_ifop_2025.11.18.pdf" target="_blank" rel="noopener">rapport Ifop</a> ; controverse analysée en <a href="Sequence2_Dossier_documentaire.html#fiche-36" target="_blank" rel="noopener">fiche 36</a> du dossier).</p>
+      <table class="valtable"><tr><th>Religion</th><th>Compatible en 2025</th><th>Évolution depuis 2013</th></tr><tr><td>Catholicisme</td><td>91 %</td><td>+2 pts</td></tr><tr><td>Judaïsme</td><td>79 %</td><td>+4 pts</td></tr><tr><td>Islam</td><td>42 %</td><td>+16 pts</td></tr></table>
+      <p class="source-note">Sources : The Conversation (EVS/ISSP) · Gérard Grunberg, Slate.fr, 3 juill. 2018 · Ifop, 18 nov. 2025 · CEVIPOF/Ipsos, Bilan 13 ans.</p>
+    </div>
+
+    <div class="part">
+      <h4>D. Les réseaux sociaux, chambre d'écho ou moteur de radicalisation ?</h4>
+      <p>La fréquentation des réseaux sociaux dessine des publics très contrastés : TikTok concentre les 18-24 ans (39 % de ses utilisateurs quotidiens, contre 10 % dans l'échantillon global) et les foyers modestes, LinkedIn est masculin et diplômé (43 % de Bac+5), Facebook reste ancré chez les 45-59 ans (cette sociologie des usages par plateforme est détaillée en <a href="Sequence2_Dossier_documentaire.html#fiche-61" target="_blank" rel="noopener">fiche 61</a> du dossier). Résultat le plus significatif pour le cours : l'usage intensif des réseaux est associé à un profil de déclassement — jeune, diplômé, mais à faible revenu — 47 % des usagers intensifs se situant dans le groupe à précarité élevée, contre 40 % chez les utilisateurs occasionnels (Note CEVIPOF, nov. 2025). Le phénomène « French Dream », qui compile depuis 2019 des vidéos filmées par des personnes de classes populaires pour susciter le <i>cringe</i>, illustre concrètement ce mépris de classe recyclé en divertissement viral (<a href="https://www.ladn.eu/media-mutants/reseaux-sociaux/french-dream-internautes-compilent-pires-tiktok-francais/" target="_blank" rel="noopener">L'ADN</a> ; analyse développée en <a href="Sequence2_Dossier_documentaire.html#fiche-38" target="_blank" rel="noopener">fiche 38</a>).</p>
+      <p>Cette chambre d'écho a-t-elle pour autant un camp politique ? Les recherches les plus récentes du CEVIPOF répondent par la négative, à rebours du sens commun médiatique (démonstration complète en <a href="Sequence2_Dossier_documentaire.html#fiche-60" target="_blank" rel="noopener">fiche 60</a> du dossier) : l'usage intensif des réseaux est associé en France à la gauche et à la gauche radicale — le soutien à LFI grimpe de 20 % chez les usagers faibles à 46 % chez les utilisateurs fréquents de TikTok — tandis que le soutien au RN reste quasiment stable (48-52 %) quelle que soit l'intensité d'usage. Un résultat qui n'empêche pas l'existence, en parallèle, d'un écosystème d'influenceurs d'extrême droite actif depuis 2015, dont la puissance dépasse la seule communication officielle du parti : Jordan Bardella comptait 1,5 million d'abonnés TikTok en juin 2024, contre 114 000 pour Manon Aubry (cet écosystème est cartographié en <a href="Sequence2_Dossier_documentaire.html#fiche-39" target="_blank" rel="noopener">fiche 39</a>).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">47 % / 40 %</div><div class="lbl">précarité élevée : usagers intensifs / occasionnels des réseaux</div></div>
+        <div class="figure"><div class="num">20 % → 46 %</div><div class="lbl">soutien à LFI selon l'intensité d'usage des réseaux (jusqu'aux usagers TikTok fréquents)</div></div>
+        <div class="figure"><div class="num">1,5 M / 114 000</div><div class="lbl">abonnés TikTok : J. Bardella / M. Aubry, juin 2024</div></div>
+      </div>
+      <p class="source-note">Sources : Flora Chanvril, Luc Rouban, Note CEVIPOF n°8, nov. 2025 · L'ADN · The Conversation, 2024.</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>Réseaux sociaux : vecteur de radicalisation ou chambre d'écho ?</b> Le 30 octobre 2025, le président de la République dénonçait sur X un « processus de dégénérescence démocratique » à l'œuvre sur les réseaux — un diagnostic largement partagé dans le débat public, qui associe spontanément intensité d'usage numérique et progression de l'extrême droite. La note CEVIPOF de Flora Chanvril et Luc Rouban va à contre-courant : elle démonte explicitement le concept de « techno-fascisme » (alliance supposée entre élites tech et extrême droite) et montre que le soutien au RN ne varie quasiment pas selon l'intensité d'usage des réseaux, quand celui à LFI, lui, grimpe fortement. Les auteurs concluent que les réseaux sociaux fonctionnent comme des « chambres d'écho » qui amplifient des fractures déjà existantes, sans en créer de nouvelles ni favoriser un camp en particulier (thèse détaillée en <a href="Sequence2_Dossier_documentaire.html#fiche-60" target="_blank" rel="noopener">fiche 60</a> du dossier).</p>
+      <p><b>À vous de trancher</b> : cette conclusion contredit-elle vraiment l'existence documentée d'un écosystème d'influenceurs d'extrême droite actif depuis 2015 (partie D), ou les deux constats sont-ils compatibles ?</p>
+    </div>
+  </section>
+
+  <section class="bloc" id="activite">
+    <span class="bloc-tag">ACTIVITÉ EN LIGNE · 1H</span>
+    <h3>À vous de jouer</h3>
+
+    <div class="activity-card">
+      <h4>Quiz — Bloc 1 &amp; Bloc 2 (16 questions)</h4>
+      <div class="sub">30 minutes. Une seule bonne réponse par question. Les 8 premières questions portent sur le bloc 1, les 8 suivantes sur le bloc 2. Cliquez sur « Corriger » à la fin pour voir votre score et les explications.</div>
+      <form id="quizForm"></form>
+      <button class="primary" id="checkQuiz" type="button">Corriger le quiz</button>
+      <div id="quizScore"></div>
+    </div>
+
+    <div class="activity-card">
+      <h4>Étude de cas notée (40 minutes)</h4>
+      <div class="sub">Production courte individuelle, 200 à 250 mots. Corpus fourni ci-dessous.</div>
+      <div class="corpus">
+        <h5>Corpus</h5>
+        <div class="doc"><b>Document 1 — Synthèse de l'entretien avec François de Singly</b><br>La multiplication des formes familiales contemporaines ne fragiliserait pas l'institution familiale : elle témoignerait au contraire de la force de l'impératif affectif qui la fonde depuis le XIXe siècle, la fonction de transmission se redéployant surtout via l'école (thèse développée dans le dossier, <a href="Sequence2_Dossier_documentaire.html#fiche-26" target="_blank" rel="noopener">fiche 26</a>).<div class="src">Source : entretien avec François de Singly, <a href="https://www.ladn.eu/nouveaux-usages/les-nouveaux-modeles-familiaux-tentent-de-bousculer-les-imaginaires/" target="_blank" rel="noopener">L'ADN</a></div></div>
+        <div class="doc"><b>Document 2 — L'écart salarial femmes-hommes en France, 2024</b><br>21,8 % d'écart de revenu salarial total en défaveur des femmes dans le secteur privé ; 14,0 % à temps de travail identique ; seulement 3,6 % à poste strictement comparable dans un même établissement. La convergence ralentit : -0,4 point en 2024, contre -0,9 point par an en moyenne entre 2019 et 2023 (voir dossier, <a href="Sequence2_Dossier_documentaire.html#fiche-40" target="_blank" rel="noopener">fiche 40</a>).<div class="src">Source : Insee Focus n°377, <a href="https://www.insee.fr/fr/statistiques/8743657" target="_blank" rel="noopener">« Écart de salaire entre femmes et hommes en 2024 »</a>, fév. 2026 — matière construite sur recherche web complémentaire, le dossier local dédié au genre n'ayant pu être traité</div></div>
+        <div class="doc"><b>Document 3 — L'échec social subjectif et le vote Le Pen (2022)</b><br>60 % des Français se situent à un niveau élevé de l'indice d'« échec social subjectif », contre 43 % pour la solitude et 31 % pour l'assignation spatiale. Au second tour de la présidentielle 2022, le vote Le Pen passe de 20 % au niveau le plus bas de l'indice à 64 % au niveau maximum (indice détaillé en <a href="Sequence2_Dossier_documentaire.html#fiche-52" target="_blank" rel="noopener">fiche 52</a> du dossier).<div class="src">Source : Luc Rouban, Note CEVIPOF, janv. 2025 (<a href="https://hal.science/hal-04921797" target="_blank" rel="noopener">hal.science</a>)</div></div>
+        <div class="doc"><b>Document 4 — Compatibilité perçue des religions avec les valeurs françaises (2013-2025)</b><br>Catholicisme : 89 % → 91 %. Judaïsme : 75 % → 79 %. Islam : 26 % → 42 % (+16 points, la plus forte progression des trois) — hiérarchie analysée en <a href="Sequence2_Dossier_documentaire.html#fiche-54" target="_blank" rel="noopener">fiche 54</a> du dossier.<div class="src">Source : CEVIPOF/Ipsos, Fractures françaises, Bilan 13 ans, oct. 2025</div></div>
+        <div class="doc"><b>Document 5 — Le RN aux municipales de mars 2026</b><br>Réélection dès le premier tour à Perpignan (50,61 %), Hénin-Beaumont et Fréjus ; qualification au second tour dans 20 villes de plus de 100 000 habitants ; mais moins de 8 % des voix à Paris, Bordeaux et Toulouse (analyse complète en <a href="Sequence2_Dossier_documentaire.html#fiche-76" target="_blank" rel="noopener">fiche 76</a>).<div class="src">Source : Vert, résultats des élections municipales 2026, mars 2026</div></div>
+      </div>
+      <p style="font-size:14px;"><b>Consigne :</b> en vous appuyant sur au moins trois éléments chiffrés du corpus, répondez à la question suivante : <i>« Les fractures sociales, familiales et religieuses décrites par l'approche sociologique du bloc 1 recoupent-elles les mêmes lignes que celles mesurées par la cartographie des valeurs politiques du bloc 2 (vote RN, confiance démocratique) ? »</i></p>
+      <textarea id="caseResponse" placeholder="Votre réponse (200 à 250 mots)..."></textarea>
+      <div class="wordcount" id="wordcount">0 mot</div>
+      <button class="primary" id="saveCase" type="button" style="margin-top:10px;">Enregistrer ma réponse</button>
+      <span class="saved-note" id="savedNote">✓ Réponse enregistrée pour relecture par les pairs</span>
+    </div>
+  </section>
+
+  <section class="bloc" id="bloc2">
+    <span class="bloc-tag">BLOC 2 · 2H</span>
+    <h3>Cartographie des valeurs : au-delà de la gauche et de la droite</h3>
+
+    <div class="part">
+      <h4>A. Quatre familles politiques, pas deux</h4>
+      <p>En croisant un axe économique (étatiste vs libéral) et un axe culturel (national vs ouvert), Kevin Arceneaux et Anne Muxel montrent (grille détaillée en <a href="Sequence2_Dossier_documentaire.html#fiche-46" target="_blank" rel="noopener">fiche 46</a> du dossier) que chaque bloc électoral est traversé par une hétérogénéité interne considérable : à l'extrême droite, deux tiers de l'électorat sont libéraux nationaux mais 29 % restent étatistes nationaux ; à la gauche radicale, 65 % sont libéraux ouverts mais 15 % restent étatistes nationaux. Chez les personnes ne se reconnaissant dans aucun parti, la répartition entre les quatre profils est presque égale — signe que l'abstention ne recoupe pas un socle de valeurs homogène (Le Monde, oct. 2025).</p>
+      <p>Cette grille éclaire des paradoxes économiques transpartisans (analysés en <a href="Sequence2_Dossier_documentaire.html#fiche-47" target="_blank" rel="noopener">fiche 47</a> du dossier) : 61 % des Français jugent qu'il faudrait « prendre aux riches pour donner aux pauvres », un record depuis 2013, mais l'adhésion à la théorie du ruissellement atteint simultanément son plus haut niveau depuis 2018 (49 %). Le RN occupe une position hybride inédite : ses sympathisants sont à la fois plus favorables à la redistribution que ceux de Renaissance (57 %) et fortement acquis au ruissellement (50 %) — une combinaison qu'aucun grand courant classique n'affiche avec cette intensité.</p>
+      <table class="valtable"><tr><th>Bloc électoral</th><th>Étatiste national</th><th>Étatiste ouvert</th><th>Libéral national</th><th>Libéral ouvert</th></tr>
+      <tr><td>Gauche radicale</td><td>15 %</td><td>65 %</td><td>8 %</td><td>12 %</td></tr>
+      <tr><td>Gauche</td><td>17 %</td><td>58 %</td><td>13 %</td><td>12 %</td></tr>
+      <tr><td>Bloc central</td><td>14 %</td><td>14 %</td><td>41 %</td><td>31 %</td></tr>
+      <tr><td>Droite</td><td>8 %</td><td>5 %</td><td>73 %</td><td>14 %</td></tr>
+      <tr><td>Extrême droite</td><td>66 %</td><td>3 %</td><td>29 %</td><td>2 %</td></tr>
+      </table>
+      <p class="source-note">Sources : Kevin Arceneaux, Anne Muxel, Le Monde, oct. 2025 · Ipsos-BVA, Fractures françaises, vague 13, oct. 2025.</p>
+    </div>
+
+    <div class="part">
+      <h4>B. Le RN : normalisation de l'image, fracture invisible du vote</h4>
+      <p>La percée du RN depuis 2022 n'est pas un choc soudain mais l'aboutissement d'une banalisation entamée dès 2015, montre Luc Rouban (temporalités détaillées en <a href="Sequence2_Dossier_documentaire.html#fiche-48" target="_blank" rel="noopener">fiche 48</a> du dossier) : le rapprochement des ouvriers s'accélère dès 2017, celui des cadres seulement à partir de 2021, celui des retraités dès 2018 mais sans lever leurs réserves sur le danger démocratique avant 2021. Point central : ce n'est pas la xénophobie qui explique cette dynamique — les indices de rejet de l'immigration sont stables depuis 2019 — mais le rejet croissant de la mondialisation, seul indice de valeurs en hausse continue depuis 2018. L'image du parti s'en trouve transformée : le qualificatif « capable de gouverner » passe de 23 % en 2014 à 47 % en 2025 (record), et « dangereux pour la démocratie » repasse pour la première fois sous la barre des 50 % — sans empêcher 66 % des Français de continuer à le qualifier de parti d'extrême droite (records détaillés en <a href="Sequence2_Dossier_documentaire.html#fiche-49" target="_blank" rel="noopener">fiche 49</a>).</p>
+      <p>Mais l'opinion favorable ne se traduit pas mécaniquement en bulletin de vote (voir dossier, <a href="Sequence2_Dossier_documentaire.html#fiche-50" target="_blank" rel="noopener">fiche 50</a>) : parmi les personnes au niveau de soutien le plus élevé au RN, seules 46 % ont effectivement voté pour ses candidats au premier tour des législatives 2024 (51 % chez les ouvriers, 42 % seulement chez les cadres, dont 37 % s'abstiennent). Le meilleur prédicteur individuel du vote reste, une fois encore, l'« échec social subjectif » construit par Rouban : ce sentiment de dégradation par rapport à ses parents fait passer le vote Le Pen de 20 % à 64 % entre le niveau le plus bas et le plus élevé de l'indice (<a href="https://hal.science/hal-04921797" target="_blank" rel="noopener">Note CEVIPOF, janv. 2025</a> ; cf. <a href="Sequence2_Dossier_documentaire.html#fiche-52" target="_blank" rel="noopener">fiche 52</a> du dossier).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">23 % → 47 %</div><div class="lbl">jugent le RN « capable de gouverner » (2014-2025)</div></div>
+        <div class="figure"><div class="num">46 %</div><div class="lbl">des plus forts soutiens au RN ont réellement voté RN aux législatives 2024</div></div>
+        <div class="figure"><div class="num">20 % → 64 %</div><div class="lbl">vote Le Pen 2022 selon le niveau d'échec social subjectif</div></div>
+      </div>
+      <p class="source-note">Sources : Luc Rouban, Notes CEVIPOF n°1 (oct. 2025) et n°1/janv. 2025 (<a href="https://hal.science/hal-04921797" target="_blank" rel="noopener">hal.science</a>) · Ipsos-BVA, Fractures françaises, vague 13.</p>
+    </div>
+
+    <div class="part">
+      <h4>C. Déconsolidation démocratique et confiance politique</h4>
+      <p>La hiérarchie de confiance 2025 est nette : PME, scientifiques, armée, police, école et maires restent stables et plébiscités depuis dix ans, quand les institutions représentatives s'effondrent — 10 % de confiance pour les partis politiques, 20 % pour l'Assemblée nationale, 22 % pour la présidence, un chiffre encore aggravé après la démission du Premier ministre Sébastien Lecornu le 6 octobre 2025 (détail de cet effondrement contrasté en <a href="Sequence2_Dossier_documentaire.html#fiche-66" target="_blank" rel="noopener">fiche 66</a> du dossier). Quatre indicateurs de défiance envers le personnel politique battent des records en 2025 : 81 % des Français jugent que le système démocratique fonctionne mal et que leurs idées n'y sont pas représentées — y compris 42 % des sympathisants de Renaissance, l'électorat pourtant le plus proche du pouvoir en place (chiffres détaillés en <a href="Sequence2_Dossier_documentaire.html#fiche-67" target="_blank" rel="noopener">fiche 67</a>).</p>
+      <p>Cette érosion fait écho à la thèse internationale de la « déconsolidation démocratique » formulée par Roberto Foa et Yascha Mounk dès 2016 : un recul générationnel du soutien aux normes démocratiques, plus marqué chez les jeunes (<a href="https://www.journalofdemocracy.org/articles/the-signs-of-deconsolidation/" target="_blank" rel="noopener">Journal of Democracy</a>, 2017 ; thèse présentée en <a href="Sequence2_Dossier_documentaire.html#fiche-70" target="_blank" rel="noopener">fiche 70</a> du dossier). Le baromètre CEVIPOF de février 2026 confirme un attachement de principe à la démocratie qui coexiste avec un rejet massif de son fonctionnement concret : 82 % restent attachés au régime démocratique, mais 76 % jugent qu'il « ne fonctionne pas bien », et 79 % réclament davantage de référendums et de décentralisation — une demande transversale qui, fait rare, ne varie ni selon le diplôme ni selon la catégorie sociale (<a href="https://www.sciencespo.fr/cevipof/" target="_blank" rel="noopener">CEVIPOF, vague 17</a> ; données complètes en <a href="Sequence2_Dossier_documentaire.html#fiche-73" target="_blank" rel="noopener">fiche 73</a>).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">10 % / 15 %</div><div class="lbl">confiance dans les partis politiques : 2025 / vague 17 (fév. 2026)</div></div>
+        <div class="figure"><div class="num">76 % → 65 %</div><div class="lbl">jugent la démocratie « irremplaçable » (2014-2025)</div></div>
+        <div class="figure"><div class="num">79 % / 79 %</div><div class="lbl">favorables à plus de référendums / de décentralisation (2026)</div></div>
+      </div>
+      <p class="source-note">Sources : Ipsos-BVA, Fractures françaises, vague 13 · Foa &amp; Mounk, Journal of Democracy, 2017 · CEVIPOF, Baromètre de la confiance politique, vague 17, fév. 2026.</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>Déconsolidation démocratique : rupture générationnelle ou artefact statistique ?</b> Pour Foa et Mounk, l'érosion du soutien aux normes démocratiques serait plus marquée chez les jeunes générations — un effet de cohorte durable (thèse originale présentée en <a href="Sequence2_Dossier_documentaire.html#fiche-70" target="_blank" rel="noopener">fiche 70</a> du dossier). Cette thèse a été fortement contestée par Alexander Wuttke, Christian Gavras et Harald Schoen (<i>British Journal of Political Science</i>, 2020 ; critique détaillée en <a href="Sequence2_Dossier_documentaire.html#fiche-71" target="_blank" rel="noopener">fiche 71</a>), qui reprochent à Foa et Mounk de confondre effets d'âge, de génération et de période : en les dissociant statistiquement sur dix-huit démocraties européennes, ils montrent que le soutien démocratique générique reste globalement stable, les variations observées tenant surtout au contexte conjoncturel. Anne Muxel (CEVIPOF) apporte une troisième lecture, française celle-ci (voir dossier, <a href="Sequence2_Dossier_documentaire.html#fiche-72" target="_blank" rel="noopener">fiche 72</a>) : les moins de 35 ans jugent bien plus souvent qu'en 2014 que d'autres régimes pourraient valoir la démocratie (42 % contre 29 %, une tendance inverse chez les 60 ans et plus), mais elle qualifie prudemment ce résultat d'« amplification » de tendances déjà présentes plutôt que de rupture franche.</p>
+      <p><b>À vous de trancher</b> : au vu des données CEVIPOF présentées ci-dessus, la France confirme-t-elle le scénario alarmiste de Foa et Mounk, ou plutôt la lecture plus prudente de leurs critiques ?</p>
+    </div>
+
+    <div class="part">
+      <h4>D. Étude de cas : les municipales de mars 2026, un test empirique</h4>
+      <p>Les résultats de mars 2026 permettent de confronter les grilles théoriques précédentes à un scrutin réel. Le RN confirme ses bastions historiques : Louis Aliot est réélu dès le premier tour à Perpignan avec 50,61 % des voix, Steeve Briois à Hénin-Beaumont, David Rachline à Fréjus. Le parti et ses alliés se qualifient pour le second tour dans une vingtaine de villes de plus de 100 000 habitants — un progrès net par rapport à 2020, mais en-deçà des attentes formulées après les succès nationaux de 2022-2024 : le RN obtient moins de 8 % des voix à Paris, Bordeaux et Toulouse, confirmant un plafond de verre persistant dans les grandes métropoles diplômées (analyse complète en <a href="Sequence2_Dossier_documentaire.html#fiche-76" target="_blank" rel="noopener">fiche 76</a> du dossier), cohérent avec les lectures par le clivage éducatif et l'échec social subjectif présentées en partie B.</p>
+      <p>Signal inverse et souvent moins commenté : les listes citoyennes, sans étiquette partisane, remportent environ 159 communes en 2026, plus du double des 66 conquises en 2020, principalement dans les villes moyennes (percée détaillée en <a href="Sequence2_Dossier_documentaire.html#fiche-75" target="_blank" rel="noopener">fiche 75</a>). Elles perdent cependant Poitiers, leur plus grande victoire de 2020. Sur le plan national, le budget 2026 n'est adopté que le 2 février, via un troisième recours à l'article 49.3, la motion de censure de la gauche hors PS échouant de peu (260 voix sur 289 nécessaires) — un nouvel indice concret de la crise de représentation parlementaire mesurée par les enquêtes d'opinion de la partie C (adoption du budget détaillée en <a href="Sequence2_Dossier_documentaire.html#fiche-77" target="_blank" rel="noopener">fiche 77</a> du dossier).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">20</div><div class="lbl">villes de plus de 100 000 hab. où le RN et ses alliés sont qualifiés au 2nd tour</div></div>
+        <div class="figure"><div class="num">&lt;8 %</div><div class="lbl">des voix RN à Paris, Bordeaux et Toulouse</div></div>
+        <div class="figure"><div class="num">159 / 66</div><div class="lbl">communes gagnées par des listes citoyennes : 2026 / 2020</div></div>
+      </div>
+      <p class="source-note">Sources : Vert, mars 2026 · Ministère de l'Intérieur, résultats officiels municipales 2026 · LCP-Assemblée nationale, 2 fév. 2026.</p>
+    </div>
+
+    <div class="part">
+      <h4>E. Anywhere/Somewhere et généalogie longue du clivage</h4>
+      <p>Dans un registre plus politologique, le journaliste britannique David Goodhart propose, pour expliquer le Brexit puis le vote Trump, une grille voisine opposant les « Anywhere » — mobiles, diplômés, à l'aise dans la mondialisation, environ un quart de la population britannique selon son estimation — aux « Somewhere », enracinés localement et attachés à des identités de groupe, environ la moitié (<a href="https://www.franceculture.fr/emissions/des-suggestions-de-lectures-pour-le-president/les-gens-de-partout-contre-le-peuple-de" target="_blank" rel="noopener">France Culture</a> ; thèse complète en <a href="Sequence2_Dossier_documentaire.html#fiche-78" target="_blank" rel="noopener">fiche 78</a> du dossier). Cette dichotomie a, elle aussi, été critiquée pour son schématisme (l'Écosse, très « Somewhere » mais europhile lors du Brexit, l'illustre bien) et pour son biais culturaliste, qui minorerait les facteurs économiques structurels au profit des seules valeurs identitaires (critiques rassemblées en <a href="Sequence2_Dossier_documentaire.html#fiche-79" target="_blank" rel="noopener">fiche 79</a>).</p>
+      <p>En France, le politologue Jérôme Sainte-Marie propose dès 2017 une adaptation locale avec le concept de « bloc élitaire » (développée en <a href="Sequence2_Dossier_documentaire.html#fiche-80" target="_blank" rel="noopener">fiche 80</a> du dossier) : élite réelle (haute administration, haute finance), élite aspirationnelle (cadres acquis à Macron) et retraités qualifiés d'« élite par procuration », s'opposant à un « bloc populaire » plus hétérogène. Cette généalogie s'inscrit dans une longue histoire française du clivage peuple/élites, que l'on peut faire remonter à 1995, lorsque Jacques Chirac, s'inspirant d'une note d'Emmanuel Todd, fait campagne sur la « fracture sociale » — un candidat de droite défendant alors « le peuple » contre les élites, préfigurant la porosité actuelle du RN aux enjeux de justice sociale documentée en partie A (cette généalogie longue est retracée en <a href="Sequence2_Dossier_documentaire.html#fiche-81" target="_blank" rel="noopener">fiche 81</a> du dossier, de la Révolution à l'archipel contemporain).</p>
+      <div class="figure-row">
+        <div class="figure"><div class="num">~25 % / ~50 %</div><div class="lbl">« Anywhere » / « Somewhere » selon l'estimation de Goodhart (Royaume-Uni, 2017)</div></div>
+        <div class="figure"><div class="num">3</div><div class="lbl">composantes du « bloc élitaire » selon Sainte-Marie : élite réelle, aspirationnelle, retraités</div></div>
+        <div class="figure"><div class="num">1995</div><div class="lbl">Jacques Chirac fait campagne sur la « fracture sociale » (concept Emmanuel Todd)</div></div>
+      </div>
+      <p class="source-note">Sources : David Goodhart, The Road to Somewhere, Hurst, 2017 · Jérôme Sainte-Marie, Bloc contre bloc, Cerf, 2019 · The Conversation, « Aux origines des fractures françaises ».</p>
+    </div>
+
+    <div class="debat">
+      <div class="lbl">Thèse discutée</div>
+      <p><b>Le « bloc élitaire » de Sainte-Marie résiste-t-il à l'épreuve des faits ?</b> Sainte-Marie classe les retraités du côté du « bloc élitaire » (typologie complète en <a href="Sequence2_Dossier_documentaire.html#fiche-80" target="_blank" rel="noopener">fiche 80</a> du dossier), comme une « élite par procuration » attachée à son statut acquis. Or les données de Luc Rouban (partie B ; voir dossier, <a href="Sequence2_Dossier_documentaire.html#fiche-48" target="_blank" rel="noopener">fiche 48</a>) montrent au contraire un ralliement tardif mais réel des retraités au RN à partir de 2018-2021 — une catégorie qui ne se comporte pas, aux scrutins récents, comme une composante stable du camp macroniste. À l'inverse, la grille des quatre familles politiques de la partie A rappelle qu'aucun électorat, pas même celui du RN, n'est idéologiquement homogène.</p>
+      <p><b>À vous de trancher</b> : les données empiriques de ce dossier confirment-elles la typologie de Sainte-Marie, ou suggèrent-elles que les grilles théoriques englobantes (Goodhart, Sainte-Marie) simplifient au-delà du raisonnable une réalité électorale plus mouvante ?</p>
+    </div>
+  </section>
+
+  <div class="biblio">
+    <h3>Bibliographie de la séquence</h3>
+    <ol>
+      <li>Observatoire des inégalités, « <a href="https://www.inegalites.fr/Comment-evoluent-les-categories-sociales-en-France" target="_blank" rel="noopener">Comment évoluent les catégories sociales en France ?</a> », 17 mai 2023.</li>
+      <li>Louis Maurin, « Une société de classement », <i>Alternatives économiques</i>, hors-série n°89, 2011.</li>
+      <li>The Conversation France, « <a href="https://theconversation.com/il-suffit-de-traverser-la-rue-la-ritournelle-des-emplois-non-pourvus-103389" target="_blank" rel="noopener">"Il suffit de traverser la rue…" : la ritournelle des emplois non pourvus</a> », 24 sept. 2018.</li>
+      <li>Benoît Coquard, <i>Ceux qui restent. Faire sa vie dans les campagnes en déclin</i>, La Découverte, 2019 ; entretien « <a href="https://lebimsa.fr/l-actu-des-territoires/interview-de-benoit-coquard-sociologue-des-milieux-ruraux/" target="_blank" rel="noopener">Je me suis intéressé à ceux qui restent</a> », lebimsa.fr.</li>
+      <li>Jean-Noël Retière, « <a href="https://www.persee.fr/doc/polix_0295-2319_2003_num_16_63_1295" target="_blank" rel="noopener">Autour de l'autochtonie. Réflexions sur la notion de capital social populaire</a> », Politix, n°63, 2003 ; « <a href="http://www.slate.fr/story/153630/france-en-marge-entretien-croise" target="_blank" rel="noopener">À la rencontre de la "France sacrifiée"</a> », Slate.fr, 14 nov. 2017 ; IFOP pour la Fondation Foncière du Cinéma, Baromètre des Français et de leur logement.</li>
+      <li>François de Singly, entretien « <a href="https://www.ladn.eu/nouveaux-usages/les-nouveaux-modeles-familiaux-tentent-de-bousculer-les-imaginaires/" target="_blank" rel="noopener">Les nouveaux modèles familiaux tentent de bousculer les imaginaires</a> », L'ADN.</li>
+      <li>INSEE, « <a href="https://www.insee.fr/fr/statistiques/8310621" target="_blank" rel="noopener">En 2023, trois enfants sur dix vivent avec un seul de leurs parents</a> », Insee Première n°2032, 14 janv. 2025.</li>
+      <li>« En graphiques : quelle identité religieuse pour la France ? », The Conversation (European Values Study / ISSP).</li>
+      <li>Gérard Grunberg, « <a href="https://www.slate.fr/story/164051/religions-monde-chretiente-islam-juif-secularisation" target="_blank" rel="noopener">Qu'est-ce qui fait reculer la religion dans le monde ?</a> », Slate.fr, 3 juill. 2018.</li>
+      <li>Ifop, « <a href="https://www.ifop.com/wp-content/uploads/2025/11/analyse_ifop_2025.11.18.pdf" target="_blank" rel="noopener">État des lieux du rapport à l'islam et à l'islamisme des musulmans de France</a> », 18 nov. 2025.</li>
+      <li>L'ADN, « <a href="https://www.ladn.eu/media-mutants/reseaux-sociaux/french-dream-internautes-compilent-pires-tiktok-francais/" target="_blank" rel="noopener">French Dream, ces internautes qui compilent les pires TikTok Français</a> ».</li>
+      <li>Insee Focus n°377, « <a href="https://www.insee.fr/fr/statistiques/8743657" target="_blank" rel="noopener">Écart de salaire entre femmes et hommes en 2024</a> », fév. 2026.</li>
+      <li>Flora Chanvril, Luc Rouban, « Les réseaux sociaux ne font pas la politique », Note de recherche CEVIPOF — Collection Fractures françaises, n°8, nov. 2025.</li>
+      <li>Luc Rouban, « L'implantation du RN dans la société française et ses temporalités depuis 2015 », Note CEVIPOF n°1, oct. 2025 ; « <a href="https://hal.science/hal-04921797" target="_blank" rel="noopener">L'échec social subjectif ou la fracture invisible</a> », Note CEVIPOF, janv. 2025.</li>
+      <li>Kevin Arceneaux, Anne Muxel, « Fractures françaises : un espace politique français bien plus divers que le clivage gauche-droite », Le Monde, oct. 2025.</li>
+      <li>Roberto Stefan Foa, Yascha Mounk, « <a href="https://www.journalofdemocracy.org/articles/the-signs-of-deconsolidation/" target="_blank" rel="noopener">The Signs of Deconsolidation</a> », Journal of Democracy, vol. 28, n°1, janv. 2017 ; critique par Alexander Wuttke, Christian Gavras, Harald Schoen, British Journal of Political Science, 2020.</li>
+      <li>CEVIPOF, <i><a href="https://www.sciencespo.fr/cevipof/" target="_blank" rel="noopener">Baromètre de la confiance politique</a></i>, vague 17, fév. 2026.</li>
+      <li>David Goodhart, <i>The Road to Somewhere</i>, Hurst, 2017 (trad. fr. <i>Les Deux Clans</i>, Éditions des Équateurs, 2019) ; Jérôme Sainte-Marie, <i>Bloc contre bloc</i>, Éditions du Cerf, 2019.</li>
+      <li>Vert, résultats des élections municipales de mars 2026 ; Ministère de l'Intérieur, résultats officiels ; LCP-Assemblée nationale, 2 fév. 2026 (budget 2026).</li>
+      <li>CEVIPOF/Ipsos-BVA, <i>Fractures françaises</i>, vague 13 et <i>Bilan 13 ans</i>, oct. 2025.</li>
+    </ol>
+  </div>
+
+  <footer>MOOC « Fractures françaises » — yapluka-edu.fr — Séquence 2 / 2 — Document pédagogique établi à partir de sources primaires (voir bibliographie)</footer>
+</div>
+
+<script>
+(function(){
+  var QUESTIONS = [
+    {q:"Entre 1982 et 2021, comment évolue la part des cadres supérieurs dans l'emploi total en France ?", opts:["Elle reste stable autour de 15 %","Elle passe de 8 % à 22 %","Elle recule de 22 % à 8 %","Elle double puis retombe après 2008"], correct:1, explain:"Les cadres supérieurs passent de 8 % à 22 % de l'emploi entre 1982 et 2021 (Observatoire des inégalités)."},
+    {q:"Comment évolue l'écart de taux de chômage entre diplômés du supérieur et non-diplômés entre les années 1970 et 2000 ?", opts:["Il se réduit de 40 à 10 points","Il reste stable à 25 points","Il passe de 10 à 40 points","Il disparaît complètement"], correct:2, explain:"L'écart passe de 10 points au milieu des années 1970 à 40 points dans les années 2000 (Louis Maurin, Observatoire des inégalités)."},
+    {q:"Quelle proportion des enfants mineurs vivait avec un seul de leurs deux parents en France en 2023 ?", opts:["10 %","23 %","30 %","67 %"], correct:2, explain:"30 % des enfants mineurs vivent avec un seul parent en 2023, contre 28 % en 2018 (Insee Première n°2032)."},
+    {q:"Selon François de Singly, quelles logiques structurent la famille contemporaine en tension permanente ?", opts:["Logique religieuse et logique laïque","Logique de transmission et logique affective","Logique rurale et logique urbaine","Logique économique et logique politique"], correct:1, explain:"La logique de transmission (stable) et la logique affective (fragile depuis le XIXe siècle) coexistent selon Singly."},
+    {q:"Quelle proportion des Français juge, de façon stable depuis 1998, que les religions « apportent plus de conflit que de paix » ?", opts:["24 %","42 %","64 %","91 %"], correct:2, explain:"64 %, un chiffre stable entre 1998 et 2018 (European Values Study / ISSP)."},
+    {q:"Selon Gérard Grunberg, quelle proportion des musulmans de France juge leur religion « très importante » dans leur vie, contre plus de 80 % dans les sociétés musulmanes traditionnelles ?", opts:["24 %","54 %","74 %","94 %"], correct:1, explain:"54 % seulement, signe d'une sécularisation à l'œuvre même dans cette minorité religieuse (Slate.fr, 2018)."},
+    {q:"Que révèle la note CEVIPOF sur le profil des usagers intensifs de réseaux sociaux ?", opts:["Ils sont surreprésentés parmi les retraités aisés","47 % se situent dans le groupe à précarité élevée, contre 40 % chez les usagers occasionnels","Ils n'utilisent qu'une seule plateforme","Ils sont majoritairement ruraux"], correct:1, explain:"L'usage intensif des réseaux est associé à un profil de déclassement : 47 % en précarité élevée contre 40 % chez les usagers occasionnels."},
+    {q:"Selon Flora Chanvril et Luc Rouban (CEVIPOF), à quel courant politique l'usage intensif des réseaux sociaux est-il le plus associé en France ?", opts:["Le RN, dont le soutien grimpe fortement avec l'usage","La gauche et la gauche radicale, tandis que le soutien au RN reste stable","Aucun courant, l'effet est nul","Le centre, en légère hausse"], correct:1, explain:"Le soutien à LFI grimpe avec l'intensité d'usage (jusqu'à 46 % chez les usagers fréquents de TikTok), quand le soutien au RN reste stable autour de 48-52 %."},
+    {q:"Quels sont les deux axes utilisés par Arceneaux et Muxel pour construire la grille des « quatre familles politiques » ?", opts:["Âge et revenu","Un axe économique (étatiste/libéral) et un axe culturel (national/ouvert)","Territoire et diplôme","Genre et religion"], correct:1, explain:"La grille croise un axe économique (étatiste vs libéral) et un axe culturel (national vs ouvert)."},
+    {q:"Quelle particularité économique caractérise les sympathisants du RN selon les données Fractures françaises 2025 ?", opts:["Ils sont uniquement favorables au ruissellement","Ils sont uniquement favorables à la redistribution","Ils combinent un fort soutien à la redistribution ET au ruissellement","Ils refusent toute intervention de l'État"], correct:2, explain:"Le RN affiche une position hybride inédite : 57 % pro-redistribution et 50 % pro-ruissellement, davantage que Renaissance sur la redistribution."},
+    {q:"Comment évolue le qualificatif « capable de gouverner le pays » attribué au RN entre 2014 et 2025 ?", opts:["Il recule de 47 % à 23 %","Il progresse de 23 % à 47 %, un record","Il reste stable autour de 30 %","Il s'effondre après 2022"], correct:1, explain:"Le qualificatif atteint 47 % en 2025, un record depuis le début de la série (23 % en 2014)."},
+    {q:"Que mesure l'indice d'« échec social subjectif » construit par Luc Rouban, et que prédit-il le mieux ?", opts:["Le niveau de diplôme ; il ne prédit rien d'électoral","Le sentiment de dégradation par rapport à ses parents et aux autres ; il prédit le vote RN mieux que le diplôme","Le revenu du foyer uniquement ; il prédit l'abstention","L'éloignement géographique ; il prédit le vote écologiste"], correct:1, explain:"Cet indice, qui touche 60 % des Français à un niveau élevé, prédit mieux le vote RN (20 % à 64 % selon le niveau) que le diplôme ou le territoire."},
+    {q:"Quel pourcentage de Français juge le système démocratique « irremplaçable » en 2025, contre 76 % en 2014 ?", opts:["82 %","76 %","65 %","34 %"], correct:2, explain:"65 % en 2025, contre 76 % en 2014 — une érosion progressive mesurée par le CEVIPOF/Ipsos."},
+    {q:"Selon Foa et Mounk (2017), l'érosion du soutien aux normes démocratiques serait particulièrement marquée chez :", opts:["Les jeunes générations","Les retraités","Les cadres supérieurs uniquement","Aucune génération en particulier"], correct:0, explain:"Foa et Mounk avancent un effet de cohorte : l'érosion serait plus marquée chez les jeunes générations (Journal of Democracy, 2017)."},
+    {q:"Aux municipales de mars 2026, combien de communes ont été remportées par des listes citoyennes sans étiquette partisane ?", opts:["66, comme en 2020","Environ 159, plus du double de 2020","Plus de 300","Moins de 20"], correct:1, explain:"Environ 159 communes, plus du double des 66 conquises en 2020, principalement dans les villes moyennes."},
+    {q:"Selon l'estimation de David Goodhart pour le Royaume-Uni, quelle proportion de la population appartient à la catégorie « Somewhere » ?", opts:["Environ 5 %","Environ 25 %","Environ 50 %","Environ 90 %"], correct:2, explain:"Goodhart estime les « Somewhere » à environ la moitié de la population britannique, contre 20-25 % pour les « Anywhere »."}
+  ];
+
+  var form = document.getElementById('quizForm');
+  QUESTIONS.forEach(function(item, idx){
+    var block = document.createElement('div');
+    block.className = 'quiz-q';
+    block.dataset.index = idx;
+    var qp = document.createElement('p');
+    qp.className = 'q';
+    qp.textContent = (idx+1) + '. ' + item.q;
+    block.appendChild(qp);
+    item.opts.forEach(function(opt, oi){
+      var label = document.createElement('label');
+      var input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'q'+idx;
+      input.value = oi;
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(opt));
+      block.appendChild(label);
+    });
+    var explain = document.createElement('div');
+    explain.className = 'explain';
+    explain.textContent = item.explain;
+    block.appendChild(explain);
+    form.appendChild(block);
+  });
+
+  document.getElementById('checkQuiz').addEventListener('click', function(){
+    var score = 0;
+    QUESTIONS.forEach(function(item, idx){
+      var block = form.querySelector('.quiz-q[data-index="'+idx+'"]');
+      var chosen = block.querySelector('input[name="q'+idx+'"]:checked');
+      var labels = block.querySelectorAll('label');
+      labels.forEach(function(l, oi){
+        l.classList.remove('chosen','right-answer');
+        if (oi === item.correct) l.classList.add('right-answer');
+      });
+      block.classList.remove('correct','incorrect');
+      if (chosen) {
+        var oi = parseInt(chosen.value, 10);
+        labels[oi].classList.add('chosen');
+        if (oi === item.correct) { block.classList.add('correct'); score++; }
+        else { block.classList.add('incorrect'); }
+      } else {
+        block.classList.add('incorrect');
+      }
+    });
+    var scoreEl = document.getElementById('quizScore');
+    scoreEl.style.display = 'block';
+    scoreEl.textContent = 'Score : ' + score + ' / ' + QUESTIONS.length;
+  });
+
+  var textarea = document.getElementById('caseResponse');
+  var wc = document.getElementById('wordcount');
+  textarea.addEventListener('input', function(){
+    var words = textarea.value.trim().length ? textarea.value.trim().split(/\s+/).length : 0;
+    wc.textContent = words + ' mot' + (words>1?'s':'');
+    wc.className = 'wordcount' + ((words>=200 && words<=250) ? ' ok' : '');
+  });
+  document.getElementById('saveCase').addEventListener('click', function(){
+    var note = document.getElementById('savedNote');
+    note.style.display = 'inline';
+    setTimeout(function(){ note.style.display = 'none'; }, 4000);
+  });
+
+  document.querySelectorAll('.steps span').forEach(function(s){
+    s.addEventListener('click', function(){
+      var el = document.getElementById(s.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+})();
+</script>
+</body>
+</html>
