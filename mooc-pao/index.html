@@ -1,0 +1,1832 @@
+<title>MOOC PAO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#F6F1E7;
+    --paper-raised:#FFFFFE;
+    --ink:#221D17;
+    --ink-soft:#6E6252;
+    --ink-faint:#948875;
+    --line:#DED0B8;
+    --line-strong:#C7B892;
+    --accent-ps:#1C6E96;
+    --accent-ai:#B85E14;
+    --accent-id:#9C2450;
+    --accent-ps-soft:#DCEAF1;
+    --accent-ai-soft:#F2E2CE;
+    --accent-id-soft:#EFD8E1;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#161310;
+      --paper-raised:#211C16;
+      --ink:#ECE3D2;
+      --ink-soft:#AB9E89;
+      --ink-faint:#7C7261;
+      --line:#3B3427;
+      --line-strong:#4F4632;
+      --accent-ps:#6FC1EC;
+      --accent-ai:#F0A24E;
+      --accent-id:#EC7EA2;
+      --accent-ps-soft:#1C313B;
+      --accent-ai-soft:#3A2C18;
+      --accent-id-soft:#3A1F2B;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#161310;
+    --paper-raised:#211C16;
+    --ink:#ECE3D2;
+    --ink-soft:#AB9E89;
+    --ink-faint:#7C7261;
+    --line:#3B3427;
+    --line-strong:#4F4632;
+    --accent-ps:#6FC1EC;
+    --accent-ai:#F0A24E;
+    --accent-id:#EC7EA2;
+    --accent-ps-soft:#1C313B;
+    --accent-ai-soft:#3A2C18;
+    --accent-id-soft:#3A1F2B;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  a{color:var(--ink); text-decoration-color:var(--line-strong); text-underline-offset:2px;}
+  a:hover{color:var(--accent-id); text-decoration-color:var(--accent-id);}
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible + label{
+    outline:2px solid var(--accent-id); outline-offset:2px;
+  }
+
+  .mono{font-family:"IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;}
+
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; text-wrap:balance; margin:0; font-weight:600;}
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- Header ---------- */
+  header.top{
+    border-bottom:1px solid var(--line);
+    padding:52px 0 40px;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow .tick{width:22px; height:1px; background:var(--line-strong); display:inline-block;}
+  h1.title{font-size:clamp(2.1rem, 4.4vw, 3.05rem); line-height:1.06; letter-spacing:-0.01em;}
+  h1.title em{font-style:italic; font-weight:500; color:var(--accent-id);}
+  .lede{
+    max-width:62ch;
+    margin-top:22px;
+    font-size:1.06rem;
+    color:var(--ink-soft);
+  }
+  .lede p{margin:0 0 14px;}
+  .lede p:last-child{margin-bottom:0;}
+  .lede strong{color:var(--ink); font-weight:600;}
+
+  /* ---------- Séance type ---------- */
+  .seance-type{
+    margin-top:36px;
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    padding:20px 22px 22px;
+  }
+  .seance-type h3{font-size:1rem; font-weight:600; margin-bottom:14px; font-family:"IBM Plex Sans"; letter-spacing:0.01em;}
+  .st-bar{display:flex; width:100%; height:34px; border:1px solid var(--ink); overflow:hidden;}
+  .st-seg{display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono"; font-size:11.5px; letter-spacing:0.02em; color:var(--paper); border-right:1px solid var(--paper); white-space:nowrap; overflow:hidden;}
+  .st-seg:last-child{border-right:none;}
+  .st-seg.concept{background:var(--ink); flex:15;}
+  .st-seg.traversee{background:var(--accent-ps); flex:55;}
+  .st-seg.eclairage{background:var(--accent-ai); flex:25;}
+  .st-seg.ouverture{background:var(--accent-id); flex:5; font-size:0;}
+  .st-legend{display:flex; flex-wrap:wrap; gap:18px; margin-top:12px; font-size:12.5px; color:var(--ink-soft);}
+  .st-legend span{display:flex; align-items:center; gap:7px;}
+  .st-dot{width:9px;height:9px; display:inline-block;}
+
+  /* ---------- Filter / nav bar ---------- */
+  .toolbar{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+  }
+  .toolbar-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .filters{display:flex; gap:6px; flex-wrap:wrap;}
+  .filters input{position:absolute; opacity:0; width:1px; height:1px;}
+  .filters label{
+    font-family:"IBM Plex Mono"; font-size:12px; letter-spacing:0.03em;
+    padding:6px 12px; border:1px solid var(--line-strong); cursor:pointer;
+    color:var(--ink-soft); user-select:none; display:inline-flex; align-items:center; gap:7px;
+    background:var(--paper-raised);
+  }
+  .filters label .sw{width:8px;height:8px; border-radius:50%; display:inline-block;}
+  .filters input:checked + label{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .filters input:checked + label .sw{outline:1px solid var(--paper);}
+  .expand-controls{display:flex; gap:14px; font-family:"IBM Plex Mono"; font-size:12px;}
+  .expand-controls button{
+    background:none; border:none; padding:0; color:var(--ink-soft); cursor:pointer;
+    text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line-strong);
+    font-family:inherit; font-size:inherit;
+  }
+  .expand-controls button:hover{color:var(--accent-id);}
+
+  /* filter behaviour, pure CSS via :has() */
+  .page:has(#f-ps:checked) .card:not([data-app="ps"]){opacity:0.32; filter:grayscale(65%);}
+  .page:has(#f-ai:checked) .card:not([data-app="ai"]){opacity:0.32; filter:grayscale(65%);}
+  .page:has(#f-id:checked) .card:not([data-app="id"]){opacity:0.32; filter:grayscale(65%);}
+  .card{transition:opacity .25s ease, filter .25s ease;}
+
+  /* ---------- Programme / phases ---------- */
+  main.programme{padding:52px 0 40px;}
+  .phase-block{margin-bottom:56px;}
+  .phase-block:last-child{margin-bottom:0;}
+  .phase-head{
+    display:grid; grid-template-columns:auto 1fr; gap:18px 22px; align-items:baseline;
+    padding-bottom:16px; margin-bottom:22px; border-bottom:1px solid var(--ink);
+    scroll-margin-top:70px;
+  }
+  .phase-num{font-family:"IBM Plex Mono"; font-size:13px; color:var(--ink-faint); letter-spacing:0.05em; align-self:start; padding-top:8px;}
+  .phase-head h2{font-size:1.55rem; font-weight:600;}
+  .phase-desc{grid-column:2; color:var(--ink-soft); max-width:62ch; font-size:0.98rem; margin-top:4px;}
+
+  .card{
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    margin-bottom:14px;
+  }
+  .card[open]{border-color:var(--line-strong);}
+  .card summary{
+    list-style:none; cursor:pointer; padding:18px 20px;
+    display:grid; grid-template-columns:auto auto 1fr auto; gap:16px; align-items:center;
+    border-left:4px solid var(--card-accent, var(--ink-faint));
+  }
+  .card summary::-webkit-details-marker{display:none;}
+  .card[data-app="ps"]{--card-accent:var(--accent-ps);}
+  .card[data-app="ai"]{--card-accent:var(--accent-ai);}
+  .card[data-app="id"]{--card-accent:var(--accent-id);}
+  .card-n{font-family:"IBM Plex Mono"; font-size:13px; color:var(--ink-faint); white-space:nowrap;}
+  .card-app-tag{
+    font-family:"IBM Plex Mono"; font-size:11px; letter-spacing:0.04em; text-transform:uppercase;
+    padding:3px 8px; white-space:nowrap; color:var(--paper-raised);
+    background:var(--card-accent, var(--ink-faint));
+  }
+  .card-title{font-family:"Fraunces"; font-weight:600; font-size:1.12rem; line-height:1.3;}
+  .card-title .notion-tag{
+    display:block; font-family:"IBM Plex Mono"; font-weight:400; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--ink-faint); margin-bottom:4px;
+  }
+  .chev{font-family:"IBM Plex Mono"; color:var(--ink-faint); transition:transform .2s ease; font-size:14px;}
+  .card[open] .chev{transform:rotate(90deg);}
+
+  .card-body{padding:2px 20px 26px; border-top:1px solid var(--line);}
+  .card-body > * + *{margin-top:20px;}
+  .cb-block h4{
+    font-family:"IBM Plex Mono"; font-size:11.5px; text-transform:uppercase; letter-spacing:0.07em;
+    color:var(--ink-faint); margin:0 0 9px; padding-top:18px;
+  }
+  .cb-block p{margin:0; color:var(--ink);}
+  .cb-block ul{margin:0; padding-left:1.1em;}
+  .cb-block li{margin-bottom:6px;}
+  .cb-block li:last-child{margin-bottom:0;}
+
+  .traversee-flow{display:flex; flex-wrap:wrap; align-items:stretch; gap:8px; margin-top:2px;}
+  .tf-step{
+    flex:1 1 220px; border:1px solid var(--line); padding:12px 14px; position:relative;
+    background:var(--paper);
+  }
+  .tf-step .app-pill{
+    font-family:"IBM Plex Mono"; font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em;
+    padding:2px 7px; display:inline-block; margin-bottom:8px; color:var(--paper-raised);
+  }
+  .tf-step[data-app="ps"] .app-pill{background:var(--accent-ps);}
+  .tf-step[data-app="ai"] .app-pill{background:var(--accent-ai);}
+  .tf-step[data-app="id"] .app-pill{background:var(--accent-id);}
+  .tf-step p{margin:0; font-size:0.94rem; color:var(--ink);}
+  .tf-arrow{
+    display:flex; align-items:center; justify-content:center; padding:0 6px;
+    color:var(--ink-faint); font-family:"IBM Plex Mono"; font-size:15px;
+  }
+  @media (max-width:600px){
+    .traversee-flow{flex-direction:column;}
+    .tf-arrow{transform:rotate(90deg); padding:2px 0;}
+  }
+
+  .eclairage-box{
+    border:1px solid var(--line-strong); border-left:3px solid var(--card-accent, var(--ink-faint));
+    padding:14px 16px; background:var(--paper);
+  }
+  .eclairage-box .el-title{font-weight:600; font-size:0.98rem; margin-bottom:6px;}
+  .eclairage-box p{margin:0; font-size:0.95rem; color:var(--ink-soft);}
+
+  .exo-list{display:flex; flex-direction:column; gap:14px;}
+  .exo-item{
+    border:1px solid var(--line); border-left:3px solid var(--card-accent, var(--ink-faint));
+    background:var(--paper); padding:14px 16px;
+  }
+  .exo-head{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:8px;}
+  .exo-num{font-size:12px; color:var(--ink-faint);}
+  .exo-titre{font-weight:600; font-size:0.98rem; color:var(--ink);}
+  .exo-app-tag{
+    font-family:"IBM Plex Mono"; font-size:10.5px; letter-spacing:0.04em; text-transform:uppercase;
+    padding:2px 7px; color:var(--paper-raised); background:var(--card-accent, var(--ink-faint));
+    margin-left:auto;
+  }
+  .exo-steps{margin:0 0 10px; padding-left:1.3em; display:flex; flex-direction:column; gap:5px;}
+  .exo-steps li{font-size:0.92rem; color:var(--ink-soft);}
+  .exo-res{margin:0; font-size:0.88rem;}
+  .exo-res a{color:var(--ink-soft);}
+  .exo-res a:hover{color:var(--accent-id);}
+  .rtag{font-family:"IBM Plex Mono"; font-size:10px; text-transform:uppercase; color:var(--ink-faint); margin-right:6px;}
+  .lang-flag{
+    font-family:"IBM Plex Mono"; font-size:10px; text-transform:uppercase; letter-spacing:0.03em;
+    color:var(--ink-faint); border:1px solid var(--line-strong); padding:1px 6px; margin-left:4px;
+    white-space:nowrap;
+  }
+
+  footer.foot{
+    border-top:1px solid var(--line); padding:34px 0 60px; color:var(--ink-faint); font-size:0.88rem;
+  }
+  footer.foot p{max-width:60ch; margin:0 0 8px;}
+
+  .skiplink{position:absolute; left:-999px;}
+  .skiplink:focus{left:24px; top:8px; background:var(--ink); color:var(--paper); padding:8px 14px; z-index:50;}
+</style>
+
+<div class="intro-wrap">
+<a class="skiplink" href="#programme">Aller au programme</a>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow"><span class="tick"></span>MOOC PAO &middot; BTS Communication &amp; assimilés &middot; 20 séances &times; 2h</div>
+    <h1 class="title">Une notion, <em>trois logiciels</em>, une séance.</h1>
+    <div class="lede">
+      <p>Ce programme n'enseigne pas Photoshop, puis Illustrator, puis InDesign. Il enseigne <strong>les principes qui traversent les trois</strong> &mdash; calque, sélection, transparence, tracé, style, gabarit, résolution &mdash; en observant à chaque séance comment un même concept s'incarne différemment selon le logiciel. On ne suit jamais un tutoriel du début à la fin : on manipule un principe, on le retrouve ailleurs sous un autre nom, on comprend pourquoi il change de forme.</p>
+      <p>Chaque séance garde malgré tout un <strong>éclairage spécifique</strong> : une fonctionnalité propre à un seul des trois logiciels, inaccessible aux deux autres, présentée pour ce qu'elle est &mdash; une réponse locale à un problème que les autres logiciels résolvent autrement.</p>
+    </div>
+
+    <div class="seance-type">
+      <h3>Anatomie d'une séance (2h)</h3>
+      <div class="st-bar">
+        <div class="st-seg concept">15&nbsp;min</div>
+        <div class="st-seg traversee">65&nbsp;min</div>
+        <div class="st-seg eclairage">30&nbsp;min</div>
+        <div class="st-seg ouverture">&nbsp;</div>
+      </div>
+      <div class="st-legend">
+        <span><span class="st-dot" style="background:var(--ink)"></span>Ouverture conceptuelle &mdash; la notion, à froid</span>
+        <span><span class="st-dot" style="background:var(--accent-ps)"></span>Traversée &mdash; la même manip, 2 ou 3 logiciels</span>
+        <span><span class="st-dot" style="background:var(--accent-ai)"></span>Éclairage &mdash; le propre d'un seul logiciel</span>
+        <span><span class="st-dot" style="background:var(--accent-id)"></span>Mise en pratique &mdash; les 6 exercices de la séance, en classe ou en autonomie</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+</div>
+
+<div class="toolbar page">
+  <div class="wrap toolbar-inner">
+    <div class="filters" role="group" aria-label="Filtrer par logiciel en éclairage">
+      <input type="radio" name="appfilter" id="f-all" checked>
+      <label for="f-all">Tout le programme</label>
+      <input type="radio" name="appfilter" id="f-ps">
+      <label for="f-ps"><span class="sw" style="background:var(--accent-ps)"></span>Éclairage Photoshop</label>
+      <input type="radio" name="appfilter" id="f-ai">
+      <label for="f-ai"><span class="sw" style="background:var(--accent-ai)"></span>Éclairage Illustrator</label>
+      <input type="radio" name="appfilter" id="f-id">
+      <label for="f-id"><span class="sw" style="background:var(--accent-id)"></span>Éclairage InDesign</label>
+    </div>
+    <div class="expand-controls">
+      <button type="button" id="btn-expand">Tout déplier</button>
+      <button type="button" id="btn-collapse">Tout replier</button>
+    </div>
+  </div>
+
+  <main class="programme wrap" id="programme"></main>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-soft)">Proposition v2 &mdash; à retravailler ensemble.</strong> Le séquençage des notions, l'équilibre entre logiciels et le contenu précis de chaque séance restent ouverts à révision. Les ressources citées pointent en priorité vers la documentation Adobe en français (helpx.adobe.com, souvent servie depuis un miroir régional comme <span class="mono">/fr/</span>, <span class="mono">/be_fr/</span> ou <span class="mono">/ca_fr/</span> &mdash; contenu identique à la version internationale) ; quand aucune page française équivalente n'existe, le lien anglais vérifié est conservé et signalé par la mention <span class="mono">(en anglais)</span>. Liens vérifiés le 3&nbsp;septembre 2026.</p>
+  </div>
+</footer>
+
+<script>
+const PS = "ps", AI = "ai", ID = "id";
+const APPNAME = { ps: "Photoshop", ai: "Illustrator", id: "InDesign" };
+
+const PHASES = [
+  { id:"fondations", num:"Phase 01", title:"Fondations communes", desc:"Ce qui est vrai dans les trois logiciels avant même d'ouvrir un menu : comment l'image est codée, comment on l'empile, on la découpe, on la superpose, on la colore." , range:[1,5]},
+  { id:"construction", num:"Phase 02", title:"Construire le dessin et le texte", desc:"On passe de l'image donnée à la forme et au texte construits à la main : tracés, transformations, typographie, styles réutilisables, intégration texte/image." , range:[6,10]},
+  { id:"production", num:"Phase 03", title:"Mise en page et système de production", desc:"La notion isolée devient système : grilles et gabarits, résolution de sortie, fichiers liés, effets non destructifs, passerelle entre pixel et vecteur." , range:[11,15]},
+  { id:"specialisation", num:"Phase 04", title:"Spécialisation et finition", desc:"Retouche avancée, hiérarchie visuelle à l'échelle du document, pagination longue, préparation à l'impression, puis synthèse transversale." , range:[16,20]}
+];
+
+const SESSIONS = [
+{n:1, phase:"fondations", app:AI,
+ title:`Pixel ou courbe&nbsp;? La nature de l'image numérique`,
+ notion:`Deux façons radicalement différentes de coder une image&nbsp;: une grille de pixels de valeur fixe (matriciel), ou une description mathématique de points et de courbes (vectoriel). Cette distinction conditionne tout ce qui suivra&nbsp;: la résolution a un sens en pixel, aucun en vecteur&nbsp;; un agrandissement dégrade l'un, jamais l'autre.`,
+ objectifs:[`Distinguer à l'œil un rendu matriciel d'un rendu vectoriel, et expliquer pourquoi.`,`Observer la dégradation par agrandissement d'un pixel, et son absence sur une courbe.`],
+ traversee:[
+   {app:PS, action:`Zoomer une photo à 1600&nbsp;% jusqu'à voir le pixel individuel&nbsp;; observer la grille de valeurs.`},
+   {app:AI, action:`Dessiner une forme simple et l'agrandir sans limite&nbsp;: la courbe reste nette à toute échelle.`},
+   {app:ID, action:`Ouvrir un document InDesign contenant les deux&nbsp;: un logo vectoriel et une photo importée, pour voir les deux logiques cohabiter dans une même page.`}
+ ],
+ eclairage:{title:`Illustrator &mdash; les plans de travail (artboards)`, text:`Un seul document vectoriel peut contenir plusieurs plans de travail indépendants (une affiche, sa déclinaison réseaux sociaux, sa carte de visite) partageant les mêmes objets sources. Rien d'équivalent en un clic dans Photoshop ou InDesign.`,
+   links:[
+     {t:`Introduction aux plans de travail dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/introduction-to-artboards.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Un même visuel, deux formats de plan de travail`, app:AI,
+     etapes:[
+      `Dans Illustrator, ouvrir Fichier > Nouveau et créer un document avec un premier plan de travail au format A4 portrait.`,
+      `Dessiner ou importer un petit ensemble de formes simples (logo, pictogramme) destiné à être décliné.`,
+      `Sélectionner l'outil Plan de travail (Maj+O) et cliquer sur le signe + dans la barre d'options pour ajouter un second plan de travail au format carré (1080 x 1080 px).`,
+      `Copier les formes du premier plan de travail, les coller dans le second, puis les réorganiser pour occuper l'espace disponible.`,
+      `Ouvrir le panneau Plans de travail (Fenêtre > Plans de travail) et renommer chaque plan de travail selon son usage (« Affiche », « Réseaux sociaux »).`,
+      `Vérifier dans le panneau que les deux plans de travail restent indépendants tout en partageant les mêmes objets sources.`
+     ],
+     ressource:{t:`Présentation du plan de travail`, u:"https://helpx.adobe.com/ca_fr/illustrator/using/artboard-overview.html", fr:true}},
+    {titre:`Voir le pixel&nbsp;: zoom extrême sur une photo`, app:PS,
+     etapes:[
+      `Dans Photoshop, ouvrir une photographie et sélectionner l'outil Zoom (Z) dans la barre d'outils.`,
+      `Zoomer progressivement jusqu'à 1600&nbsp;% en cliquant sur la zone à observer ou en saisissant la valeur dans le champ de zoom en bas à gauche.`,
+      `Ouvrir le panneau Info (Fenêtre > Info) et déplacer le curseur sur l'image pour lire les valeurs RVB d'un pixel isolé.`,
+      `Faire une capture d'écran de la grille de pixels observée et l'annoter pour repérer un pixel unique et sa valeur.`,
+      `Comparer cette capture avec la même zone affichée à 100&nbsp;% pour montrer l'écart entre perception globale et structure réelle.`
+     ],
+     ressource:{t:`Zoom in or zoom out to view your image`, u:"https://helpx.adobe.com/photoshop/using/tool-techniques/zoom-tool.html", fr:false}},
+    {titre:`Une courbe agrandie sans limite`, app:AI,
+     etapes:[
+      `Dans Illustrator, dessiner une forme simple (étoile ou pictogramme) avec l'outil Plume ou un outil de forme.`,
+      `Sélectionner la forme avec l'outil Sélection, puis ouvrir Objet > Transformer > Mettre à l'échelle.`,
+      `Agrandir la forme à 800&nbsp;%, en cochant Mettre à l'échelle les contours et effets pour conserver ses proportions.`,
+      `Zoomer (Affichage > Zoom avant) sur les contours de la forme agrandie pour vérifier l'absence de crénelage.`,
+      `Exporter cette forme en PNG (Fichier > Exporter > Exporter sous) et comparer sa netteté à celle d'une image bitmap agrandie au même taux.`
+     ],
+     ressource:{t:`Transformation d'objets dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/transforming-objects.html", fr:true}},
+    {titre:`Agrandir une image bitmap&nbsp;: la limite de l'interpolation`, app:PS,
+     etapes:[
+      `Dans Photoshop, ouvrir une photographie de résolution modeste (environ 800 x 600 px).`,
+      `Ouvrir Image > Taille de l'image et noter les dimensions et la résolution actuelles.`,
+      `Multiplier la largeur par 4 en conservant les proportions, avec rééchantillonnage activé, puis valider.`,
+      `Zoomer à 100&nbsp;% sur un détail à bord net (texte, contour) pour observer le flou d'interpolation.`,
+      `Annuler (Ctrl/Cmd+Z) puis comparer ce résultat à l'agrandissement sans perte obtenu dans l'exercice Illustrator équivalent.`
+     ],
+     ressource:{t:`Resize images in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/resize-images.html", fr:false}},
+    {titre:`Vecteur et pixel dans une même page InDesign`, app:ID,
+     etapes:[
+      `Dans InDesign, créer un document et utiliser Fichier > Importer pour placer un logo vectoriel (.ai ou .eps).`,
+      `Importer ensuite, avec la même commande, une photographie (.jpg ou .psd) sur la même page.`,
+      `Sélectionner le logo avec l'outil Sélection et l'agrandir via les poignées (Maj maintenu) pour observer sa netteté conservée.`,
+      `Sélectionner la photo et l'agrandir de la même façon pour observer sa dégradation progressive.`,
+      `Ouvrir le panneau Liens (Fenêtre > Utilitaires > Liens) pour vérifier que les deux fichiers restent liés à leur source.`
+     ],
+     ressource:{t:`Copie et insertion d'images`, u:"https://helpx.adobe.com/fr/indesign/using/placing-graphics.html", fr:true}},
+    {titre:`Dupliquer et exporter des plans de travail séparément`, app:AI,
+     etapes:[
+      `Dans le document à deux plans de travail créé plus haut, sélectionner l'outil Plan de travail (Maj+O).`,
+      `Cliquer sur le premier plan de travail puis, Alt maintenu, le faire glisser pour en créer une copie dupliquée.`,
+      `Double-cliquer sur le plan de travail dupliqué pour ouvrir ses options et saisir un troisième format (carte de visite, 85 x 55 mm).`,
+      `Ouvrir Fichier > Exporter > Exporter pour les écrans et cocher l'export par plan de travail.`,
+      `Exporter chaque plan de travail séparément en PNG et vérifier que trois fichiers distincts ont été générés.`
+     ],
+     ressource:{t:`Export des plans de travail sélectionnés`, u:"https://helpx.adobe.com/fr/illustrator/desktop/create-manage-artboards/organize-manage-artboards/export-artboards.html", fr:true}}
+   ]},
+
+{n:2, phase:"fondations", app:PS,
+ title:`Le calque&nbsp;: empiler plutôt que fusionner`,
+ notion:`Un calque isole une partie du contenu pour la modifier sans toucher au reste. L'ordre d'empilement fait sens dans les trois logiciels, mais ce qu'un calque contient diffère&nbsp;: des pixels en Photoshop, des objets vectoriels en Illustrator, des blocs de mise en page en InDesign.`,
+ objectifs:[`Manipuler l'empilement, la visibilité et le verrouillage de calques dans les trois logiciels.`,`Expliquer pourquoi organiser en calques change la façon de corriger un projet.`],
+ traversee:[
+   {app:PS, action:`Construire un photomontage à trois calques pixels, réordonner et masquer sans fusionner.`},
+   {app:AI, action:`Organiser une illustration en calques d'objets (fond, personnage, texte) et déplacer un objet d'un calque à l'autre.`},
+   {app:ID, action:`Créer deux calques de mise en page (un pour le texte, un pour les images) sur un même gabarit de page.`}
+ ],
+ eclairage:{title:`Photoshop &mdash; calques de réglage non destructifs`, text:`Un calque de réglage (courbes, teinte/saturation&hellip;) corrige tous les calques en dessous sans jamais modifier leurs pixels d'origine&nbsp;: on peut le supprimer à tout moment et retrouver l'image intacte. Ni Illustrator ni InDesign n'ont d'équivalent direct appliqué à des pixels.`,
+   links:[
+     {t:`Comment utiliser les calques de réglage`, u:"https://helpx.adobe.com/fr/photoshop/how-to/adjustment-layer.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Construire et réorganiser un photomontage à trois calques`, app:PS,
+     etapes:[
+      `Dans Photoshop, ouvrir trois photographies distinctes et les glisser-déposer dans un même document pour créer trois calques pixels.`,
+      `Ouvrir le panneau Calques (Fenêtre > Calques) et renommer chaque calque selon son contenu (arrière-plan, sujet, élément décoratif).`,
+      `Réordonner les calques par glisser-déposer dans le panneau pour changer l'ordre d'empilement et observer l'effet.`,
+      `Cliquer sur l'icône en forme d'œil du calque décoratif pour le masquer temporairement sans le supprimer.`,
+      `Déplacer le calque du sujet avec l'outil Déplacement pour vérifier qu'il reste indépendant des deux autres.`,
+      `Enregistrer le document au format PSD en conservant les trois calques distincts, sans les fusionner.`
+     ],
+     ressource:{t:`Découverte des concepts de base sur les calques dans Photoshop`, u:"https://helpx.adobe.com/be_fr/photoshop/using/layer-basics.html", fr:true}},
+    {titre:`Ajouter un calque de réglage Courbes sans toucher aux pixels`, app:PS,
+     etapes:[
+      `Dans le photomontage précédent, sélectionner le calque du sujet dans le panneau Calques.`,
+      `Cliquer sur l'icône de calque de réglage en bas du panneau Calques et choisir Courbes dans le menu.`,
+      `Modifier la courbe pour éclaircir l'image et observer que seuls les calques situés en dessous sont affectés.`,
+      `Double-cliquer sur la vignette du calque de réglage pour rouvrir ses réglages et les modifier sans perte de qualité.`,
+      `Masquer puis réafficher le calque de réglage pour comparer instantanément l'image avec et sans correction.`
+     ],
+     ressource:{t:`Create adjustment layers in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/create-manage-layers/color-adjustment-fill-layers/create-adjustment-layers.html", fr:false}},
+    {titre:`Organiser une illustration en calques nommés`, app:AI,
+     etapes:[
+      `Dans Illustrator, ouvrir ou créer une illustration composée d'un fond, d'un personnage et d'un bloc de texte.`,
+      `Ouvrir le panneau Calques (Fenêtre > Calques) et créer trois calques distincts via le bouton Nouveau calque.`,
+      `Sélectionner chaque groupe d'objets et le déplacer dans le calque correspondant à l'aide du repère coloré du panneau.`,
+      `Renommer chaque calque en double-cliquant sur son nom (« Fond », « Personnage », « Texte »).`,
+      `Réorganiser l'ordre des calques par glisser-déposer pour placer le texte au-dessus du personnage.`,
+      `Verrouiller le calque « Fond » en cliquant sur la case à côté de son nom pour éviter de le modifier accidentellement.`
+     ],
+     ressource:{t:`Layers overview in Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/manage-layers/create-and-organize-layers/layers-overview.html", fr:false}},
+    {titre:`Verrouiller et masquer des calques pour isoler une zone de travail`, app:AI,
+     etapes:[
+      `Dans le même document, sélectionner le calque « Personnage » dans le panneau Calques.`,
+      `Cliquer sur l'icône en forme d'œil des calques « Fond » et « Texte » pour les masquer et isoler le personnage.`,
+      `Modifier un détail du personnage pendant que les autres calques restent masqués, sans risque de les toucher.`,
+      `Réafficher les calques masqués un par un en recliquant sur leur icône d'œil.`,
+      `Verrouiller le calque « Texte » via sa case de verrouillage pour empêcher toute sélection accidentelle par la suite.`
+     ],
+     ressource:{t:`Comment verrouiller, masquer ou supprimer des calques dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/locking-hiding-deleting-objects.html", fr:true}},
+    {titre:`Créer deux calques de mise en page sur un gabarit`, app:ID,
+     etapes:[
+      `Dans InDesign, ouvrir le panneau Pages (Fenêtre > Pages) et double-cliquer sur A-Gabarit pour l'éditer.`,
+      `Ouvrir le panneau Calques (Fenêtre > Calques) et créer un premier calque nommé « Images » via le menu du panneau.`,
+      `Créer un second calque nommé « Texte » au-dessus du premier, depuis le même panneau.`,
+      `Placer un bloc image sur le calque « Images » via Fichier > Importer, puis un bloc de texte sur le calque « Texte ».`,
+      `Vérifier dans le panneau Calques que chaque bloc apparaît dans le calque correspondant en dépliant le triangle d'expansion.`
+     ],
+     ressource:{t:`Créer et utiliser des calques dans Adobe InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/layers.html", fr:true}},
+    {titre:`Verrouiller un calque et tester sa visibilité dans la maquette`, app:ID,
+     etapes:[
+      `Sur le document créé, sélectionner le calque « Images » dans le panneau Calques.`,
+      `Cliquer sur la case de verrouillage à côté du nom du calque pour empêcher toute modification de son contenu.`,
+      `Essayer de sélectionner l'image placée avec l'outil Sélection pour constater qu'elle est désormais protégée.`,
+      `Masquer le calque « Texte » via son icône d'œil, puis appliquer le gabarit à une nouvelle page du document.`,
+      `Réafficher le calque « Texte » et déverrouiller le calque « Images » pour rendre la maquette de nouveau modifiable.`
+     ],
+     ressource:{t:`Travailler avec les calques dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/how-to/work-with-layers.html", fr:true}}
+   ]},
+
+{n:3, phase:"fondations", app:PS,
+ title:`Sélectionner et masquer&nbsp;: isoler sans détruire`,
+ notion:`Isoler une zone pour la travailler seule est une opération transversale&nbsp;: une sélection en Photoshop, un masque d'écrêtage en Illustrator, un cadre importé en InDesign. Le masquage &mdash; cacher sans supprimer &mdash; est la version réversible et donc préférable de la sélection.`,
+ objectifs:[`Différencier sélection (temporaire) et masque (persistant et réversible).`,`Créer un masque de fusion en Photoshop et un masque d'écrêtage en Illustrator sur le même principe visuel.`],
+ traversee:[
+   {app:PS, action:`Détourer un sujet avec l'outil de sélection rapide, puis convertir la sélection en masque de fusion sur le calque.`},
+   {app:AI, action:`Créer un masque d'écrêtage&nbsp;: une forme vectorielle qui découpe une image placée en dessous.`},
+   {app:ID, action:`Importer une image dans un cadre de forme libre et ajuster son recadrage sans jamais modifier le fichier source.`}
+ ],
+ eclairage:{title:`Photoshop &mdash; les canaux (channels)`, text:`Au-delà du rouge/vert/bleu, un canal peut stocker une sélection entière en niveaux de gris et la réutiliser à volonté (canal alpha). C'est la mémoire des sélections complexes &mdash; cheveux, fumée, transparence fine &mdash; qu'aucun des deux autres logiciels ne propose sous cette forme.`,
+   links:[
+     {t:`Photoshop channel basics`, u:"https://helpx.adobe.com/photoshop/using/channel-basics.html", fr:false}
+   ]},
+ exercices:[
+    {titre:`Détourer un sujet et le convertir en masque de fusion`, app:PS,
+     etapes:[
+      `Dans Photoshop, ouvrir une photo où le sujet se détache d'un fond distinct et sélectionner l'outil Sélection rapide.`,
+      `Peindre sur le sujet pour le sélectionner, en ajustant la taille du pinceau avec les crochets [ et ].`,
+      `Cliquer sur le bouton Sélectionner et masquer dans la barre d'options et régler le curseur Rayon de la section Détection des bords.`,
+      `Valider la sélection affinée avec la sortie « Calque avec masque de fusion ».`,
+      `Dans le panneau Calques, repeindre en noir une petite zone de la vignette du masque pour masquer une portion sans supprimer de pixels.`,
+      `Repeindre en blanc au même endroit pour constater que le contenu masqué réapparaît intact.`
+     ],
+     ressource:{t:`Utilisation de masques de fusion avec des sélections`, u:"https://helpx.adobe.com/fr/photoshop/how-to/make-selection-layer-mask.html", fr:true}},
+    {titre:`Désactiver et peaufiner un masque de fusion existant`, app:PS,
+     etapes:[
+      `Sur le calque masqué de l'exercice précédent, clic droit sur la vignette du masque et choisir Désactiver le masque de calque.`,
+      `Observer le sujet réapparaître entièrement, sans que le masque n'ait été supprimé.`,
+      `Réactiver le masque par un nouveau clic droit puis Activer le masque de calque.`,
+      `Sélectionner l'outil Pinceau, régler son opacité à 50&nbsp;% et repasser sur un bord du masque pour l'adoucir.`,
+      `Sélectionner la vignette du masque et utiliser Image > Réglages > Courbes pour resserrer son contraste noir/blanc et durcir sa bordure.`
+     ],
+     ressource:{t:`Peaufiner les masques de fusion`, u:"https://helpx.adobe.com/fr/photoshop/how-to/fine-tune-layer-masks.html", fr:true}},
+    {titre:`Créer un masque d'écrêtage sur une photo importée`, app:AI,
+     etapes:[
+      `Dans Illustrator, importer une photographie avec Fichier > Placer et la positionner sur le plan de travail.`,
+      `Dessiner par-dessus une forme vectorielle fermée (ellipse ou forme libre) définissant la zone à révéler.`,
+      `Sélectionner la forme et la photo avec l'outil Sélection, la forme devant être au-dessus dans l'empilement.`,
+      `Appliquer Objet > Masque d'écrêtage > Créer (Ctrl/Cmd+7) pour découper la photo selon les contours de la forme.`,
+      `Double-cliquer sur le groupe d'écrêtage pour entrer en mode isolation et repositionner la photo à l'intérieur sans modifier le masque.`
+     ],
+     ressource:{t:`Utilisation et modification des masques d'écrêtage dans Illustrator`, u:"https://helpx.adobe.com/fr/illustrator/using/visual-tutorial---creating-mask.html", fr:true}},
+    {titre:`Détacher un objet d'un masque d'écrêtage pour le modifier`, app:AI,
+     etapes:[
+      `Reprendre le masque d'écrêtage créé précédemment et le sélectionner avec l'outil Sélection.`,
+      `Ouvrir le panneau Calques et déplier le groupe d'écrêtage pour repérer séparément la forme de masquage et la photo.`,
+      `Utiliser Objet > Masque d'écrêtage > Libérer pour dissocier temporairement les deux éléments.`,
+      `Modifier la couleur de contour de la forme de masquage pour vérifier qu'elle agit comme un objet indépendant.`,
+      `Resélectionner les deux éléments et réappliquer Objet > Masque d'écrêtage > Créer pour reconstituer le masque.`
+     ],
+     ressource:{t:`Recadrer un visuel à l'aide de masques`, u:"https://helpx.adobe.com/fr/illustrator/using/visual-tutorial---creating-mask.html", fr:true}},
+    {titre:`Importer une image dans un cadre de forme libre`, app:ID,
+     etapes:[
+      `Dans InDesign, dessiner une forme libre avec l'outil Plume ou l'outil Forme personnalisée pour créer un cadre non rectangulaire.`,
+      `La forme sélectionnée, choisir Fichier > Importer et sélectionner une photographie à placer à l'intérieur.`,
+      `Utiliser le Sélecteur de contenu, au centre du cadre, pour repositionner l'image sans modifier la forme du cadre.`,
+      `Ouvrir Objet > Ajustement > Adapter le contenu proportionnellement pour cadrer l'image sans déformation.`,
+      `Vérifier dans le panneau Liens (Fenêtre > Utilitaires > Liens) que l'image reste liée à son fichier source.`
+     ],
+     ressource:{t:`Modifier, masquer et exporter des objets et des blocs`, u:"https://helpx.adobe.com/fr/indesign/using/frames-objects.html", fr:true}},
+    {titre:`Ajuster le recadrage d'une image sans toucher au fichier source`, app:ID,
+     etapes:[
+      `Sélectionner l'image placée dans l'exercice précédent avec l'outil Sélection.`,
+      `Double-cliquer sur l'image pour activer le Sélecteur de contenu, qui déplace le contenu indépendamment du cadre.`,
+      `Redimensionner le cadre à l'aide des poignées, Maj maintenu, pour révéler une portion différente de l'image.`,
+      `Utiliser Objet > Ajustement > Centrer le contenu pour recentrer automatiquement l'image dans son cadre.`,
+      `Ouvrir le fichier image d'origine dans son application source pour vérifier qu'il n'a subi aucune modification.`
+     ],
+     ressource:{t:`Redimensionnement du contenu d'un bloc dans InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/how-to/resize-content-frame.html", fr:true}}
+   ]},
+
+{n:4, phase:"fondations", app:AI,
+ title:`Transparence et modes de fusion`,
+ notion:`L'opacité règle la quantité de contenu visible&nbsp;; le mode de fusion règle la façon dont ses couleurs interagissent avec ce qui est en dessous (Produit, Superposition, Éclaircir&hellip;). Le vocabulaire et les résultats visuels des modes sont quasi identiques d'un logiciel à l'autre &mdash; une des rares notions qui se transpose presque sans traduction.`,
+ objectifs:[`Régler l'opacité d'un calque/objet indépendamment de son contenu.`,`Prédire l'effet d'un mode de fusion (Produit, Superposition) avant de l'appliquer.`],
+ traversee:[
+   {app:PS, action:`Superposer une texture sur une photo et tester les modes Produit, Superposition, Incrustation successivement.`},
+   {app:AI, action:`Appliquer les mêmes modes de fusion à des formes vectorielles superposées, avec opacité de groupe isolée.`},
+   {app:ID, action:`Importer un PNG Photoshop dont la transparence a été conservée, et vérifier qu'elle survit à l'export PDF final.`}
+ ],
+ eclairage:{title:`Illustrator &mdash; isolation de la transparence par groupe`, text:`Le panneau Transparence d'Illustrator permet d'isoler le mélange à l'intérieur d'un groupe (les objets du groupe se mélangent entre eux, mais pas avec le fond), et de définir un groupe d'écrêtage d'opacité. Un contrôle plus fin qu'un simple pourcentage global.`,
+   links:[
+     {t:`Comment régler l'opacité et les modes de fusion`, u:"https://helpx.adobe.com/fr/illustrator/how-to/opacity-blending-modes.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Superposer une texture et tester les modes de fusion`, app:PS,
+     etapes:[
+      `Dans Photoshop, ouvrir une photographie et importer une image de texture sur un calque au-dessus.`,
+      `Dans le panneau Calques, ouvrir le menu déroulant des modes de fusion (réglé par défaut sur Normal).`,
+      `Sélectionner successivement les modes Produit, Superposition et Incrustation en observant le changement de rendu.`,
+      `Régler le curseur Opacité du calque de texture à 60&nbsp;% avec le mode Superposition actif.`,
+      `Ajouter un masque de fusion sur le calque de texture et peindre en noir sur le visage du sujet pour l'exclure de l'effet.`,
+      `Enregistrer deux versions du document, une par mode de fusion testé, pour comparer les rendus côte à côte.`
+     ],
+     ressource:{t:`Composition d'images à l'aide de modes de fusion de calques`, u:"https://helpx.adobe.com/be_fr/photoshop/how-to/composite-nature-photography-with-layer-blend-mode.html", fr:true}},
+    {titre:`Dissocier opacité et mode de fusion sur un calque`, app:PS,
+     etapes:[
+      `Sur le même document, sélectionner le calque de texture dans le panneau Calques.`,
+      `Repasser son mode de fusion à Normal puis régler son Opacité à 50&nbsp;% pour observer un simple mélange linéaire.`,
+      `Repasser l'Opacité à 100&nbsp;% puis choisir le mode Produit pour observer un assombrissement différent d'une simple transparence.`,
+      `Combiner mode Produit et opacité à 70&nbsp;% pour doser précisément l'intensité de l'effet.`,
+      `Noter dans Fichier > Informations sur le fichier la différence observée entre les deux réglages.`
+     ],
+     ressource:{t:`Layer opacity and blending modes in Adobe Photoshop`, u:"https://helpx.adobe.com/photoshop/using/layer-opacity-blending.html", fr:false}},
+    {titre:`Appliquer des modes de fusion à des formes vectorielles superposées`, app:AI,
+     etapes:[
+      `Dans Illustrator, dessiner trois formes colorées et les superposer partiellement sur le plan de travail.`,
+      `Ouvrir le panneau Transparence (Fenêtre > Transparence) et sélectionner la forme du dessus.`,
+      `Choisir successivement dans le menu déroulant du panneau les modes Produit, Superposition et Éclaircir.`,
+      `Régler le curseur Opacité du panneau Transparence à 75&nbsp;% avec le mode Produit actif.`,
+      `Grouper les trois formes (Objet > Grouper) et vérifier que les modes de fusion restent visibles à l'intérieur du groupe.`
+     ],
+     ressource:{t:`Change and manage blending modes in Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/manage-colors/apply-transparency-and-blending/change-the-blending-mode-in-artworks.html", fr:false}},
+    {titre:`Isoler l'opacité d'un groupe de formes fusionnées`, app:AI,
+     etapes:[
+      `Reprendre le groupe de formes créé précédemment et le sélectionner avec l'outil Sélection.`,
+      `Dans le panneau Transparence, cocher Isoler le mélange pour empêcher les modes de fusion internes d'affecter les objets derrière le groupe.`,
+      `Régler l'Opacité globale du groupe à 60&nbsp;% dans le même panneau, distincte de l'opacité de chaque forme.`,
+      `Placer un quatrième objet coloré derrière le groupe et vérifier qu'il n'est plus affecté par les modes internes.`,
+      `Décocher Isoler le mélange pour observer la différence et confirmer l'effet du réglage.`
+     ],
+     ressource:{t:`Adjust opacity in Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/manage-colors/apply-transparency-and-blending/change-the-opacity-of-artworks.html", fr:false}},
+    {titre:`Importer un PNG transparent depuis Photoshop`, app:ID,
+     etapes:[
+      `Dans Photoshop, détourer un sujet sur fond transparent et l'exporter via Fichier > Exporter sous, format PNG, option Transparence cochée.`,
+      `Dans InDesign, créer un document puis utiliser Fichier > Importer pour placer ce PNG sur une page.`,
+      `Ajouter un fond coloré derrière le cadre du PNG pour vérifier visuellement que la transparence est conservée à l'écran.`,
+      `Ouvrir le panneau Liens (Fenêtre > Utilitaires > Liens) pour confirmer que le PNG reste lié à son fichier source.`,
+      `Redimensionner légèrement le cadre du PNG avec l'outil Sélection pour vérifier que la zone transparente reste cohérente après mise à l'échelle.`
+     ],
+     ressource:{t:`Copie et insertion d'images`, u:"https://helpx.adobe.com/fr/indesign/using/placing-graphics.html", fr:true}},
+    {titre:`Vérifier la survie de la transparence à l'export PDF`, app:ID,
+     etapes:[
+      `Sur le document contenant le PNG transparent, ouvrir Fichier > Exporter et choisir le format Adobe PDF (impression).`,
+      `Dans l'onglet Général de la boîte de dialogue, vérifier que le menu Compatibilité est réglé sur Acrobat 5 (PDF 1.4) ou une version ultérieure pour conserver la transparence native.`,
+      `Choisir un préréglage Qualité optimale (impression) puis exporter le PDF sans aplatir la transparence.`,
+      `Ouvrir le PDF généré et vérifier à l'écran que le fond transparent du PNG est bien préservé.`,
+      `Comparer ce PDF à un export réalisé avec une Compatibilité Acrobat 4 (PDF 1.3) pour repérer l'aplatissement forcé de la transparence.`
+     ],
+     ressource:{t:`Utilisation des options Adobe PDF pour exporter au format PDF dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/pdf-options.html", fr:true}}
+   ]},
+
+{n:5, phase:"fondations", app:AI,
+ title:`La couleur&nbsp;: espaces, nuanciers, couleurs d'accompagnement`,
+ notion:`RVB (lumière, écran) et CMJN (encre, impression) ne décrivent pas le même univers de couleurs possibles&nbsp;; convertir de l'un à l'autre perd toujours de l'information. Un nuancier centralise les couleurs d'un projet&nbsp;; une couleur d'accompagnement (Pantone) désigne une encre physique précise, indépendante de l'écran qui l'affiche.`,
+ objectifs:[`Expliquer pourquoi une couleur RVB vive peut ternir en CMJN.`,`Créer et réutiliser une couleur nommée dans un nuancier.`],
+ traversee:[
+   {app:PS, action:`Convertir une photo de RVB à CMJN et observer le glissement visuel de certaines couleurs saturées.`},
+   {app:AI, action:`Créer un nuancier de 4 couleurs de marque et les appliquer à plusieurs formes.`},
+   {app:ID, action:`Appliquer les mêmes couleurs CMJN dans une mise en page et vérifier leur cohérence avec le nuancier Illustrator.`}
+ ],
+ eclairage:{title:`Illustrator &mdash; couleurs globales`, text:`Une couleur globale enregistrée dans le nuancier peut être modifiée une seule fois pour se répercuter automatiquement sur tous les objets qui l'utilisent dans le document &mdash; sans avoir à les resélectionner un par un.`,
+   links:[
+     {t:`Utiliser des nuances de couleur globales`, u:"https://helpx.adobe.com/be_fr/illustrator/using/using-creating-swatches.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Convertir une photo de RVB à CMJN et observer le glissement`, app:PS,
+     etapes:[
+      `Dans Photoshop, ouvrir une photographie contenant des couleurs vives et saturées (rouge, orange, vert fluo).`,
+      `Vérifier le mode colorimétrique actuel via Image > Mode, qui doit indiquer Couleurs RVB.`,
+      `Dupliquer le document (Image > Dupliquer) pour conserver une version de comparaison intacte.`,
+      `Sur la copie, choisir Image > Mode > Couleurs CMJN et valider la conversion proposée.`,
+      `Comparer les deux versions à l'écran pour repérer les couleurs saturées qui ont visiblement terni.`,
+      `Utiliser l'outil Pipette sur une même zone des deux versions pour comparer les valeurs RVB et CMJN obtenues.`
+     ],
+     ressource:{t:`Conversion entre modes colorimétriques dans Photoshop`, u:"https://helpx.adobe.com/be_fr/photoshop/using/converting-color-modes.html", fr:true}},
+    {titre:`Anticiper un rendu CMJN avec l'aperçu des couleurs d'épreuve`, app:PS,
+     etapes:[
+      `Sur la photo RVB d'origine, ouvrir Affichage > Configuration des couleurs d'épreuve et vérifier que Couleurs CMJN de travail est sélectionné.`,
+      `Activer Affichage > Couleurs d'épreuve (Ctrl/Cmd+Y) pour simuler à l'écran le rendu CMJN sans convertir le document.`,
+      `Basculer l'aperçu on/off plusieurs fois pour repérer les couleurs qui changent le plus visiblement.`,
+      `Ouvrir le panneau Info et survoler une couleur problématique pour lire ses valeurs RVB et sa simulation CMJN.`,
+      `Désactiver l'aperçu des couleurs d'épreuve une fois l'observation terminée.`
+     ],
+     ressource:{t:`Color settings in Photoshop`, u:"https://helpx.adobe.com/photoshop/using/color-settings.html", fr:false}},
+    {titre:`Créer un nuancier de 4 couleurs de marque`, app:AI,
+     etapes:[
+      `Dans Illustrator, ouvrir le panneau Nuancier (Fenêtre > Nuancier).`,
+      `Créer une forme test, lui appliquer une couleur CMJN précise via le panneau Couleur, puis cliquer sur Nouvelle nuance.`,
+      `Nommer cette nuance selon son usage de marque (« Bleu principal ») et cocher Couleur globale dans la boîte de dialogue.`,
+      `Répéter l'opération pour créer trois nuances supplémentaires jusqu'aux quatre couleurs de la charte.`,
+      `Appliquer chacune des quatre nuances à des formes différentes du plan de travail depuis le panneau Nuancier.`,
+      `Enregistrer ce jeu de couleurs via le menu du panneau Nuancier > Enregistrer les nuances pour réutilisation future.`
+     ],
+     ressource:{t:`Utilisation et création de nuances dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/using-creating-swatches.html", fr:true}},
+    {titre:`Modifier une couleur globale et observer sa répercussion`, app:AI,
+     etapes:[
+      `Reprendre le nuancier de quatre couleurs et sélectionner plusieurs formes utilisant la même nuance globale.`,
+      `Double-cliquer sur cette nuance dans le panneau Nuancier pour ouvrir ses options de couleur globale.`,
+      `Modifier légèrement sa teinte ou sa saturation dans le panneau qui s'ouvre, puis valider.`,
+      `Observer que toutes les formes utilisant cette nuance changent de couleur simultanément, sans sélection individuelle.`,
+      `Annuler la modification (Ctrl/Cmd+Z) pour revenir à la couleur de marque d'origine.`
+     ],
+     ressource:{t:`Utiliser des nuances de couleur globales`, u:"https://helpx.adobe.com/be_fr/illustrator/using/using-creating-swatches.html", fr:true}},
+    {titre:`Appliquer les couleurs CMJN de marque dans une mise en page`, app:ID,
+     etapes:[
+      `Dans InDesign, ouvrir le panneau Nuancier (Fenêtre > Couleur > Nuancier).`,
+      `Créer une nouvelle nuance via le menu du panneau > Nouvelle nuance de couleur, Type de couleur sur Couleur de process et Mode sur CMJN.`,
+      `Saisir les mêmes valeurs CMJN que celles définies dans le nuancier Illustrator pour la première couleur de marque.`,
+      `Répéter l'opération pour les trois autres couleurs de la charte, en les nommant à l'identique du fichier Illustrator.`,
+      `Appliquer ces nuances à un titre et à un bloc de fond de la mise en page pour vérifier leur cohérence visuelle.`
+     ],
+     ressource:{t:`Utilisation des tons directs et des couleurs CMJN dans InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/using/spot-process-colors.html", fr:true}},
+    {titre:`Vérifier la cohérence colorimétrique avec le nuancier Illustrator`, app:ID,
+     etapes:[
+      `Placer dans le document InDesign un élément vectoriel importé depuis le fichier Illustrator contenant les couleurs de marque.`,
+      `Sélectionner cet élément et ouvrir le panneau Nuancier pour observer les couleurs importées automatiquement.`,
+      `Comparer les valeurs CMJN de ces nuances importées avec celles créées manuellement dans l'exercice précédent.`,
+      `Fusionner les éventuels doublons via le menu du panneau Nuancier > Fusionner les nuances si deux nuances identiques portent des noms différents.`,
+      `Appliquer une nuance fusionnée à un nouvel objet pour confirmer la cohérence colorimétrique du projet.`
+     ],
+     ressource:{t:`Application de couleurs aux objets dans un document Adobe InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/using/apply-color.html", fr:true}}
+   ]},
+
+{n:6, phase:"construction", app:PS,
+ title:`Le tracé et la courbe de Bézier`,
+ notion:`Un point d'ancrage et ses poignées définissent une courbe mathématique&nbsp;: c'est le vocabulaire caché derrière un détourage précis, une lettre dessinée, un habillage de texte personnalisé. Une fois compris dans un logiciel, ce vocabulaire se lit à l'identique dans les deux autres.`,
+ objectifs:[`Placer un point d'ancrage et manipuler ses poignées pour obtenir une courbe précise.`,`Reconnaître un tracé fermé, un tracé ouvert, un point anguleux, un point courbe.`],
+ traversee:[
+   {app:AI, action:`Dessiner à la plume le contour d'un objet simple (une feuille, une goutte) en alternant points anguleux et points courbes.`},
+   {app:PS, action:`Détourer une photo à la plume pour obtenir un tracé de travail exportable, plus précis qu'une sélection au lasso.`},
+   {app:ID, action:`Utiliser un tracé pour définir un habillage de texte personnalisé autour d'une image.`}
+ ],
+ eclairage:{title:`Photoshop &mdash; du tracé à la sélection, et retour`, text:`Photoshop permet de convertir une sélection en tracé de travail (pour la lisser à la plume) puis de reconvertir ce tracé en sélection ou en tracé de détourage exportable pour la PAO &mdash; un aller-retour impossible dans Illustrator, où tout est déjà vectoriel.`,
+   links:[
+     {t:`Convert between paths and selection borders in Photoshop`, u:"https://helpx.adobe.com/photoshop/using/converting-paths-selection-borders.html", fr:false}
+   ]},
+ exercices:[
+    {titre:`Dessiner un contour à la plume`, app:AI,
+     etapes:[
+      `Sélectionner l'outil Plume dans le panneau Outils.`,
+      `Placer un premier point d'ancrage anguleux (simple clic) pour amorcer le contour de la feuille ou de la goutte.`,
+      `Cliquer-glisser pour créer un point courbe et faire apparaître ses poignées, en ajustant leur longueur pour épouser la courbure voulue.`,
+      `Alterner clics simples (points anguleux) et cliqués-glissés (points courbes) jusqu'à refermer le tracé sur son point de départ.`,
+      `Vérifier dans le panneau Tracés (Fenêtre > Tracés) que le tracé est bien fermé, et corriger les poignées avec l'outil Sélection directe si besoin.`
+     ],
+     ressource:{t:`Dessin avec les outils Plume, Courbure et Crayon dans Illustrator`, u:"https://helpx.adobe.com/fr/illustrator/using/drawing-pen-pencil-or-flare.html", fr:true}},
+    {titre:`Remodeler le tracé avec la Sélection directe`, app:AI,
+     etapes:[
+      `Sélectionner l'outil Sélection directe dans le panneau Outils.`,
+      `Cliquer sur un point d'ancrage du tracé dessiné à l'exercice précédent pour afficher ses poignées.`,
+      `Faire glisser une poignée pour modifier l'angle et la longueur de la courbe sans déplacer le point d'ancrage.`,
+      `Maintenir Alt (Windows) ou Option (Mac) en déplaçant une poignée pour rendre le point courbe asymétrique et créer une inflexion précise.`
+     ],
+     ressource:{t:`Reshape a path with the Direct Selection tool`, u:"https://helpx.adobe.com/illustrator/using/tool-techniques/direct-selection-tool.html", fr:false}},
+    {titre:`Détourer une photo à la plume`, app:PS,
+     etapes:[
+      `Sélectionner l'outil Plume et choisir le mode "Tracé" dans la barre d'options.`,
+      `Cliquer le long du contour du sujet à détourer, en plaçant des points anguleux sur les segments droits.`,
+      `Cliquer-glisser sur les zones arrondies pour créer des points courbes qui épousent le contour du sujet.`,
+      `Refermer le tracé en cliquant sur le point de départ.`,
+      `Enregistrer ce tracé sous un nom explicite dans le panneau Tracés (double-clic sur "Tracé de travail").`
+     ],
+     ressource:{t:`Dessin avec les outils Plume dans Photoshop`, u:"https://helpx.adobe.com/fr/photoshop/using/drawing-pen-tools.html", fr:true}},
+    {titre:`Du tracé de travail au tracé de détourage exportable`, app:PS,
+     etapes:[
+      `Dans le panneau Tracés, sélectionner le tracé enregistré à l'exercice précédent.`,
+      `Cliquer sur l'icône "Charger le tracé en tant que sélection" en bas du panneau Tracés pour obtenir une sélection.`,
+      `Revenir au tracé en cliquant sur "Tracé depuis la sélection" pour vérifier la fidélité de l'aller-retour.`,
+      `Ouvrir le menu du panneau Tracés et choisir "Options de tracé de détourage" pour définir ce tracé comme tracé de détourage exportable.`,
+      `Enregistrer le fichier au format PSD ou TIFF pour conserver ce tracé de détourage lors de l'import en PAO.`
+     ],
+     ressource:{t:`Manage paths in Photoshop`, u:"https://helpx.adobe.com/photoshop/using/paths.html", fr:false}},
+    {titre:`Dessiner un tracé à la plume autour d'une image`, app:ID,
+     etapes:[
+      `Importer l'image (Fichier > Importer) et la placer sur le montage.`,
+      `Sélectionner l'outil Plume dans le panneau Outils.`,
+      `Dessiner un tracé fermé autour d'une partie de l'image, en alternant points anguleux et points courbes.`,
+      `Vérifier la fermeture du tracé en observant le petit cercle qui apparaît près du point de départ avant le clic final.`
+     ],
+     ressource:{t:`Dessin avec l'outil Plume dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/drawing-pen-tool.html", fr:true}},
+    {titre:`Habillage de texte personnalisé autour du tracé`, app:ID,
+     etapes:[
+      `Sélectionner le tracé dessiné à l'exercice précédent avec l'outil Sélection.`,
+      `Ouvrir le panneau Habillage du texte (Fenêtre > Habillage du texte).`,
+      `Cliquer sur l'option "Habiller autour de la forme de l'objet" pour que le texte suive le contour du tracé.`,
+      `Placer un bloc de texte à proximité et régler le décalage d'habillage pour affiner l'espacement entre le texte et le tracé.`
+     ],
+     ressource:{t:`Apply text wrap in InDesign`, u:"https://helpx.adobe.com/indesign/desktop/format-and-style-text/composition-and-text-wrapping/apply-text-wrap.html", fr:false}}
+   ]},
+
+{n:7, phase:"construction", app:AI,
+ title:`Formes et transformations géométriques`,
+ notion:`Échelle, rotation, symétrie, répétition&nbsp;: les mêmes opérations géométriques s'appliquent à un calque pixellisé ou à un objet vectoriel, mais avec des conséquences différentes sur la qualité du résultat &mdash; c'est le retour, en pratique, de la notion de la séance&nbsp;1.`,
+ objectifs:[`Appliquer une transformation (échelle, rotation, symétrie) avec un point d'ancrage choisi.`,`Constater la perte de qualité d'une transformation matricielle contre l'absence de perte en vectoriel.`],
+ traversee:[
+   {app:AI, action:`Transformer une forme vectorielle (rotation à 37°, symétrie, mise à l'échelle à 300&nbsp;%) sans aucune perte visible.`},
+   {app:PS, action:`Appliquer les mêmes transformations à un calque pixel et observer le flou d'interpolation à 300&nbsp;%.`},
+   {app:ID, action:`Transformer un cadre image importé (rotation, mise à l'échelle) sans jamais modifier le fichier source lié.`}
+ ],
+ eclairage:{title:`Illustrator &mdash; motifs et grille de perspective`, text:`Un motif vectoriel se répète à l'infini sans jamais se pixelliser, et la grille de perspective permet de dessiner un objet en respectant un point de fuite donné &mdash; deux outils sans équivalent direct dans les deux autres logiciels.`,
+   links:[
+     {t:`Création et modification de motifs dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/create-edit-patterns.html", fr:true},
+     {t:`About perspective drawing`, u:"https://helpx.adobe.com/illustrator/desktop/manage-objects/reshape-transform-objects/about-perspective-drawing.html", fr:false}
+   ]},
+ exercices:[
+    {titre:`Rotation vectorielle à 37° avec point de référence`, app:AI,
+     etapes:[
+      `Sélectionner la forme vectorielle avec l'outil Sélection.`,
+      `Ouvrir la boîte de dialogue Rotation (Objet > Transformer > Rotation).`,
+      `Choisir un point de référence précis (un coin ou un centre) dans l'aperçu de la boîte de dialogue.`,
+      `Saisir 37° dans le champ Angle et valider par OK.`,
+      `Zoomer à 400% pour vérifier que les contours restent parfaitement nets, sans aucun flou.`
+     ],
+     ressource:{t:`Transformation d'objets dans Illustrator`, u:"https://helpx.adobe.com/fr/illustrator/using/transforming-objects.html", fr:true}},
+    {titre:`Symétrie et échelle 300% sans perte`, app:AI,
+     etapes:[
+      `Dupliquer la forme transformée à l'exercice précédent (Édition > Dupliquer).`,
+      `Appliquer une symétrie via Objet > Transformer > Symétrie, en choisissant l'axe Vertical.`,
+      `Ouvrir Objet > Transformer > Échelle et saisir 300% dans le champ Échelle uniforme.`,
+      `Valider, puis zoomer à 400% pour confirmer que les contours vectoriels restent parfaitement nets malgré l'agrandissement.`
+     ],
+     ressource:{t:`Scale objects in Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/manage-objects/reshape-transform-objects/scale-objects.html", fr:false}},
+    {titre:`Transformation manuelle d'un calque pixel`, app:PS,
+     etapes:[
+      `Sélectionner le calque pixellisé correspondant à la même forme, importée ou recréée dans Photoshop.`,
+      `Ouvrir Édition > Transformation manuelle.`,
+      `Faire pivoter le calque de 37° en saisissant l'angle dans la barre d'options.`,
+      `Redimensionner à 300% en tirant une poignée d'angle tout en maintenant Maj, puis valider avec Entrée.`,
+      `Zoomer à 400% pour observer le flou d'interpolation qui apparaît sur les contours du calque transformé.`
+     ],
+     ressource:{t:`Transformation des objets dans Photoshop`, u:"https://helpx.adobe.com/fr/photoshop/key-concepts/transform.html", fr:true}},
+    {titre:`Comparer les méthodes de rééchantillonnage`, app:PS,
+     etapes:[
+      `Dupliquer le calque transformé à l'exercice précédent (Calque > Dupliquer le calque).`,
+      `Ouvrir Image > Taille de l'image et activer l'option Rééchantillonnage.`,
+      `Appliquer la méthode "Conservation des détails" sur la copie en augmentant la taille de 150%, puis recommencer avec "Bicubique automatique" sur une autre copie.`,
+      `Comparer visuellement la netteté des deux résultats côte à côte dans le document.`
+     ],
+     ressource:{t:`Taille et résolution des images Photoshop`, u:"https://helpx.adobe.com/ca_fr/photoshop/key-concepts/resample.html", fr:true}},
+    {titre:`Transformer le cadre sans toucher au fichier source`, app:ID,
+     etapes:[
+      `Importer une image avec Fichier > Importer et la placer dans un cadre.`,
+      `Sélectionner le cadre avec l'outil Sélection, puis appliquer une rotation de 37° dans le panneau Contrôle.`,
+      `Utiliser l'outil Sélection directe pour redimensionner uniquement le contenu à l'intérieur du cadre, sans modifier les proportions du cadre.`,
+      `Vérifier dans le panneau Contrôle que les valeurs d'échelle du cadre et celles du contenu sont désormais différentes.`
+     ],
+     ressource:{t:`Modifier, masquer et exporter des objets et des blocs`, u:"https://helpx.adobe.com/fr/indesign/using/frames-objects.html", fr:true}},
+    {titre:`Vérifier l'intégrité du fichier lié`, app:ID,
+     etapes:[
+      `Ouvrir le panneau Liens (Fenêtre > Liens).`,
+      `Sélectionner l'image transformée à l'exercice précédent et observer son statut dans le panneau (absence d'icône d'alerte de modification).`,
+      `Cliquer sur "Afficher les informations sur le lien" pour comparer la taille et la date du fichier original à celles du fichier sur le disque.`,
+      `Conclure que seules les valeurs de transformation ont changé dans InDesign, jamais le fichier source lié.`
+     ],
+     ressource:{t:`Gestion des graphismes liés ou incorporés dans Adobe InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/using/graphics-links.html", fr:true}}
+   ]},
+
+{n:8, phase:"construction", app:ID,
+ title:`Anatomie de la typographie`,
+ notion:`Corps, interlignage, approche, crénage&nbsp;: le vocabulaire typographique est identique dans les trois logiciels, mais son terrain de jeu naturel est InDesign (texte long), quand Illustrator traite le texte comme un objet dessiné et Photoshop comme un calque parmi d'autres.`,
+ objectifs:[`Nommer et régler corps, interlignage, approche et crénage dans un logiciel de mise en page.`,`Observer les limites du texte comme calque pixellisable dans Photoshop.`],
+ traversee:[
+   {app:ID, action:`Composer un paragraphe de texte long en réglant précisément interlignage et approche pour améliorer sa lisibilité.`},
+   {app:AI, action:`Faire courir un texte court le long d'un tracé dessiné à la séance précédente.`},
+   {app:PS, action:`Ajouter un texte court sur une photo et observer ses limites (pas de texte courant sur plusieurs pages, rasterisation à l'export).`}
+ ],
+ eclairage:{title:`InDesign &mdash; styles imbriqués et styles GREP`, text:`Un style imbriqué applique automatiquement une mise en forme différente aux premiers mots d'un paragraphe (une lettrine, un mot d'intro en majuscules) selon une règle, sans intervention manuelle&nbsp;; un style GREP va plus loin en appliquant une mise en forme à tout texte correspondant à un motif (une date, un numéro). Rien de comparable dans Illustrator ou Photoshop.`,
+   links:[
+     {t:`Lettrines et styles imbriqués dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/drop-caps-nested-styles.html", fr:true},
+     {t:`Recherche et remplacement à l'aide d'expressions et de requêtes GREP`, u:"https://helpx.adobe.com/fr/indesign/using/find-replace-grep-queries.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Régler l'interlignage d'un paragraphe long`, app:ID,
+     etapes:[
+      `Placer un texte long dans un bloc avec l'outil Texte.`,
+      `Sélectionner tout le paragraphe (Ctrl/Cmd+A).`,
+      `Dans le panneau Caractère (Fenêtre > Style de caractère > Caractère), régler l'interlignage sur une valeur supérieure de 2 points au corps du texte.`,
+      `Comparer la lisibilité obtenue avec celle d'un interlignage automatique.`
+     ],
+     ressource:{t:`Mise en forme des caractères dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/formatting-characters.html", fr:true}},
+    {titre:`Régler l'approche et le crénage`, app:ID,
+     etapes:[
+      `Sélectionner un mot du paragraphe et lui appliquer une approche positive via le champ Approche du panneau Caractère.`,
+      `Placer le curseur entre deux lettres comme "AV" et régler le crénage manuel dans le champ Crénage.`,
+      `Basculer entre crénage Métrique et Optique sur cette même paire de lettres pour observer la différence.`,
+      `Choisir la valeur qui améliore le plus la lecture et l'appliquer à l'ensemble du paragraphe.`
+     ],
+     ressource:{t:`Mise en forme des caractères dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/formatting-characters.html", fr:true}},
+    {titre:`Créer un texte sur un tracé`, app:AI,
+     etapes:[
+      `Dessiner un tracé ouvert avec l'outil Plume ou Courbure.`,
+      `Sélectionner l'outil Texte sur tracé dans le groupe d'outils Texte du panneau Outils.`,
+      `Cliquer sur le tracé pour y placer le point d'insertion, puis saisir un texte court.`,
+      `Ajuster le corps et l'interlignage dans le panneau Caractère pour que le texte reste lisible en suivant la courbe.`
+     ],
+     ressource:{t:`Create type on a path in Illustrator`, u:"https://helpx.adobe.com/illustrator/using/creating-type-path.html", fr:false}},
+    {titre:`Régler les effets du texte sur tracé`, app:AI,
+     etapes:[
+      `Sélectionner le texte sur tracé créé à l'exercice précédent avec l'outil Sélection.`,
+      `Ouvrir Texte > Texte sur tracé > Options.`,
+      `Tester les effets Arc-en-ciel, Distorsion et Gravité, puis choisir celui qui respecte le mieux la forme du tracé.`,
+      `Inverser l'orientation du texte si besoin en faisant glisser le curseur de départ de l'autre côté du tracé.`
+     ],
+     ressource:{t:`Apply effects to text on paths in Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/design-with-text/edit-format-text/apply-effects-to-text-on-paths.html", fr:false}},
+    {titre:`Ajouter un texte court sur une photo`, app:PS,
+     etapes:[
+      `Sélectionner l'outil Texte horizontal et cliquer sur la photo.`,
+      `Saisir un texte court (titre ou légende).`,
+      `Régler le corps et l'interlignage dans le panneau Caractère (Fenêtre > Caractère).`,
+      `Positionner le calque de texte avec l'outil Déplacement pour l'intégrer harmonieusement à la photo.`
+     ],
+     ressource:{t:`Format characters in Photoshop`, u:"https://helpx.adobe.com/photoshop/using/formatting-characters.html", fr:false}},
+    {titre:`Observer la rasterisation du texte à l'export`, app:PS,
+     etapes:[
+      `Constater qu'aucune option ne permet de faire courir ce texte le long d'une forme, contrairement à Illustrator ou InDesign.`,
+      `Dupliquer le calque de texte (Calque > Dupliquer le calque).`,
+      `Rastériser la copie via Calque > Rastériser > Texte.`,
+      `Exporter le document en JPEG (Fichier > Exporter > Exporter sous) et zoomer pour vérifier que le texte rastérisé est devenu un ensemble de pixels non modifiable.`
+     ],
+     ressource:{t:`Convert text to shapes or work paths in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/text-typography/text-on-paths-shapes/convert-text-to-shapes-or-work-paths.html", fr:false}}
+   ]},
+
+{n:9, phase:"construction", app:AI,
+ title:`Styles réutilisables&nbsp;: ne jamais refaire deux fois`,
+ notion:`Un style enregistre un ensemble de réglages sous un nom&nbsp;: le modifier une fois le répercute partout où il est appliqué. C'est le même principe de non-répétition derrière les styles de paragraphe InDesign, les styles graphiques Illustrator et les styles de calque Photoshop.`,
+ objectifs:[`Créer un style et l'appliquer à plusieurs éléments.`,`Modifier un style existant et observer la mise à jour automatique de tous ses usages.`],
+ traversee:[
+   {app:ID, action:`Créer un style de paragraphe "Titre" et un style "Corps", les appliquer à un texte de deux pages, puis modifier le style Titre.`},
+   {app:AI, action:`Créer un style graphique (contour + ombre portée) et l'appliquer à 3 formes différentes.`},
+   {app:PS, action:`Créer un style de calque réutilisable (ombre portée + contour) et le copier sur plusieurs calques de texte.`}
+ ],
+ eclairage:{title:`Illustrator &mdash; les symboles`, text:`Un symbole est une instance liée à une définition maîtresse&nbsp;: modifier le symbole met à jour toutes ses occurrences dans le document, y compris à travers des plans de travail différents. Un style graphique ne change que l'apparence&nbsp; ; un symbole change l'objet lui-même.`,
+   links:[
+     {t:`Symbols panel options in Illustrator`, u:"https://helpx.adobe.com/illustrator/using/symbols.html", fr:false}
+   ]},
+ exercices:[
+    {titre:`Créer et appliquer les styles Titre et Corps`, app:ID,
+     etapes:[
+      `Mettre en forme manuellement un titre, puis ouvrir le panneau Styles de paragraphe (Fenêtre > Styles > Styles de paragraphe).`,
+      `Cliquer sur "Nouveau style de paragraphe" en maintenant Alt pour capturer la mise en forme du titre sélectionné et le nommer "Titre".`,
+      `Répéter l'opération sur un paragraphe de corps de texte pour créer le style "Corps".`,
+      `Appliquer chaque style aux paragraphes correspondants du document en cliquant sur leur nom dans le panneau.`
+     ],
+     ressource:{t:`Principes de base des styles de paragraphe et de caractère`, u:"https://helpx.adobe.com/ch_fr/indesign/using/paragraph-character-styles.html", fr:true}},
+    {titre:`Modifier le style Titre et observer la mise à jour`, app:ID,
+     etapes:[
+      `Double-cliquer sur le style "Titre" dans le panneau Styles de paragraphe pour ouvrir ses options.`,
+      `Modifier la police ou la couleur dans les paramètres de mise en forme des caractères de base.`,
+      `Valider par OK et observer que tous les titres du document changent instantanément.`,
+      `Annuler la modification (Ctrl/Cmd+Z) pour vérifier que la mise à jour est liée au style et non à chaque occurrence individuelle.`
+     ],
+     ressource:{t:`Principes de base des styles de paragraphe et de caractère`, u:"https://helpx.adobe.com/ch_fr/indesign/using/paragraph-character-styles.html", fr:true}},
+    {titre:`Créer un style graphique contour + ombre portée`, app:AI,
+     etapes:[
+      `Dessiner une forme et lui appliquer un contour de 2 pt dans le panneau Nuancier/Contour.`,
+      `Ajouter une ombre portée via Effet > Ombres et lueurs > Ombre portée, en réglant l'opacité et le flou.`,
+      `Ouvrir le panneau Styles graphiques (Fenêtre > Styles graphiques) et cliquer sur "Nouveau style graphique" pour enregistrer cette apparence.`,
+      `Nommer le style "Contour + ombre".`
+     ],
+     ressource:{t:`Utilisation des ombres portées, des lueurs et des contours progressifs dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/create-drop-shadow.html", fr:true}},
+    {titre:`Appliquer le style graphique à trois formes`, app:AI,
+     etapes:[
+      `Dessiner deux nouvelles formes distinctes sur le plan de travail.`,
+      `Sélectionner les trois formes ensemble avec l'outil Sélection.`,
+      `Cliquer sur le style "Contour + ombre" dans le panneau Styles graphiques pour l'appliquer aux trois formes simultanément.`,
+      `Modifier le style depuis le panneau et vérifier que les trois formes se mettent à jour ensemble.`
+     ],
+     ressource:{t:`Utilisation des styles graphiques dans Illustrator`, u:"https://helpx.adobe.com/ch_fr/illustrator/using/graphic-styles.html", fr:true}},
+    {titre:`Créer un style de calque réutilisable`, app:PS,
+     etapes:[
+      `Sélectionner un calque de texte et double-cliquer dessus pour ouvrir la boîte de dialogue Style de calque.`,
+      `Activer et régler un Contour et une Ombre portée.`,
+      `Cliquer sur "Nouveau style" dans la boîte de dialogue pour l'enregistrer dans le panneau Styles sous un nom explicite.`,
+      `Valider par OK.`
+     ],
+     ressource:{t:`Effets et styles de calque dans Adobe Photoshop`, u:"https://helpx.adobe.com/fr/photoshop/using/layer-effects-styles.html", fr:true}},
+    {titre:`Copier le style de calque sur plusieurs calques`, app:PS,
+     etapes:[
+      `Créer deux autres calques de texte dans le document.`,
+      `Faire un clic droit sur le calque source dans le panneau Calques et choisir "Copier le style de calque".`,
+      `Sélectionner les deux autres calques de texte (Maj+clic), faire un clic droit et choisir "Coller le style de calque".`,
+      `Vérifier que le contour et l'ombre portée apparaissent à l'identique sur les trois calques.`
+     ],
+     ressource:{t:`Copy and paste layer styles in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/copy-and-paste-layer-styles.html", fr:false}}
+   ]},
+
+{n:10, phase:"construction", app:ID,
+ title:`Texte et image&nbsp;: habillage et enchaînement`,
+ notion:`Faire cohabiter texte et image pose le même problème dans les trois logiciels&nbsp;: où s'arrête l'un, où commence l'autre. InDesign le résout par l'habillage et le chaînage de blocs&nbsp;; Illustrator par le texte captif dans une forme&nbsp;; Photoshop par la simple superposition de calques.`,
+ objectifs:[`Faire épouser à un bloc de texte le contour d'une image importée (habillage).`,`Enchaîner un texte entre deux blocs distincts pour qu'il continue automatiquement.`],
+ traversee:[
+   {app:ID, action:`Appliquer un habillage de texte autour d'une image détourée importée depuis Photoshop.`},
+   {app:AI, action:`Enfermer un paragraphe de texte à l'intérieur d'une forme libre avec l'outil de texte captif.`},
+   {app:PS, action:`Composer un visuel où texte et image détourée se chevauchent volontairement sur des calques distincts.`}
+ ],
+ eclairage:{title:`InDesign &mdash; blocs de texte enchaînés sur plusieurs pages`, text:`Un même flux de texte peut courir automatiquement à travers des blocs situés sur des pages différentes&nbsp;: couper un mot en page&nbsp;2 le fait réapparaître en page&nbsp;5 sans aucune intervention manuelle. Structurellement absent d'Illustrator et de Photoshop, pensés page par page ou calque par calque.`,
+   links:[
+     {t:`Liaison du texte entre plusieurs blocs dans Adobe InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/threading-text.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Habiller un texte autour d'une image détourée`, app:ID,
+     etapes:[
+      `Importer l'image détourée (fond transparent) exportée depuis Photoshop, au format PSD ou TIFF.`,
+      `La placer dans la page avec un bloc de texte à proximité.`,
+      `Sélectionner l'image et ouvrir le panneau Habillage du texte (Fenêtre > Habillage du texte).`,
+      `Cliquer sur "Habiller autour de la forme de l'objet" et choisir "Détection des contours" dans le menu Type de contour.`,
+      `Ajuster le décalage pour que le texte épouse précisément le contour détouré.`
+     ],
+     ressource:{t:`Création d'une maquette de magazine avec habillage de texte`, u:"https://helpx.adobe.com/fr/indesign/how-to/wrap-text-layout.html", fr:true}},
+    {titre:`Chaîner un texte entre deux blocs`, app:ID,
+     etapes:[
+      `Créer un premier bloc de texte contenant un paragraphe trop long pour y tenir entièrement.`,
+      `Créer un second bloc de texte vide ailleurs sur la page.`,
+      `Sélectionner le premier bloc avec l'outil Sélection et cliquer sur son port de sortie (petit carré rouge en bas à droite).`,
+      `Cliquer à l'intérieur du second bloc pour établir le lien.`,
+      `Vérifier que le texte excédentaire du premier bloc s'écoule automatiquement dans le second.`
+     ],
+     ressource:{t:`Thread text frames in InDesign`, u:"https://helpx.adobe.com/indesign/desktop/add-and-manage-text/add-and-import-text/thread-text-frames.html", fr:false}},
+    {titre:`Enfermer un paragraphe dans une forme avec le texte captif`, app:AI,
+     etapes:[
+      `Dessiner une forme libre fermée avec l'outil Plume.`,
+      `Sélectionner l'outil Texte captif dans le groupe d'outils Texte.`,
+      `Cliquer sur le contour de la forme pour la convertir en zone de texte.`,
+      `Saisir ou coller un paragraphe de texte, qui se répartit automatiquement à l'intérieur de la forme.`
+     ],
+     ressource:{t:`Ajout de texte et utilisation d'objets texte`, u:"https://helpx.adobe.com/be_fr/illustrator/using/creating-text.html", fr:true}},
+    {titre:`Régler les marges intérieures du texte captif`, app:AI,
+     etapes:[
+      `Sélectionner le texte captif créé à l'exercice précédent avec l'outil Sélection.`,
+      `Ouvrir Texte > Zone de texte > Options de zone de texte.`,
+      `Augmenter le décalage intérieur (marge) à 5 mm sur les quatre côtés.`,
+      `Valider et vérifier que le texte ne touche plus les bords de la forme.`
+     ],
+     ressource:{t:`Comment gérer les zones de texte dans Adobe Illustrator`, u:"https://helpx.adobe.com/ch_fr/illustrator/using/manage-text-area.html", fr:true}},
+    {titre:`Composer texte et image détourée sur des calques distincts`, app:PS,
+     etapes:[
+      `Détourer un sujet dans une photo avec l'outil Sélection rapide, puis copier ce sujet sur un nouveau calque.`,
+      `Créer un calque de texte séparé avec un titre court.`,
+      `Positionner le calque de texte pour qu'il chevauche volontairement le calque d'image détourée.`,
+      `Vérifier dans le panneau Calques que les deux éléments restent bien sur des calques distincts et modifiables indépendamment.`
+     ],
+     ressource:{t:`Isolate objects with the Quick Selection tool`, u:"https://helpx.adobe.com/photoshop/using/tool-techniques/quick-selection-tool.html", fr:false}},
+    {titre:`Ajuster l'ordre des calques et la superposition`, app:PS,
+     etapes:[
+      `Ouvrir le panneau Calques (Fenêtre > Calques) et vérifier l'empilement du calque image et du calque texte.`,
+      `Faire glisser le calque de texte au-dessus du calque image pour qu'il passe devant.`,
+      `Réduire l'opacité du calque texte à 80% pour accentuer le chevauchement volontaire avec l'image.`,
+      `Renommer chaque calque pour clarifier la structure du document.`
+     ],
+     ressource:{t:`Découverte des concepts de base sur les calques dans Photoshop`, u:"https://helpx.adobe.com/be_fr/photoshop/using/layer-basics.html", fr:true}}
+   ]},
+
+{n:11, phase:"production", app:ID,
+ title:`Grilles, repères et gabarits`,
+ notion:`Une grille structure l'espace avant même d'y placer du contenu&nbsp;; un gabarit applique cette structure automatiquement à toutes les pages qui l'utilisent. C'est le passage de la notion de calque (séance&nbsp;2) à l'échelle du document entier, plus lisible et généralisable en InDesign qu'ailleurs.`,
+ objectifs:[`Construire une grille de colonnes et aligner du contenu dessus.`,`Comprendre le principe de propagation d'un gabarit sur plusieurs pages.`],
+ traversee:[
+   {app:ID, action:`Définir une grille de 3 colonnes sur un gabarit de page et y placer texte et image de plusieurs pages filles.`},
+   {app:AI, action:`Aligner un ensemble d'objets sur une grille de repères pour composer une affiche structurée.`},
+   {app:PS, action:`Utiliser des repères pour composer une image respectant la règle des tiers.`}
+ ],
+ eclairage:{title:`InDesign &mdash; pages maîtresses (gabarits)`, text:`Un gabarit InDesign définit une fois pour toutes l'emplacement des éléments récurrents (pagination, colonnes, en-têtes) et les répercute sur toutes les pages qui l'utilisent&nbsp;: modifier le gabarit modifie instantanément un document de 80&nbsp;pages. Aucune notion équivalente à cette échelle dans Illustrator ou Photoshop.`,
+   links:[
+     {t:`Utilisation de gabarits dans InDesign`, u:"https://helpx.adobe.com/ca_fr/indesign/using/parent-pages.html", fr:true},
+     {t:`Numérotation des pages, chapitres et sections dans InDesign`, u:"https://helpx.adobe.com/ca_fr/indesign/using/numbering-pages-chapters-sections.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Grille de 3 colonnes sur un gabarit`, app:ID,
+     etapes:[
+      `Dans le panneau Pages, double-cliquer sur le gabarit « A-Gabarit » pour l'ouvrir.`,
+      `Ouvrir Mise en page > Marges et colonnes et régler le nombre de colonnes sur 3 avec une gouttière de 5 mm.`,
+      `Tracer un bloc de texte et un bloc image calés sur les repères de colonnes générés.`,
+      `Dans le panneau Pages, glisser le gabarit sur trois pages du document pour l'appliquer.`,
+      `Vérifier que le texte et l'image apparaissent identiquement sur les trois pages filles.`
+     ],
+     ressource:{t:`Création de documents`, u:"https://helpx.adobe.com/be_fr/indesign/using/creating-documents.html", fr:true}},
+    {titre:`Substitution locale d'un élément de gabarit`, app:ID,
+     etapes:[
+      `Sélectionner le gabarit appliqué dans le panneau Pages et ajouter un filet de pied de page.`,
+      `Passer sur une page fille et constater que le filet apparaît automatiquement.`,
+      `Maintenir Ctrl/Cmd+Maj et cliquer sur le filet pour créer une substitution locale.`,
+      `Modifier la couleur du filet substitué sur cette seule page.`,
+      `Vérifier sur une autre page fille que le filet du gabarit d'origine n'a pas changé.`
+     ],
+     ressource:{t:`Modifier, masquer et exporter des objets et des blocs`, u:"https://helpx.adobe.com/fr/indesign/using/frames-objects.html", fr:true}},
+    {titre:`Aligner des objets sur une grille de repères pour une affiche`, app:AI,
+     etapes:[
+      `Créer des repères avec Affichage > Repères > Créer des repères, en réglant lignes et colonnes.`,
+      `Activer Affichage > Repères > Magnétisme aux repères.`,
+      `Sélectionner tous les éléments de l'affiche et ouvrir Fenêtre > Alignement.`,
+      `Choisir « Aligner sur la zone de dessin » puis utiliser les boutons d'alignement horizontal et vertical.`,
+      `Utiliser « Répartir l'espacement » pour homogénéiser les écarts entre objets.`
+     ],
+     ressource:{t:`Déplacement, alignement et répartition d'objets`, u:"https://helpx.adobe.com/be_fr/illustrator/using/moving-aligning-distributing-objects.html", fr:true}},
+    {titre:`Structurer une affiche avec des repères de règle`, app:AI,
+     etapes:[
+      `Afficher les règles avec Affichage > Règles > Afficher les règles.`,
+      `Glisser plusieurs repères depuis les règles pour délimiter titre, image et texte.`,
+      `Positionner précisément un repère sélectionné via le panneau Transformation (X/Y).`,
+      `Verrouiller les repères avec Affichage > Repères > Verrouiller les repères.`,
+      `Composer l'affiche en calant chaque bloc sur les repères posés.`
+     ],
+     ressource:{t:`Understand rulers in Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/measure-and-align/grids-and-guides/about-rulers.html", fr:false}},
+    {titre:`Composer une image selon la règle des tiers`, app:PS,
+     etapes:[
+      `Créer deux repères horizontaux et deux verticaux au tiers/deux-tiers avec Affichage > Nouveau repère.`,
+      `Activer Affichage > Alignement sur > Repères.`,
+      `Avec l'outil Déplacement, caler le sujet principal sur une intersection des repères.`,
+      `Recadrer légèrement l'image avec l'outil Recadrage pour renforcer la composition.`,
+      `Enregistrer le résultat en conservant les repères comme vérification.`
+     ],
+     ressource:{t:`Grille et repères`, u:"https://helpx.adobe.com/lu_fr/photoshop/using/grid-guides.html", fr:true}},
+    {titre:`Grille personnalisée pour aligner plusieurs calques`, app:PS,
+     etapes:[
+      `Ouvrir Édition > Préférences > Repères, grille et tranches (Photoshop > Réglages sur Mac).`,
+      `Définir l'espacement principal de la grille et le nombre de subdivisions.`,
+      `Afficher la grille avec Affichage > Afficher > Grille puis activer le magnétisme.`,
+      `Sélectionner successivement plusieurs calques et les répartir sur les lignes de la grille avec l'outil Déplacement.`,
+      `Masquer la grille une fois l'alignement terminé.`
+     ],
+     ressource:{t:`Move guides in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/use-grids-measurement-guides/alignment-grids-guides/move-guides.html", fr:false}}
+   ]},
+
+{n:12, phase:"production", app:PS,
+ title:`Résolution et destination de sortie`,
+ notion:`Un même fichier pixel n'a pas de "bonne" résolution dans l'absolu&nbsp;: 72&nbsp;ppp suffit à l'écran, 300&nbsp;ppp est le minimum pour l'impression. Le vectoriel échappe entièrement à cette contrainte&nbsp; ; en InDesign, c'est la résolution effective de l'image importée (après mise à l'échelle) qui compte, pas celle du fichier d'origine.`,
+ objectifs:[`Calculer et régler la résolution d'une image selon sa destination (écran ou impression).`,`Comprendre pourquoi ré-échantillonner une image inflate ou dégrade son contenu.`],
+ traversee:[
+   {app:PS, action:`Réduire puis tenter d'agrandir une image en observant la perte de détail liée au ré-échantillonnage.`},
+   {app:AI, action:`Placer la même image dans un document vectoriel et constater que seule l'image (pas le document) est concernée par la résolution.`},
+   {app:ID, action:`Importer l'image dans une mise en page et vérifier sa résolution effective une fois mise à l'échelle dans le cadre.`}
+ ],
+ eclairage:{title:`Photoshop &mdash; Camera Raw, flux non destructif dès la capture`, text:`Camera Raw traite l'image avant même sa "révélation" en pixels définitifs&nbsp;: tous les réglages restent modifiables indéfiniment, contrairement à un ajustement appliqué directement sur des pixels. Un flux de travail propre à la photographie, sans équivalent dans les deux autres logiciels.`,
+   links:[
+     {t:`Présentation de Camera Raw`, u:"https://helpx.adobe.com/fr/camera-raw/desktop/get-started/overview-and-setup/introduction-camera-raw.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Réduire puis agrandir une image et observer la perte de détail`, app:PS,
+     etapes:[
+      `Ouvrir l'image et noter sa résolution via Image > Taille de l'image.`,
+      `Réduire les dimensions de moitié avec Rééchantillonnage activé, puis valider.`,
+      `Rouvrir Image > Taille de l'image et remonter les dimensions à leur valeur d'origine.`,
+      `Zoomer à 100&nbsp;% pour comparer la netteté avec une copie non modifiée de l'image.`,
+      `Noter les zones de flou ou de pixellisation apparues après le second rééchantillonnage.`
+     ],
+     ressource:{t:`Taille et résolution des images Photoshop`, u:"https://helpx.adobe.com/fr/photoshop/key-concepts/resample.html", fr:true}},
+    {titre:`Régler la résolution selon la destination écran ou impression`, app:PS,
+     etapes:[
+      `Dupliquer l'image source pour préparer deux versions.`,
+      `Sur la première, régler Image > Taille de l'image à 72 ppp sans rééchantillonner, pour l'écran.`,
+      `Sur la seconde, régler la résolution à 300 ppp en décochant Rééchantillonnage pour conserver les pixels d'origine.`,
+      `Comparer les dimensions en centimètres affichées pour chaque version.`,
+      `Exporter chaque version au format adapté (JPEG pour le web, TIFF pour l'impression).`
+     ],
+     ressource:{t:`Définir la taille et la résolution des images dans Photoshop`, u:"https://helpx.adobe.com/fr/photoshop/using/image-size-resolution.html", fr:true}},
+    {titre:`Placer une image bitmap dans un document vectoriel`, app:AI,
+     etapes:[
+      `Créer un nouveau document Illustrator puis Fichier > Importer l'image bitmap.`,
+      `Agrandir le cadre de l'image importée avec l'outil Sélection.`,
+      `Vérifier dans Fenêtre > Liens la résolution effective de l'image après agrandissement.`,
+      `Dessiner à côté un tracé vectoriel simple et l'agrandir à la même échelle.`,
+      `Comparer la perte de netteté de l'image bitmap face à la netteté conservée du tracé vectoriel.`
+     ],
+     ressource:{t:`Importation d'images bitmap dans Illustrator`, u:"https://helpx.adobe.com/illustrator/using/importing-bitmap-images.html", fr:false}},
+    {titre:`Vérifier la résolution effective via le panneau Liens`, app:AI,
+     etapes:[
+      `Sélectionner l'image placée dans le document.`,
+      `Ouvrir Fenêtre > Liens et double-cliquer sur l'entrée correspondante.`,
+      `Relever la résolution effective en ppp indiquée dans les informations du lien.`,
+      `Redimensionner l'image à 50&nbsp;% puis à 150&nbsp;% et noter l'évolution de la résolution effective.`,
+      `Identifier le seuil à partir duquel la résolution effective descend sous 300 ppp.`
+     ],
+     ressource:{t:`Links information in Illustrator`, u:"https://helpx.adobe.com/illustrator/using/links-info.html", fr:false}},
+    {titre:`Importer une image et vérifier sa résolution effective après mise à l'échelle`, app:ID,
+     etapes:[
+      `Fichier > Importer l'image dans un nouveau bloc.`,
+      `Ouvrir le panneau Liens et déplier les informations du lien sélectionné.`,
+      `Relever la résolution effective initiale en ppp.`,
+      `Agrandir le cadre de l'image à 130&nbsp;% avec l'outil Sélection en maintenant Ctrl/Cmd+Maj.`,
+      `Revérifier la résolution effective dans le panneau Liens et constater sa diminution proportionnelle.`
+     ],
+     ressource:{t:`Copie et insertion d'images`, u:"https://helpx.adobe.com/fr/indesign/using/placing-graphics.html", fr:true}},
+    {titre:`Comparer le poids d'un document en liens et en images intégrées`, app:ID,
+     etapes:[
+      `Enregistrer le document avec les images restées liées et noter le poids du fichier .indd.`,
+      `Sélectionner toutes les images dans le panneau Liens et choisir Incorporer le lien.`,
+      `Enregistrer une copie du document sous un autre nom.`,
+      `Comparer le poids des deux fichiers .indd dans l'explorateur de fichiers.`,
+      `Formuler une conclusion sur le compromis poids/portabilité entre liens et intégration.`
+     ],
+     ressource:{t:`Gestion des graphismes liés ou incorporés dans Adobe InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/using/graphics-links.html", fr:true}}
+   ]},
+
+{n:13, phase:"production", app:PS,
+ title:`Interopérabilité&nbsp;: liens et objets intégrés`,
+ notion:`Un fichier importé peut être copié dans le document (intégré, autonome mais lourd) ou simplement référencé (lié, léger mais dépendant du fichier source). Ce choix &mdash; et sa gestion &mdash; est au cœur du flux de production Adobe, dans les trois logiciels.`,
+ objectifs:[`Distinguer fichier lié et fichier intégré, et leurs implications pratiques.`,`Mettre à jour un lien après modification du fichier source.`],
+ traversee:[
+   {app:ID, action:`Placer une image liée, la modifier dans Photoshop, puis mettre à jour le lien depuis le panneau Liens InDesign.`},
+   {app:AI, action:`Placer un fichier Photoshop en lien dans Illustrator et observer sa mise à jour après modification externe.`},
+   {app:ID, action:`Comparer le poids d'un document avec images liées contre le même document avec images intégrées.`}
+ ],
+ eclairage:{title:`Photoshop &mdash; objets dynamiques (Smart Objects)`, text:`Un objet dynamique encapsule un contenu (y compris un fichier Illustrator entier) tout en gardant la possibilité de le remodifier à sa source&nbsp;; associé à un filtre dynamique, un effet appliqué reste modifiable indéfiniment. Une forme de non-destruction que ni Illustrator ni InDesign n'appliquent aux effets de la même façon.`,
+   links:[
+     {t:`Objets dynamiques - aperçu et avantages`, u:"https://helpx.adobe.com/fr/photoshop/desktop/create-manage-layers/smart-objects/smart-objects-overview-and-benefits.html", fr:true},
+     {t:`Create linked Smart Objects in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/create-linked-smart-objects.html", fr:false}
+   ]},
+ exercices:[
+    {titre:`Placer une image liée, la modifier dans Photoshop, mettre à jour le lien`, app:ID,
+     etapes:[
+      `Fichier > Importer et placer une image liée dans un bloc InDesign.`,
+      `Ouvrir cette image dans Photoshop via un double-clic depuis le panneau Liens (Modifier l'original).`,
+      `Appliquer une modification visible (ex. réglage Teinte/Saturation) puis enregistrer le fichier.`,
+      `Revenir dans InDesign&nbsp;: une icône d'alerte apparaît dans le panneau Liens en regard du fichier modifié.`,
+      `Sélectionner le lien et cliquer sur le bouton Mettre à jour le lien dans le panneau Liens.`
+     ],
+     ressource:{t:`Gestion des liens de créations graphiques`, u:"https://helpx.adobe.com/indesign/desktop/add-graphics-and-media/manage-links/links-panel-overview.html", fr:false}},
+    {titre:`Synchroniser un lien modifié en dehors d'InDesign`, app:ID,
+     etapes:[
+      `Ouvrir le panneau Liens et repérer l'état du lien source.`,
+      `Modifier le fichier source dans son application native puis l'enregistrer.`,
+      `Revenir dans InDesign et observer l'icône d'avertissement de lien modifié.`,
+      `Utiliser le menu contextuel du panneau Liens > Mettre à jour le lien.`,
+      `Vérifier dans le bloc du document que le contenu affiché correspond à la nouvelle version du fichier.`
+     ],
+     ressource:{t:`Utilisation des fichiers gérés dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/managed-files.html", fr:true}},
+    {titre:`Comparer le poids d'un document avec images liées ou intégrées`, app:ID,
+     etapes:[
+      `Enregistrer le document avec toutes les images en liens et relever son poids.`,
+      `Sélectionner les liens dans le panneau et choisir Incorporer le lien.`,
+      `Enregistrer sous un nouveau nom et relever le nouveau poids.`,
+      `Comparer les deux poids de fichier et noter le facteur multiplicatif.`,
+      `Conclure sur le cas d'usage préférable (envoi à un imprimeur vs archivage autonome).`
+     ],
+     ressource:{t:`Embed or unembed images in InDesign`, u:"https://helpx.adobe.com/indesign/desktop/add-graphics-and-media/manage-links/embed-unembed-images.html", fr:false}},
+    {titre:`Placer un fichier Photoshop en lien et observer sa mise à jour`, app:AI,
+     etapes:[
+      `Fichier > Placer, cocher Lié, sélectionner le fichier PSD.`,
+      `Modifier ce fichier dans Photoshop (ex. ajouter un calque de réglage) puis l'enregistrer.`,
+      `Revenir dans Illustrator et ouvrir Fenêtre > Liens&nbsp;: une icône signale le fichier modifié.`,
+      `Sélectionner le lien et cliquer sur Mettre à jour le lien dans le panneau Liens.`,
+      `Vérifier que l'aperçu dans le document reflète la modification effectuée dans Photoshop.`
+     ],
+     ressource:{t:`Place linked Photoshop documents in Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/add-and-import-files/import-from-other-apps/place-linked-photoshop-documents.html", fr:false}},
+    {titre:`Relier un fichier lié manquant`, app:AI,
+     etapes:[
+      `Déplacer le fichier source hors de son dossier d'origine pour simuler un lien manquant.`,
+      `Ouvrir le document Illustrator et observer l'icône d'alerte dans le panneau Liens.`,
+      `Sélectionner le lien manquant et choisir Relier dans le panneau Liens.`,
+      `Naviguer jusqu'au nouvel emplacement du fichier et valider.`,
+      `Vérifier que l'aperçu du document est de nouveau correct.`
+     ],
+     ressource:{t:`Relink, replace or update linked files in Adobe Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/add-and-import-files/manage-linked-and-embedded-files/relink-replace-or-update-linked-files.html", fr:false}},
+    {titre:`Comparer un fichier incorporé et un fichier lié dans le panneau Liens`, app:AI,
+     etapes:[
+      `Placer une première image en lien (option Lié cochée) et une seconde en l'incorporant (option décochée).`,
+      `Ouvrir Fenêtre > Liens et repérer les icônes distinctes des deux types d'objets.`,
+      `Modifier le fichier source de l'image liée en externe puis constater l'alerte, absente pour l'image incorporée.`,
+      `Sélectionner l'image incorporée et utiliser Modifier l'original pour l'ouvrir dans son application source.`,
+      `Comparer le poids du document selon que l'image est incorporée ou liée.`
+     ],
+     ressource:{t:`Gérer les fichiers liés et incorporés`, u:"https://helpx.adobe.com/illustrator/using/manage-linked-and-embedded-files.html", fr:false}}
+   ]},
+
+{n:14, phase:"production", app:ID,
+ title:`Effets non destructifs&nbsp;: le principe de réversibilité`,
+ notion:`Un effet non destructif reste modifiable ou supprimable sans perte&nbsp;: filtre dynamique en Photoshop, attribut d'apparence en Illustrator, style d'objet en InDesign. C'est la généralisation, à toute une famille d'opérations, du principe déjà vu avec les calques de réglage (séance&nbsp;2) et les objets dynamiques (séance&nbsp;13).`,
+ objectifs:[`Appliquer un effet réversible et le modifier après coup sans repartir de zéro.`,`Identifier, face à une opération donnée, si elle est destructive ou non dans le logiciel utilisé.`],
+ traversee:[
+   {app:PS, action:`Appliquer un filtre dynamique (Flou gaussien) sur un objet dynamique et le régler à nouveau après application.`},
+   {app:AI, action:`Empiler plusieurs attributs d'apparence (deux contours, un remplissage, une ombre) sur un même objet et les réordonner.`},
+   {app:ID, action:`Créer un style d'objet combinant fond, contour et ombre portée, applicable à plusieurs cadres d'un coup.`}
+ ],
+ eclairage:{title:`InDesign &mdash; styles d'objets`, text:`Un style d'objet combine en une seule définition remplissage, contour, habillage de texte et effets, applicable et modifiable globalement sur tous les cadres qui l'utilisent &mdash; l'équivalent, à l'échelle d'un objet de mise en page entier, de ce que le panneau Apparence fait objet par objet dans Illustrator.`,
+   links:[
+     {t:`Utilisation des styles d'objet pour mettre en forme les objets dans un document InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/object-styles.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Appliquer un filtre dynamique Flou gaussien et le régler à nouveau`, app:PS,
+     etapes:[
+      `Sélectionner le calque puis Filtre > Convertir pour les filtres dynamiques.`,
+      `Appliquer Filtre > Flou > Flou gaussien et régler le rayon.`,
+      `Valider&nbsp;: le filtre apparaît sous le calque dans le panneau Calques, avec son masque.`,
+      `Double-cliquer sur « Flou gaussien » sous le calque pour rouvrir la boîte de dialogue.`,
+      `Modifier le rayon et valider pour vérifier la mise à jour non destructive du rendu.`
+     ],
+     ressource:{t:`Apply Smart Filters`, u:"https://helpx.adobe.com/photoshop/using/applying-smart-filters.html", fr:false}},
+    {titre:`Masquer partiellement un filtre dynamique via son masque`, app:PS,
+     etapes:[
+      `Sur le calque contenant le filtre dynamique, sélectionner la vignette de masque du filtre.`,
+      `Choisir l'outil Pinceau, couleur noire, et peindre sur une zone de l'image.`,
+      `Constater que le flou disparaît localement dans la zone peinte.`,
+      `Repasser en blanc pour rétablir partiellement l'effet.`,
+      `Vérifier dans le panneau Calques que le filtre reste modifiable à tout moment.`
+     ],
+     ressource:{t:`Objets dynamiques - aperçu et avantages`, u:"https://helpx.adobe.com/fr/photoshop/desktop/create-manage-layers/smart-objects/smart-objects-overview-and-benefits.html", fr:true}},
+    {titre:`Empiler plusieurs attributs d'apparence et les réordonner`, app:AI,
+     etapes:[
+      `Sélectionner l'objet et ouvrir Fenêtre > Apparence.`,
+      `Dans le menu du panneau, choisir Ajouter un nouveau contour deux fois pour obtenir deux contours distincts.`,
+      `Régler l'épaisseur et la couleur de chaque contour ainsi que celles du fond.`,
+      `Glisser un contour au-dessus de l'autre dans la liste du panneau pour changer l'ordre d'empilement.`,
+      `Observer le changement visuel résultant du nouvel ordre des attributs.`
+     ],
+     ressource:{t:`Modification des attributs d'aspect dans Illustrator`, u:"https://helpx.adobe.com/illustrator/using/appearance-attributes.html", fr:false}},
+    {titre:`Ajouter une ombre portée à l'empilement d'attributs`, app:AI,
+     etapes:[
+      `Avec l'objet sélectionné, ouvrir Effet > Styles graphiques > Ombre portée.`,
+      `Régler le mode de fusion, l'opacité, le décalage et le flou de l'ombre.`,
+      `Valider et vérifier l'ajout de l'ombre dans la liste du panneau Apparence.`,
+      `Double-cliquer sur l'ombre dans le panneau Apparence pour rouvrir ses réglages et les modifier.`,
+      `Enregistrer l'ensemble comme style graphique via le panneau Styles graphiques pour le réutiliser.`
+     ],
+     ressource:{t:`Utilisation des ombres portées, des lueurs et des contours progressifs dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/create-drop-shadow.html", fr:true}},
+    {titre:`Créer un style d'objet combinant fond, contour et ombre portée`, app:ID,
+     etapes:[
+      `Ouvrir Fenêtre > Styles > Styles d'objets et cliquer sur Nouveau style d'objet.`,
+      `Dans la section Fond, définir une couleur de remplissage.`,
+      `Dans la section Contour, régler l'épaisseur et la couleur du filet.`,
+      `Dans la section Effets, ajouter une Ombre portée avec décalage et flou.`,
+      `Nommer le style et valider.`
+     ],
+     ressource:{t:`Utilisation des styles d'objet pour mettre en forme les objets dans un document InDesign`, u:"https://helpx.adobe.com/ca_fr/indesign/using/object-styles.html", fr:true}},
+    {titre:`Appliquer et modifier globalement un style d'objet sur plusieurs cadres`, app:ID,
+     etapes:[
+      `Sélectionner plusieurs blocs du document et cliquer sur le style d'objet créé dans le panneau Styles d'objets.`,
+      `Vérifier que fond, contour et ombre s'appliquent uniformément à tous les blocs sélectionnés.`,
+      `Double-cliquer sur le style dans le panneau pour rouvrir ses options.`,
+      `Modifier la couleur de fond du style et valider.`,
+      `Constater que tous les blocs utilisant ce style sont mis à jour simultanément.`
+     ],
+     ressource:{t:`About object styles in InDesign`, u:"https://helpx.adobe.com/indesign/desktop/add-graphics-and-media/manage-object-styles/about-object-styles.html", fr:false}}
+   ]},
+
+{n:15, phase:"production", app:AI,
+ title:`La passerelle raster&nbsp;/&nbsp;vecteur`,
+ notion:`On peut faire passer une image d'un monde à l'autre&nbsp;: vectoriser une photo (Image Trace) ou sélectionner intelligemment un sujet pixellisé grâce à l'intelligence artificielle embarquée. La séance&nbsp;1 posait la distinction&nbsp;; celle-ci en fait le pont, dans les deux sens.`,
+ objectifs:[`Vectoriser une image matricielle et régler la précision du résultat.`,`Utiliser une sélection automatique assistée par IA et en évaluer les limites.`],
+ traversee:[
+   {app:AI, action:`Vectoriser une photo avec Image Trace et ajuster le nombre de couleurs et le seuil pour un résultat exploitable.`},
+   {app:PS, action:`Détourer automatiquement un sujet avec la sélection du sujet assistée par IA, et corriger manuellement les erreurs.`},
+   {app:ID, action:`Assembler dans une même page le résultat vectorisé et une photo restée matricielle, pour comparer leur rendu à l'impression.`}
+ ],
+ eclairage:{title:`Illustrator &mdash; réglages avancés d'Image Trace`, text:`Au-delà des préréglages, Image Trace expose des curseurs fins (seuil de netteté, nombre de couleurs, lissage des courbes, taille minimale des zones) qui déterminent si le résultat reste exploitable en production ou seulement décoratif. Aucune fonction équivalente de vectorisation automatique n'existe dans Photoshop ou InDesign.`,
+   links:[
+     {t:`Optimize results using Image Trace`, u:"https://helpx.adobe.com/illustrator/using/image-trace-results-optimization.html", fr:false}
+   ]},
+ exercices:[
+    {titre:`Vectoriser une photo avec Image Trace et régler couleurs/seuil`, app:AI,
+     etapes:[
+      `Sélectionner l'image placée puis ouvrir Fenêtre > Vectorisation de l'image.`,
+      `Choisir un préréglage (ex. Photo haute fidélité) dans le menu Prédéfini.`,
+      `Passer en Mode Couleur et régler le nombre de couleurs souhaité.`,
+      `Ajuster le curseur Seuil pour un résultat en noir et blanc si besoin, ou le Bruit pour réduire les détails parasites.`,
+      `Cliquer sur Développer pour convertir le résultat en tracés vectoriels modifiables.`
+     ],
+     ressource:{t:`Options du panneau Vectorisation de l'image dans Illustrator`, u:"https://helpx.adobe.com/illustrator/desktop/manage-objects/traces-mockups-symbols/image-trace-panel-options.html", fr:false}},
+    {titre:`Appliquer et ajuster un paramètre prédéfini de vectorisation`, app:AI,
+     etapes:[
+      `Sélectionner l'image et ouvrir le menu déroulant Vectorisation de l'image dans la barre Propriétés.`,
+      `Choisir le préréglage « Croquis technique » ou « Illustration 6 couleurs ».`,
+      `Ouvrir le panneau complet pour affiner Seuil et Taille min. de tracé.`,
+      `Modifier « Lisser les courbes » pour simplifier les tracés obtenus.`,
+      `Comparer le nombre d'ancrages du tracé avant et après ajustement du lissage.`
+     ],
+     ressource:{t:`Paramètres prédéfinis de vectorisation de l'image`, u:"https://helpx.adobe.com/illustrator/using/image-trace-presets.html", fr:false}},
+    {titre:`Détourer un sujet avec la sélection assistée par IA`, app:PS,
+     etapes:[
+      `Sélectionner l'outil Sélection rapide puis cliquer sur Sélectionner le sujet dans la barre d'options.`,
+      `Observer la sélection générée automatiquement autour du sujet principal.`,
+      `Affiner les bords avec Sélectionner et masquer, en réglant Décontaminer les couleurs.`,
+      `Corriger manuellement les zones mal détourées avec l'outil Sélection rapide en mode Ajouter/Soustraire.`,
+      `Copier le sujet détouré sur un nouveau calque via Ctrl/Cmd+J.`
+     ],
+     ressource:{t:`Détecter et sélectionner des sujets dans Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/detect-subject-using-select-subject.html", fr:false}},
+    {titre:`Évaluer et corriger les limites d'une sélection automatique`, app:PS,
+     etapes:[
+      `Appliquer Sélectionner le sujet sur une image à contours complexes (cheveux, transparence).`,
+      `Ouvrir Sélectionner et masquer et activer l'outil Peaufiner le bord sur les zones fines.`,
+      `Observer les erreurs de détourage (zones oubliées ou incluses à tort).`,
+      `Corriger avec l'outil Pinceau de sélection rapide en alternant Ajouter et Soustraire.`,
+      `Exporter la sélection corrigée sous forme de calque de masque et comparer au résultat automatique initial.`
+     ],
+     ressource:{t:`Sélection d'un sujet dans vos images`, u:"https://helpx.adobe.com/photoshop/using/quick-actions/select-subject.html", fr:false}},
+    {titre:`Assembler résultat vectorisé et photo matricielle sur une même page`, app:ID,
+     etapes:[
+      `Enregistrer le résultat vectorisé d'Illustrator au format AI ou EPS.`,
+      `Dans InDesign, Fichier > Importer ce fichier vectoriel dans un premier bloc.`,
+      `Importer ensuite la photo restée matricielle dans un second bloc de la même page.`,
+      `Mettre à l'échelle chaque élément en vérifiant la résolution effective de la photo dans le panneau Liens.`,
+      `Composer la page en équilibrant la zone vectorielle et la zone photographique.`
+     ],
+     ressource:{t:`Copie et insertion d'images`, u:"https://helpx.adobe.com/fr/indesign/using/placing-graphics.html", fr:true}},
+    {titre:`Contrôler la cohérence des formats avant l'export final`, app:ID,
+     etapes:[
+      `Ouvrir Fenêtre > Liens et vérifier le statut de chaque fichier placé (vectoriel et matriciel).`,
+      `Lancer le contrôle en amont via Fenêtre > Sortie > Contrôle en amont.`,
+      `Identifier les alertes de résolution insuffisante sur la photo matricielle.`,
+      `Corriger en revenant sur le fichier source si la résolution effective est trop faible.`,
+      `Exporter la page en PDF une fois toutes les alertes du Contrôle en amont résolues.`
+     ],
+     ressource:{t:`Contrôle des fichiers dans InDesign en amont de l'envoi à un prestataire de services`, u:"https://helpx.adobe.com/fr/indesign/using/preflighting-files-handoff.html", fr:true}}
+   ]},
+
+{n:16, phase:"specialisation", app:PS,
+ title:`Retouche&nbsp;: correction tonale et colorimétrique`,
+ notion:`Corriger la lumière et la couleur d'une image obéit à une logique commune (courbe de réponse, plage de valeurs), mais Photoshop en fait un terrain de spécialisation profond&nbsp;: Illustrator recolore des aplats vectoriels, pas des dégradés photographiques continus.`,
+ objectifs:[`Utiliser Courbes et Niveaux pour corriger l'exposition et le contraste d'une image.`,`Distinguer correction tonale (photo) et recoloration d'aplats (vecteur).`],
+ traversee:[
+   {app:PS, action:`Corriger l'exposition et le contraste d'une photo terne avec un calque de réglage Courbes.`},
+   {app:AI, action:`Recolorer entièrement une illustration vectorielle avec l'outil Recolorier les objets, sans repasser objet par objet.`},
+   {app:ID, action:`Comparer visuellement l'image corrigée et l'illustration recolorée assemblées dans une même page.`}
+ ],
+ eclairage:{title:`Photoshop &mdash; remplacement de ciel assisté par IA`, text:`Le remplacement de ciel détecte automatiquement la zone de ciel, la remplace par une bibliothèque de préréglages et recalcule l'éclairage du premier plan en conséquence &mdash; une automatisation contextuelle profonde, propre à la retouche photo, sans équivalent en vectoriel.`,
+   links:[
+     {t:`Remplacement du ciel sur vos photos`, u:"https://helpx.adobe.com/ca_fr/photoshop/using/replace-sky.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Corriger l'exposition avec un calque de réglage Courbes`, app:PS,
+     etapes:[
+      `Ouvrir la photo terne fournie dans Photoshop.`,
+      `Dans le panneau Calques, cliquer sur l'icône Créer un calque de remplissage ou de réglage puis choisir Courbes.`,
+      `Dans le panneau Propriétés, placer un point au milieu de la courbe et le tirer légèrement vers le haut pour éclaircir les tons moyens.`,
+      `Ajouter un point dans les hautes lumières et un point dans les ombres pour former une légère courbe en S et renforcer le contraste.`,
+      `Comparer avant/après en activant et désactivant l'œil du calque de réglage Courbes dans le panneau Calques.`,
+      `Aplatir l'image via Calque > Aplatir l'image puis enregistrer le fichier.`
+     ],
+     ressource:{t:`Using the Curves adjustment in Photoshop`, u:"https://helpx.adobe.com/photoshop/using/curves-adjustment.html", fr:false}},
+    {titre:`Corriger le contraste avec un calque de réglage Niveaux`, app:PS,
+     etapes:[
+      `Dupliquer l'image terne utilisée pour l'exercice précédent via Image > Dupliquer.`,
+      `Dans le panneau Calques, ajouter un calque de réglage Niveaux via l'icône Créer un calque de remplissage ou de réglage.`,
+      `Dans le panneau Propriétés, observer l'histogramme et rapprocher les curseurs noir et blanc des bords du nuage de points.`,
+      `Déplacer le curseur gris central pour ajuster la luminosité générale des tons moyens.`,
+      `Exporter le résultat en JPEG via Fichier > Exporter > Exporter sous.`
+     ],
+     ressource:{t:`Use the Photoshop Levels adjustment`, u:"https://helpx.adobe.com/photoshop/using/levels-adjustment.html", fr:false}},
+    {titre:`Recolorier entièrement une illustration vectorielle`, app:AI,
+     etapes:[
+      `Ouvrir une illustration vectorielle comportant plusieurs aplats de couleur.`,
+      `Sélectionner tous les objets avec Édition > Tout sélectionner.`,
+      `Cliquer sur Recolorier les objets dans la barre de propriétés pour ouvrir la boîte de dialogue.`,
+      `Dans l'onglet Modifier, faire glisser la roue chromatique pour changer l'ensemble des teintes en conservant les proportions entre couleurs.`,
+      `Choisir une Harmonie de couleurs prédéfinie dans le menu déroulant du même onglet puis valider.`
+     ],
+     ressource:{t:`Redéfinition des couleurs d'une illustration`, u:"https://helpx.adobe.com/be_fr/illustrator/using/recolor-artwork.html", fr:true}},
+    {titre:`Construire une harmonie de couleurs avec le Guide de couleurs`, app:AI,
+     etapes:[
+      `Sélectionner un objet de référence dans l'illustration recoloriée.`,
+      `Ouvrir le panneau Guide de couleurs via Fenêtre > Couleur > Guide de couleurs.`,
+      `Choisir une règle d'harmonie (Complémentaire, Analogue, etc.) dans le menu du panneau.`,
+      `Cliquer sur Enregistrer le groupe de couleurs dans le panneau Nuancier pour créer un groupe de couleurs nommé.`,
+      `Appliquer les nuances de ce nouveau groupe à d'autres objets de l'illustration en les sélectionnant puis en cliquant sur chaque nuance.`
+     ],
+     ressource:{t:`Utilisation de groupes de couleurs (harmonies) dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/color-groups-harmonies.html", fr:true}},
+    {titre:`Assembler l'image corrigée et l'illustration recoloriée sur une même page`, app:ID,
+     etapes:[
+      `Créer un nouveau document InDesign avec deux blocs image côte à côte.`,
+      `Utiliser Fichier > Importer pour placer l'image Photoshop corrigée dans le premier bloc.`,
+      `Importer de la même façon l'illustration Illustrator recoloriée dans le second bloc, sur la même page.`,
+      `Ajuster la taille des blocs avec l'outil Sélection pour aligner visuellement les deux éléments.`,
+      `Comparer à l'écran le rendu des couleurs de la photo corrigée et de l'illustration recoloriée.`
+     ],
+     ressource:{t:`Copie et insertion d'images`, u:"https://helpx.adobe.com/fr/indesign/using/placing-graphics.html", fr:true}},
+    {titre:`Vérifier la résolution et le profil colorimétrique des fichiers placés`, app:ID,
+     etapes:[
+      `Dans le document assemblé, ouvrir le panneau Liens via Fenêtre > Liens.`,
+      `Sélectionner l'image Photoshop placée dans la liste pour afficher ses informations dans la zone Infos sur le lien.`,
+      `Relever la résolution effective et le profil colorimétrique indiqués.`,
+      `Faire de même pour le fichier Illustrator recolorié et comparer les deux profils affichés.`,
+      `Si un lien signale une modification, cliquer sur le bouton Mettre à jour le lien dans le panneau.`
+     ],
+     ressource:{t:`Gestion des graphismes liés ou incorporés dans Adobe InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/using/graphics-links.html", fr:true}}
+   ]},
+
+{n:17, phase:"specialisation", app:ID,
+ title:`Hiérarchie visuelle à l'échelle du document`,
+ notion:`Équilibre, contraste, point focal&nbsp;: des principes de composition qui s'appliquent aussi bien à une seule page qu'à un document entier de plusieurs dizaines de pages &mdash; mais qui, à cette échelle, réclament des outils pensés pour la cohérence globale plutôt que pour l'objet isolé.`,
+ objectifs:[`Identifier le point focal et la hiérarchie de lecture d'une composition existante.`,`Faire varier volontairement la visibilité d'un même calque à travers plusieurs pages d'un document.`],
+ traversee:[
+   {app:ID, action:`Sur un document de 4 pages, faire varier la visibilité d'un calque de gabarit page par page pour composer une progression visuelle.`},
+   {app:AI, action:`Aligner et distribuer une composition complexe de 8 objets pour construire une hiérarchie de lecture claire.`},
+   {app:PS, action:`Retravailler le contraste et la netteté sélective d'une image pour renforcer son point focal.`}
+ ],
+ eclairage:{title:`InDesign &mdash; calques traversant plusieurs pages`, text:`Un calque InDesign n'est pas propre à une page&nbsp;: il traverse tout le document (ou tout un gabarit), et sa visibilité peut être activée ou désactivée indépendamment sur chaque page ou spread, permettant par exemple de composer plusieurs versions linguistiques d'un même document sans dupliquer la mise en page.`,
+   links:[
+     {t:`Créer et utiliser des calques dans Adobe InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/layers.html", fr:true},
+     {t:`Associer, verrouiller et dupliquer des objets dans InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/using/grouping-locking-duplicating-objects.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Piloter la visibilité d'un calque de gabarit page par page`, app:ID,
+     etapes:[
+      `Créer un document InDesign de 4 pages et ouvrir le panneau Calques via Fenêtre > Calques.`,
+      `Créer un calque nommé « Gabarit visuel » et y placer un élément graphique commun aux 4 pages.`,
+      `Se placer sur la page 1 et, dans le panneau Calques, désactiver l'œil de visibilité pour ce calque sur cette planche.`,
+      `Répéter l'opération page par page en alternant visibilité activée et désactivée selon l'effet recherché.`,
+      `Vérifier en mode Aperçu (Affichage > Écran > Aperçu) que la visibilité varie bien d'une page à l'autre.`
+     ],
+     ressource:{t:`Créer et utiliser des calques dans Adobe InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/layers.html", fr:true}},
+    {titre:`Dupliquer un calque pour créer une variante de gabarit`, app:ID,
+     etapes:[
+      `Sélectionner le calque « Gabarit visuel » dans le panneau Calques.`,
+      `Dans le menu du panneau Calques, choisir Dupliquer le calque.`,
+      `Verrouiller le calque d'origine à l'aide de l'icône de verrou pour éviter toute modification accidentelle.`,
+      `Modifier les objets du calque dupliqué pour créer une seconde version de la hiérarchie visuelle.`,
+      `Comparer les deux versions en activant l'une puis l'autre via l'œil de visibilité.`
+     ],
+     ressource:{t:`Associer, verrouiller et dupliquer des objets dans InDesign`, u:"https://helpx.adobe.com/be_fr/indesign/using/grouping-locking-duplicating-objects.html", fr:true}},
+    {titre:`Construire une hiérarchie de lecture par alignement et distribution`, app:AI,
+     etapes:[
+      `Placer les 8 objets de la composition de façon désordonnée sur le plan de travail.`,
+      `Sélectionner tous les objets puis ouvrir le panneau Alignement via Fenêtre > Alignement.`,
+      `Choisir Aligner sur le plan de travail dans le menu du panneau, puis appliquer un alignement horizontal centré aux objets principaux.`,
+      `Sélectionner les objets secondaires et utiliser les boutons Distribuer l'espacement pour créer un rythme régulier autour du point focal.`,
+      `Agrandir légèrement l'objet destiné à devenir le point d'entrée visuel principal.`
+     ],
+     ressource:{t:`Déplacement, alignement et répartition d'objets dans Illustrator`, u:"https://helpx.adobe.com/ch_fr/illustrator/using/moving-aligning-distributing-objects.html", fr:true}},
+    {titre:`Affiner la hiérarchie par l'espacement et la superposition`, app:AI,
+     etapes:[
+      `Dans la même composition, sélectionner un sous-groupe de trois objets secondaires.`,
+      `Dans le panneau Alignement, saisir une valeur de Distribuer l'espacement personnalisée pour resserrer leur lien visuel.`,
+      `Utiliser Objet > Disposition > Mettre au premier plan pour faire ressortir le point focal choisi.`,
+      `Reculer les objets périphériques d'un cran avec Objet > Disposition > Reculer d'un plan.`,
+      `Vérifier la lecture globale en réduisant temporairement l'opacité des objets secondaires dans le panneau Fenêtre > Transparence.`
+     ],
+     ressource:{t:`Déplacement, alignement et répartition d'objets dans Illustrator`, u:"https://helpx.adobe.com/ch_fr/illustrator/using/moving-aligning-distributing-objects.html", fr:true}},
+    {titre:`Renforcer le point focal par la netteté sélective`, app:PS,
+     etapes:[
+      `Ouvrir la photo à retravailler et dupliquer le calque d'arrière-plan via Calque > Dupliquer le calque.`,
+      `Sélectionner la zone correspondant au point focal avec l'outil Lasso.`,
+      `Inverser la sélection via Sélection > Intervertir pour cibler le reste de l'image.`,
+      `Appliquer Filtre > Renforcement > Netteté optimisée avec un réglage léger sur la sélection inversée pour adoucir l'arrière-plan.`,
+      `Désélectionner puis appliquer une accentuation plus marquée uniquement sur la zone du point focal.`
+     ],
+     ressource:{t:`Sharpen selected areas in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/sharpen-a-selection.html", fr:false}},
+    {titre:`Augmenter le contraste local pour détacher le sujet`, app:PS,
+     etapes:[
+      `Sur la même image, ajouter un calque de réglage Courbes muni d'un masque de fusion limité au point focal.`,
+      `Peindre le masque en noir avec l'outil Pinceau pour n'appliquer le réglage qu'au sujet principal.`,
+      `Dans le panneau Propriétés, accentuer légèrement le contraste en formant une courbe en S sur ce calque.`,
+      `Ajouter un second calque de réglage Luminosité/Contraste réglé en négatif et masqué pour assombrir légèrement les bords de l'image.`,
+      `Comparer le rendu final avec l'image d'origine pour valider le renforcement du point focal.`
+     ],
+     ressource:{t:`Sharpen controls with Smart Sharpen in Photoshop`, u:"https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/sharpen-controls-with-smart-sharpen.html", fr:false}}
+   ]},
+
+{n:18, phase:"specialisation", app:ID,
+ title:`Documents longs&nbsp;: pagination et automatisation`,
+ notion:`Au-delà d'une poignée de pages, la mise en page cesse d'être un exercice manuel&nbsp;: sommaire automatique, sections et numérotation, fusion de données transforment la logique page par page en un système géré globalement. Un territoire propre à InDesign, sans équivalent en Illustrator ou Photoshop.`,
+ objectifs:[`Générer un sommaire automatique à partir des styles de paragraphe utilisés.`,`Comprendre le principe de la fusion de données pour personnaliser un document en série.`],
+ traversee:[
+   {app:ID, action:`Générer un sommaire automatique d'un document de plusieurs chapitres à partir des styles "Titre" déjà en place.`},
+   {app:ID, action:`Découper le document en sections avec une numérotation de page propre à chacune (romaine pour l'avant-propos, arabe pour le corps).`},
+   {app:AI, action:`Préparer un gabarit d'illustration destiné à être décliné en série (carte de vœux, badge) via un principe équivalent à la fusion de données.`}
+ ],
+ eclairage:{title:`InDesign &mdash; fusion de données`, text:`La fusion de données génère automatiquement une série de documents personnalisés (badges, cartes de visite, étiquettes) à partir d'un fichier de données (CSV) et d'un gabarit unique &mdash; une automatisation de production propre à la mise en page en série.`,
+   links:[
+     {t:`Fusion de données pour créer des lettres, des enveloppes ou des étiquettes d'adresses dans Adobe InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/data-merge.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Générer un sommaire automatique à partir des styles Titre`, app:ID,
+     etapes:[
+      `Vérifier que tous les titres de chapitre du document utilisent bien le style de paragraphe « Titre ».`,
+      `Ouvrir Mise en page > Table des matières.`,
+      `Dans la boîte de dialogue, ajouter le style « Titre » à la liste Inclure les styles de paragraphe.`,
+      `Choisir les options de mise en forme du sommaire (police, tabulations) puis cliquer sur OK.`,
+      `Cliquer sur la page pour placer le bloc de texte contenant le sommaire généré.`
+     ],
+     ressource:{t:`Création d'une table des matières dans Adobe InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/creating-table-contents.html", fr:true}},
+    {titre:`Mettre à jour le sommaire après modification du document`, app:ID,
+     etapes:[
+      `Modifier le titre d'un chapitre existant directement dans le document.`,
+      `Ajouter un nouveau chapitre dont le titre utilise le style « Titre ».`,
+      `Sélectionner le bloc de texte contenant le sommaire déjà généré.`,
+      `Retourner dans Mise en page > Table des matières et cliquer sur OK pour régénérer un sommaire à jour.`,
+      `Vérifier que les numéros de page et les nouveaux titres apparaissent correctement dans le sommaire.`
+     ],
+     ressource:{t:`Création d'une table des matières dans Adobe InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/creating-table-contents.html", fr:true}},
+    {titre:`Découper le document en sections numérotées différemment`, app:ID,
+     etapes:[
+      `Ouvrir le panneau Pages via Fenêtre > Pages et repérer la première page du corps du document.`,
+      `Faire un clic droit sur la miniature de la page et choisir Options de numérotation et de section.`,
+      `Sur les pages préliminaires, définir un Style de numérotation en chiffres romains commençant à i.`,
+      `Sur la première page du corps, créer une nouvelle section avec un Style de numérotation en chiffres arabes redémarrant à 1.`,
+      `Vérifier dans le panneau Pages que chaque section affiche la numérotation attendue sous les miniatures.`
+     ],
+     ressource:{t:`Numérotation des pages, chapitres et sections dans InDesign`, u:"https://helpx.adobe.com/ca_fr/indesign/using/numbering-pages-chapters-sections.html", fr:true}},
+    {titre:`Organiser le document en chapitres et planches cohérentes`, app:ID,
+     etapes:[
+      `Dans le panneau Pages, regrouper les pages de chaque chapitre en planches distinctes lorsque le format le permet.`,
+      `Insérer des sauts ou des planches vides entre chapitres via le menu du panneau Pages.`,
+      `Vérifier que la pagination reste continue d'un chapitre à l'autre malgré les sections créées.`,
+      `Renommer chaque planche ou section dans le panneau pour faciliter la navigation dans un document long.`
+     ],
+     ressource:{t:`Création et gestion de pages et de planches dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/pages-spreads-1.html", fr:true}},
+    {titre:`Construire une charte de nuances pour un gabarit destiné à la déclinaison`, app:AI,
+     etapes:[
+      `Ouvrir le gabarit d'illustration de base destiné à être décliné en série.`,
+      `Ouvrir le panneau Nuancier via Fenêtre > Nuancier et créer une nouvelle nuance globale pour chaque couleur clé de l'illustration.`,
+      `Nommer chaque nuance de façon explicite (par exemple « Fond principal », « Accent »).`,
+      `Regrouper ces nuances en cliquant sur Nouveau groupe de couleurs à partir de la sélection dans le panneau Nuancier.`,
+      `Vérifier que chaque objet du gabarit utilise bien une nuance globale nommée plutôt qu'une couleur non nommée.`
+     ],
+     ressource:{t:`Utilisation et création de nuances dans Illustrator`, u:"https://helpx.adobe.com/be_fr/illustrator/using/using-creating-swatches.html", fr:true}},
+    {titre:`Produire plusieurs déclinaisons colorées du gabarit`, app:AI,
+     etapes:[
+      `Sélectionner l'ensemble des objets du gabarit préparé à l'exercice précédent.`,
+      `Ouvrir Édition > Recolorier les objets.`,
+      `Dans l'onglet Assigner, faire correspondre chaque nuance globale existante à une nouvelle couleur pour créer une première déclinaison.`,
+      `Valider, dupliquer l'illustration, puis répéter l'opération pour produire une deuxième déclinaison de couleurs.`,
+      `Enregistrer chaque déclinaison sous un nom de fichier distinct identifiant sa variante de couleur.`
+     ],
+     ressource:{t:`Redéfinition des couleurs d'une illustration`, u:"https://helpx.adobe.com/be_fr/illustrator/using/recolor-artwork.html", fr:true}}
+   ]},
+
+{n:19, phase:"specialisation", app:ID,
+ title:`Préparation à l'impression`,
+ notion:`Un fichier prêt pour l'écran ne l'est pas pour l'imprimeur&nbsp;: fonds perdus, marques de coupe, contrôle en amont, export PDF conforme aux normes d'impression. La dernière étape du flux, qui interroge à rebours toutes les notions vues depuis la séance&nbsp;5 (couleur).`,
+ objectifs:[`Identifier et corriger les erreurs signalées par un contrôle en amont avant export.`,`Exporter un document en PDF conforme aux exigences d'un imprimeur (fonds perdus, marques de coupe).`],
+ traversee:[
+   {app:ID, action:`Lancer le contrôle en amont d'un document et corriger les erreurs signalées (résolution insuffisante, police manquante, couleur RVB).`},
+   {app:ID, action:`Exporter le document en PDF avec fonds perdus et marques de coupe, prêt à l'envoi.`},
+   {app:PS, action:`Vérifier et convertir en CMJN une image restée en RVB, repérée par le contrôle en amont.`}
+ ],
+ eclairage:{title:`InDesign &mdash; aperçu des séparations et surimpression`, text:`Avant impression, InDesign permet de visualiser séparément chaque plaque d'encre (cyan, magenta, jaune, noir, teintes directes) et de simuler la surimpression &mdash; un contrôle qui n'a de sens qu'à l'échelle d'un document destiné à l'impression offset, propre à InDesign.`,
+   links:[
+     {t:`Préparation à l'impression des séparations dans InDesign`, u:"https://helpx.adobe.com/fr/indesign/using/preparing-print-separations.html", fr:true},
+     {t:`Surimpression`, u:"https://helpx.adobe.com/fr/indesign/using/overprinting.html", fr:true}
+   ]},
+ exercices:[
+    {titre:`Lancer le contrôle en amont et corriger les erreurs`, app:ID,
+     etapes:[
+      `Ouvrir le document à vérifier et afficher le panneau Contrôle en amont via Fenêtre > Sortie > Contrôle en amont.`,
+      `Activer la case Activer le contrôle en amont et choisir le profil correspondant à l'imprimeur.`,
+      `Dérouler la liste des erreurs signalées (polices manquantes, images basse résolution, couleurs RVB).`,
+      `Double-cliquer sur chaque erreur pour être amené directement à l'objet concerné dans le document.`,
+      `Corriger chaque erreur jusqu'à ce que le panneau n'affiche plus aucune erreur.`
+     ],
+     ressource:{t:`Contrôle des fichiers dans InDesign en amont de l'envoi à un prestataire de services`, u:"https://helpx.adobe.com/fr/indesign/using/preflighting-files-handoff.html", fr:true}},
+    {titre:`Créer un profil de contrôle en amont personnalisé`, app:ID,
+     etapes:[
+      `Ouvrir le panneau Contrôle en amont puis, dans son menu, choisir Définir un profil.`,
+      `Cliquer sur le bouton + pour créer un nouveau profil et lui donner un nom explicite.`,
+      `Dans la catégorie Couleur, cocher l'option qui signale la présence d'espaces colorimétriques RVB.`,
+      `Dans la catégorie Images et objets, définir une résolution minimale requise pour les images placées.`,
+      `Enregistrer le profil puis l'appliquer au document en cours pour vérifier qu'il détecte bien les anomalies ciblées.`
+     ],
+     ressource:{t:`Create and manage preflight profiles in InDesign`, u:"https://helpx.adobe.com/indesign/desktop/print/preflight/create-and-manage-preflight-profiles.html", fr:false}},
+    {titre:`Exporter le document en PDF avec fonds perdus et marques de coupe`, app:ID,
+     etapes:[
+      `Vérifier au préalable, dans Fichier > Configuration du document, qu'un fond perdu est défini pour le document.`,
+      `Choisir Fichier > Exporter puis sélectionner le format Adobe PDF (impression).`,
+      `Dans l'onglet Repères et fonds perdus de la boîte de dialogue d'export, cocher Repères de coupe.`,
+      `Cocher Utiliser les réglages du document ou saisir manuellement la valeur de fond perdu demandée par l'imprimeur.`,
+      `Cliquer sur Exporter puis contrôler dans le PDF généré la présence des marques et du débord d'image.`
+     ],
+     ressource:{t:`Spécification des repères d'impression, des fonds perdus et des zones de ligne-bloc dans Adobe InDesign`, u:"https://helpx.adobe.com/lu_fr/indesign/using/printers-marks-bleeds.html", fr:true}},
+    {titre:`Choisir un préréglage PDF conforme aux exigences d'impression`, app:ID,
+     etapes:[
+      `Relancer Fichier > Exporter au format Adobe PDF (impression) sur le document corrigé.`,
+      `Dans le menu déroulant Préréglage Adobe PDF, sélectionner Qualité d'impression ou le préréglage fourni par l'imprimeur.`,
+      `Vérifier dans l'onglet Sortie que la conversion des couleurs correspond au profil CMJN attendu.`,
+      `Vérifier dans l'onglet Général que la plage de pages et les fonds perdus exportés sont corrects.`,
+      `Enregistrer le PDF final en le renommant selon la convention de nommage de l'imprimeur.`
+     ],
+     ressource:{t:`Exporter des fichiers InDesign au format Adobe PDF`, u:"https://helpx.adobe.com/fr/indesign/using/exporting-publishing-pdf.html", fr:true}},
+    {titre:`Convertir une image RVB en CMJN avant export`, app:PS,
+     etapes:[
+      `Ouvrir l'image restée en mode RVB repérée par le contrôle en amont d'InDesign.`,
+      `Choisir Image > Mode et observer que la coche est actuellement sur Couleurs RVB.`,
+      `Sélectionner Couleurs CMJN dans le même menu pour lancer la conversion.`,
+      `Vérifier dans le titre de la fenêtre du document que le mode CMJN est bien actif.`,
+      `Réenregistrer le fichier puis remplacer le lien correspondant dans InDesign via le panneau Liens.`
+     ],
+     ressource:{t:`Conversion entre modes colorimétriques dans Photoshop`, u:"https://helpx.adobe.com/be_fr/photoshop/using/converting-color-modes.html", fr:true}},
+    {titre:`Identifier et corriger les couleurs non imprimables`, app:PS,
+     etapes:[
+      `Sur une image encore en RVB, repérer une zone dont la teinte semble hors gamme d'impression.`,
+      `Ouvrir le sélecteur de couleur sur cette zone et observer le triangle d'avertissement de couleur non imprimable.`,
+      `Cliquer sur le petit carré affiché à côté du triangle pour basculer automatiquement vers l'équivalent CMJN le plus proche.`,
+      `Appliquer cette couleur corrigée à la zone concernée à l'aide de l'outil Pot de peinture.`,
+      `Vérifier le rendu final de la zone corrigée avant de convertir l'ensemble de l'image en CMJN.`
+     ],
+     ressource:{t:`Sélection des couleurs`, u:"https://helpx.adobe.com/ch_fr/photoshop/using/choosing-colors.html", fr:true}}
+   ]},
+
+{n:20, phase:"specialisation", app:ID,
+ title:`Synthèse&nbsp;: un flux, trois logiciels`,
+ notion:`Aucune notion nouvelle&nbsp;: cette séance relie explicitement les 19 précédentes en suivant, sur un même petit projet, le trajet complet &mdash; de l'image brute à la sortie imprimable &mdash; à travers les trois logiciels, chacun à l'endroit où il fait ce qu'aucun autre ne fait aussi bien.`,
+ objectifs:[`Restituer, projet en main, la carte des 19 notions transversales et leur enchaînement logique.`,`Justifier, pour chaque étape de son projet, pourquoi tel logiciel plutôt qu'un autre.`],
+ traversee:[
+   {app:PS, action:`Finaliser la retouche des images sources du projet (résolution, correction tonale, détourage).`},
+   {app:AI, action:`Finaliser les éléments vectoriels (logo, pictogrammes, illustrations) et leur charte de couleurs.`},
+   {app:ID, action:`Assembler l'ensemble en mise en page finale, contrôler en amont et exporter le PDF prêt à l'impression.`}
+ ],
+ eclairage:{title:`Pas d'éclairage nouveau &mdash; convergence`, text:`Cette séance fait l'inventaire des 19 éclairages précédents et de la place que chacun occupe dans un flux de production réel&nbsp;: quelle fonctionnalité exclusive a réellement servi, laquelle serait restée anecdotique hors de son contexte de séance.`,
+   links:[]},
+ exercices:[
+    {titre:`Finaliser la retouche des images sources du projet`, app:PS,
+     etapes:[
+      `Rassembler toutes les images sources du projet dans un même dossier de travail.`,
+      `Pour chaque image, ajouter les calques de réglage nécessaires (Courbes, Niveaux, Teinte/Saturation) déjà pratiqués en séance 16.`,
+      `Harmoniser la balance des couleurs entre les images en appliquant un calque de réglage Balance des couleurs comparable sur chaque fichier.`,
+      `Convertir chaque image en CMJN via Image > Mode > Couleurs CMJN si le projet est destiné à l'impression.`,
+      `Exporter chaque image finalisée au format TIFF ou PSD haute résolution via Fichier > Exporter > Exporter sous.`
+     ],
+     ressource:{t:`Photoshop Tutorials`, u:"https://helpx.adobe.com/photoshop/tutorials.html", fr:false}},
+    {titre:`Vérifier la cohérence technique des images avant assemblage`, app:PS,
+     etapes:[
+      `Ouvrir chaque image finalisée et vérifier sa résolution via Image > Taille de l'image (300 ppp minimum pour l'impression).`,
+      `Vérifier le mode colorimétrique de chaque fichier via Image > Mode.`,
+      `Aplatir les calques inutiles pour alléger les fichiers via Calque > Aplatir l'image.`,
+      `Nommer les fichiers de façon cohérente pour faciliter leur repérage dans InDesign.`,
+      `Consigner, pour chaque image, le logiciel et la notion transversale travaillée afin de justifier ce choix plus tard.`
+     ],
+     ressource:{t:`Photoshop Tutorials`, u:"https://helpx.adobe.com/photoshop/tutorials.html", fr:false}},
+    {titre:`Finaliser les éléments vectoriels du projet`, app:AI,
+     etapes:[
+      `Regrouper tous les tracés et formes du projet dans des calques nommés clairement.`,
+      `Vérifier et nettoyer les tracés dans le panneau Tracé (Fenêtre > Tracé) pour supprimer les points superflus.`,
+      `Appliquer les styles graphiques définitifs (contours, fonds, effets) validés au fil du parcours.`,
+      `Convertir les polices de texte en tracés si nécessaire via Texte > Créer les tracés avant export final.`,
+      `Enregistrer les éléments vectoriels finalisés au format AI ou PDF via Fichier > Enregistrer sous.`
+     ],
+     ressource:{t:`Illustrator Tutorials`, u:"https://helpx.adobe.com/illustrator/tutorials.html", fr:false}},
+    {titre:`Construire et vérifier la charte de couleurs du projet`, app:AI,
+     etapes:[
+      `Rassembler dans le panneau Nuancier (Fenêtre > Nuancier) toutes les couleurs utilisées dans le projet.`,
+      `Éliminer les doublons et couleurs non conformes à l'aide de Recolorier les objets.`,
+      `Nommer chaque nuance selon son usage (couleur principale, secondaire, accent).`,
+      `Vérifier que chaque nuance est définie en CMJN en vue de l'impression.`,
+      `Enregistrer la charte comme groupe de couleurs réutilisable dans le panneau Nuancier.`
+     ],
+     ressource:{t:`Illustrator Tutorials`, u:"https://helpx.adobe.com/illustrator/tutorials.html", fr:false}},
+    {titre:`Assembler le projet en mise en page finale`, app:ID,
+     etapes:[
+      `Créer un document InDesign aux dimensions finales du projet, avec fonds perdus définis.`,
+      `Importer via Fichier > Importer les images Photoshop finalisées et les éléments Illustrator dans les blocs appropriés.`,
+      `Vérifier dans le panneau Liens (Fenêtre > Liens) que tous les fichiers sont correctement référencés et à jour.`,
+      `Appliquer les styles de paragraphe et de caractère définis pour l'ensemble du texte du projet.`,
+      `Relire et ajuster la hiérarchie visuelle de chaque page (point focal, alignement, contraste).`
+     ],
+     ressource:{t:`InDesign Tutorials`, u:"https://helpx.adobe.com/indesign/view-all-tutorials.html", fr:false}},
+    {titre:`Contrôler en amont et exporter le PDF prêt à l'impression`, app:ID,
+     etapes:[
+      `Lancer le contrôle en amont via Fenêtre > Sortie > Contrôle en amont et corriger toutes les erreurs signalées.`,
+      `Vérifier les fonds perdus et marges de sécurité de chaque page.`,
+      `Exporter le document en PDF via Fichier > Exporter, avec un préréglage Qualité d'impression incluant fonds perdus et marques de coupe.`,
+      `Ouvrir le PDF exporté et vérifier visuellement chaque page.`,
+      `Rédiger une courte note justifiant, pour chaque étape du projet, le choix du logiciel utilisé.`
+     ],
+     ressource:{t:`InDesign Tutorials`, u:"https://helpx.adobe.com/indesign/view-all-tutorials.html", fr:false}}
+   ]}
+];
+
+function esc(s){ return s; } // content is pre-authored, no user input
+
+function tfStep(step){
+  return `<div class="tf-step" data-app="${step.app}"><span class="app-pill">${APPNAME[step.app]}</span><p>${step.action}</p></div>`;
+}
+
+function resTag(r){
+  return r.fr === false ? `<span class="lang-flag">en anglais</span>` : "";
+}
+
+function renderCard(s){
+  const traversee = s.traversee.map((st,i)=>{
+    const arrow = i < s.traversee.length-1 ? `<div class="tf-arrow">&rarr;</div>` : "";
+    return tfStep(st) + arrow;
+  }).join("");
+
+  const eclLinks = s.eclairage.links.length
+    ? `<ul style="margin-top:8px; padding-left:1.1em;">${s.eclairage.links.map(l=>`<li style="font-size:0.85rem;"><a href="${l.u}" target="_blank" rel="noopener">${l.t} &#8599;</a> ${resTag(l)}</li>`).join("")}</ul>`
+    : "";
+
+  const exercices = s.exercices.map((ex,i)=>`
+    <div class="exo-item" data-app="${ex.app}">
+      <div class="exo-head">
+        <span class="exo-num mono">${String(i+1).padStart(2,"0")}</span>
+        <span class="exo-titre">${ex.titre}</span>
+        <span class="exo-app-tag">${APPNAME[ex.app]}</span>
+      </div>
+      <ol class="exo-steps">${ex.etapes.map(st=>`<li>${st}</li>`).join("")}</ol>
+      <p class="exo-res"><span class="rtag">Adobe&nbsp;&middot;</span><a href="${ex.ressource.u}" target="_blank" rel="noopener">${ex.ressource.t} &#8599;</a> ${resTag(ex.ressource)}</p>
+    </div>`).join("");
+
+  return `
+  <details class="card" data-app="${s.app}">
+    <summary>
+      <span class="card-n mono">S${String(s.n).padStart(2,"0")}</span>
+      <span class="card-app-tag">${APPNAME[s.app]}</span>
+      <span class="card-title"><span class="notion-tag">Notion transversale</span>${s.title}</span>
+      <span class="chev">&#9656;</span>
+    </summary>
+    <div class="card-body">
+      <div class="cb-block">
+        <h4>La notion</h4>
+        <p>${s.notion}</p>
+      </div>
+      <div class="cb-block">
+        <h4>Objectifs</h4>
+        <ul>${s.objectifs.map(o=>`<li>${o}</li>`).join("")}</ul>
+      </div>
+      <div class="cb-block">
+        <h4>Traversée &mdash; la même notion, logiciel après logiciel</h4>
+        <div class="traversee-flow">${traversee}</div>
+      </div>
+      <div class="cb-block">
+        <h4>Éclairage spécifique</h4>
+        <div class="eclairage-box">
+          <div class="el-title">${s.eclairage.title}</div>
+          <p>${s.eclairage.text}</p>
+          ${eclLinks}
+        </div>
+      </div>
+      <div class="cb-block">
+        <h4>Exercices &mdash; 6 mini-parcours pas à pas</h4>
+        <div class="exo-list">${exercices}</div>
+      </div>
+    </div>
+  </details>`;
+}
+
+function render(){
+  const root = document.getElementById("programme");
+  let html = "";
+  PHASES.forEach(ph=>{
+    const sessions = SESSIONS.filter(s=>s.phase===ph.id);
+    html += `
+    <section class="phase-block" id="${ph.id}">
+      <div class="phase-head">
+        <div class="phase-num mono">${ph.num}</div>
+        <h2>${ph.title}</h2>
+        <div class="phase-desc">${ph.desc}</div>
+      </div>
+      ${sessions.map(renderCard).join("")}
+    </section>`;
+  });
+  root.innerHTML = html;
+
+  document.getElementById("btn-expand").addEventListener("click", ()=>{
+    document.querySelectorAll(".card").forEach(d=>d.open = true);
+  });
+  document.getElementById("btn-collapse").addEventListener("click", ()=>{
+    document.querySelectorAll(".card").forEach(d=>d.open = false);
+  });
+}
+render();
+</script>
